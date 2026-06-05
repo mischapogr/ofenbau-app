@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#b5450f" />
+  <!-- Stylised stove / flame -->
+  <path
+    d="M32 12c4 6 1 9-1 12 4 0 7-2 8-6 3 4 5 9 5 14 0 9-7 16-15 16S14 41 14 32c0-4 1-7 3-10 1 4 4 6 7 6-3-5-3-11 8-16z"
+    fill="#ffd7a0"
+  />
+  <path
+    d="M32 26c2 3 4 5 4 9 0 4-3 7-6 7s-5-3-5-6c0-4 3-6 7-10z"
+    fill="#b5450f"
+  />
+</svg>

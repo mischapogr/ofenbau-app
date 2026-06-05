@@ -1,0 +1,45 @@
+# Local development environment.
+#   docker compose up -d        → app on http://localhost:5173
+#   Mailpit web UI              → http://localhost:8025
+#
+# Production image is built separately from Dockerfile.prod (see README).
+
+services:
+  app:
+    container_name: ofenbau-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '5173:5173'
+    volumes:
+      # Mount source for hot reload …
+      - .:/app
+      # … but keep the container's node_modules (anonymous volume) so the
+      # host's platform-specific binaries don't shadow the installed deps.
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      # Ensures file-watching works across the Docker bind mount.
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - .env
+    depends_on:
+      - mailpit
+    restart: unless-stopped
+
+  mailpit:
+    container_name: ofenbau-mailpit
+    image: axllent/mailpit:latest
+    ports:
+      # Host ports are overridable to avoid clashes with other local stacks.
+      - '${MAILPIT_SMTP_PORT:-1025}:1025' # SMTP — point your mailer here
+      - '${MAILPIT_UI_PORT:-8025}:8025' # Web UI — http://localhost:8025
+    environment:
+      - MP_MAX_MESSAGES=500
+      - MP_SMTP_AUTH_ACCEPT_ANY=1
+      - MP_SMTP_AUTH_ALLOW_INSECURE=1
+    restart: unless-stopped
+
+volumes:
+  node_modules:

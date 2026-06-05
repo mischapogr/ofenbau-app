@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO meta tags (further refined per-route via the useSeo composable) -->
+    <title>Ofenbau Mustermann — Kachelöfen, Kamine & Ofenbau</title>
+    <meta
+      name="description"
+      content="Meisterhafter Ofenbau, Kachelöfen und Kamine — handwerkliche Wärme für Ihr Zuhause. Beratung, Planung und Montage aus einer Hand."
+    />
+    <meta name="theme-color" content="#b5450f" />
+    <link rel="canonical" href="http://localhost:5173/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ofenbau Mustermann" />
+    <meta
+      property="og:description"
+      content="Meisterhafter Ofenbau, Kachelöfen und Kamine — handwerkliche Wärme für Ihr Zuhause."
+    />
+    <meta property="og:locale" content="de_DE" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ofenbau Mustermann" />
+    <meta
+      name="twitter:description"
+      content="Meisterhafter Ofenbau, Kachelöfen und Kamine — handwerkliche Wärme für Ihr Zuhause."
+    />
+
+    <!-- Prevent dark-mode flash: apply the stored/system theme before paint. -->
+    <script>
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark')
+          }
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

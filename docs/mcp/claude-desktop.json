@@ -1,0 +1,43 @@
+{
+  "_comment": "Claude Desktop config. Merge the 'mcpServers' object into your existing config file: macOS ~/Library/Application Support/Claude/claude_desktop_config.json — Windows %APPDATA%\\Claude\\claude_desktop_config.json. Claude Desktop has no per-project root, so the filesystem server is pinned to an ABSOLUTE path — change it to your checkout location. Replace token placeholders with real values (Claude Desktop does not expand ${ENV} variables).",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/absolute/path/to/ofenbau-mustermann-app"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "github": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
+      }
+    },
+    "codegraphcontext": {
+      "command": "uvx",
+      "args": ["codegraphcontext"]
+    },
+    "stitch": {
+      "command": "npx",
+      "args": ["-y", "stitch-mcp"],
+      "env": {
+        "STITCH_API_KEY": "REPLACE_WITH_YOUR_STITCH_KEY"
+      }
+    }
+  }
+}

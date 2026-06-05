@@ -1,0 +1,46 @@
+/**
+ * Design tokens — single source of truth for color, radius, shadow, spacing.
+ *
+ * Tokens are exposed as CSS custom properties and consumed by Tailwind
+ * (see tailwind.config.js). When wiring up a Stitch-generated design, map the
+ * Stitch "design DNA" values onto these variables and the whole UI follows.
+ *
+ * Colors are stored as space-separated RGB channels so Tailwind's
+ * `<alpha-value>` opacity modifier works (e.g. `bg-brand-600/50`).
+ */
+
+:root {
+  /* Brand — warm terracotta / fired-clay palette, fitting for an Ofenbauer. */
+  --color-brand-50: 253 242 233;
+  --color-brand-100: 252 226 207;
+  --color-brand-200: 248 194 158;
+  --color-brand-300: 243 158 109;
+  --color-brand-400: 236 120 64;
+  --color-brand-500: 224 90 34;
+  --color-brand-600: 181 69 15;
+  --color-brand-700: 150 55 16;
+  --color-brand-800: 120 46 18;
+  --color-brand-900: 99 40 19;
+  --color-brand-950: 54 19 8;
+
+  /* Semantic surfaces / text — light theme defaults. */
+  --color-surface: 255 255 255;
+  --color-surface-muted: 245 244 242;
+  --color-content: 28 25 23;
+  --color-content-muted: 87 83 78;
+
+  /* Geometry & elevation */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.25rem;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+  --container-max: 80rem;
+}
+
+/* Dark theme overrides — activated by the `.dark` class on <html>. */
+.dark {
+  --color-surface: 24 22 20;
+  --color-surface-muted: 35 31 28;
+  --color-content: 245 244 242;
+  --color-content-muted: 168 162 158;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.45);
+}
