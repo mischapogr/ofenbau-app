@@ -39,7 +39,7 @@ Then open:
 | Service | URL |
 | --- | --- |
 | **App** (Vite dev server, hot reload) | <http://localhost:5173> |
-| **Mailpit** (catches dev emails) | <http://localhost:8025> |
+| **Mailpit** (catches dev emails) | <http://localhost:8023> |
 
 Useful commands:
 
