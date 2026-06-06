@@ -8,8 +8,8 @@ defineProps({
 <template>
   <component
     :is="as"
-    class="rounded-2xl bg-surface shadow-card ring-1 ring-content-muted/10 transition-transform duration-200"
-    :class="hoverable && 'hover:-translate-y-1'"
+    class="rounded-2xl bg-surface shadow-card ring-1 ring-content-muted/10 transition-all duration-300"
+    :class="hoverable && 'hover:-translate-y-1.5 hover:shadow-lift'"
   >
     <slot />
   </component>

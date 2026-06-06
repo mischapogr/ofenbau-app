@@ -1,46 +1,57 @@
 /**
  * Design tokens — single source of truth for color, radius, shadow, spacing.
  *
- * Tokens are exposed as CSS custom properties and consumed by Tailwind
- * (see tailwind.config.js). When wiring up a Stitch-generated design, map the
- * Stitch "design DNA" values onto these variables and the whole UI follows.
+ * Mapped from the configured Stitch project "Modern Stove Builder Homepage"
+ * (warm, light "hearth" direction): cream surfaces, warm-charcoal ink panels,
+ * a burnt-orange accent (#e35205 / #ec6d13) and Stitch ROUND_EIGHT geometry.
  *
- * Colors are stored as space-separated RGB channels so Tailwind's
- * `<alpha-value>` opacity modifier works (e.g. `bg-brand-600/50`).
+ * Tokens are exposed as CSS custom properties and consumed by Tailwind
+ * (see tailwind.config.js). Colors are stored as space-separated RGB channels
+ * so Tailwind's `<alpha-value>` opacity modifier works (e.g. `bg-brand-500/50`).
+ *
+ * The site is intentionally a single, polished light theme — no dark mode.
  */
 
 :root {
-  /* Brand — warm terracotta / fired-clay palette, fitting for an Ofenbauer. */
-  --color-brand-50: 253 242 233;
-  --color-brand-100: 252 226 207;
-  --color-brand-200: 248 194 158;
-  --color-brand-300: 243 158 109;
-  --color-brand-400: 236 120 64;
-  --color-brand-500: 224 90 34;
-  --color-brand-600: 181 69 15;
-  --color-brand-700: 150 55 16;
-  --color-brand-800: 120 46 18;
-  --color-brand-900: 99 40 19;
-  --color-brand-950: 54 19 8;
+  /* Brand — burnt-orange "hearth" accent. Stitch primary #e35205 (= 500). */
+  --color-brand-50: 253 244 238;
+  --color-brand-100: 250 227 208;
+  --color-brand-200: 244 194 156;
+  --color-brand-300: 238 158 107;
+  --color-brand-400: 235 125 63;
+  --color-brand-500: 227 82 5;
+  --color-brand-600: 198 67 4;
+  --color-brand-700: 161 54 6;
+  --color-brand-800: 126 44 11;
+  --color-brand-900: 103 38 13;
+  --color-brand-950: 55 16 4;
 
-  /* Semantic surfaces / text — light theme defaults. */
+  /* Ink — warm charcoal for hero/footer panels and primary text (#1c1816). */
+  --color-ink-50: 245 243 242;
+  --color-ink-100: 230 226 224;
+  --color-ink-200: 199 192 188;
+  --color-ink-300: 158 149 144;
+  --color-ink-400: 110 102 98;
+  --color-ink-500: 74 66 62;
+  --color-ink-600: 53 46 43;
+  --color-ink-700: 41 35 32;
+  --color-ink-800: 28 24 22;
+  --color-ink-900: 24 20 18;
+  --color-ink-950: 15 12 11;
+
+  /* Semantic surfaces / text — warm light theme. */
   --color-surface: 255 255 255;
-  --color-surface-muted: 245 244 242;
-  --color-content: 28 25 23;
-  --color-content-muted: 87 83 78;
+  --color-surface-muted: 250 246 241;
+  --color-surface-sand: 243 236 227;
+  --color-content: 28 24 22;
+  --color-content-muted: 107 99 94;
 
-  /* Geometry & elevation */
-  --radius-xl: 0.875rem;
+  /* Geometry & elevation — Stitch ROUND_EIGHT, soft warm shadows. */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
   --radius-2xl: 1.25rem;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+  --shadow-sm: 0 1px 2px rgb(40 24 16 / 0.06);
+  --shadow-card: 0 4px 12px rgb(40 24 16 / 0.06), 0 12px 32px rgb(40 24 16 / 0.08);
+  --shadow-lift: 0 14px 28px rgb(40 24 16 / 0.12), 0 28px 64px rgb(40 24 16 / 0.14);
   --container-max: 80rem;
-}
-
-/* Dark theme overrides — activated by the `.dark` class on <html>. */
-.dark {
-  --color-surface: 24 22 20;
-  --color-surface-muted: 35 31 28;
-  --color-content: 245 244 242;
-  --color-content-muted: 168 162 158;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.45);
 }

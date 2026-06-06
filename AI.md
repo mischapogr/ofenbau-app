@@ -32,17 +32,25 @@ Mailpit web UI (dev mail catcher): http://localhost:8025
 
 ## Architecture
 
-- `src/main.js` bootstraps Pinia + Router; `src/App.vue` mounts the layout,
-  `<RouterView>`, and initialises the theme.
+See [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for the full map.
+
+- `src/main.js` bootstraps Pinia + Router and registers the global `v-reveal`
+  directive; `src/App.vue` mounts the layout + `<RouterView>` (page transition).
 - `src/styles/tokens.css` — design tokens as CSS variables, surfaced to Tailwind
-  (`brand`, `surface`, `content`). Single source of truth for color/dark mode.
-- `src/composables/` — `useTheme` (DOM `.dark` toggle), `useApi`
-  (loading/error/data wrapper), `useSeo` (per-route meta tags).
-- `src/services/httpClient.js` — central Axios instance (base URL, timeout, auth
-  header, error normalisation). All API calls go through here.
-- `src/stores/` — Pinia stores (`theme`, `contact`).
-- `src/layouts/` (DefaultLayout/Header/Footer), `src/pages/` (lazy-loaded views),
-  `src/components/` (reusable UI: `Base*`, `App*`, `ThemeToggle`, `FeatureCard`).
+  (`brand`, `ink`, `surface`, `content`). Single source of truth for colour,
+  mapped from the configured Stitch project. **Single light theme — no dark mode.**
+- `src/data/` — content modules (`company`, `services`, `projects`, `process`,
+  `planning`). Edit copy/structure here, not in components.
+- `src/components/` — `Base*` primitives + `AppIcon` + section blocks
+  (`HeroSection`, `ServiceCards`/`ServiceCard`, `AboutSection`, `ProcessTimeline`,
+  `ProjectGallery`, `Planning3DSection`, `CTASection`, `ContactForm`, `PageHeader`,
+  `Breadcrumbs`, `SiteFooter`).
+- `src/composables/` — `useApi` (loading/error/data), `useSeo` (per-route meta),
+  `useJsonLd` (BreadcrumbList on subpages). `src/directives/reveal.js` = `v-reveal`.
+- `src/services/httpClient.js` — central Axios instance; all API calls go through
+  it. `src/stores/contact.js` — contact-form submission lifecycle.
+- `src/layouts/` (DefaultLayout, AppHeader), `src/pages/` (lazy-loaded views:
+  Home, Services, ServiceDetail, Projects, About, Contact, Legal, NotFound).
 - `@` is aliased to `src/` (see `vite.config.js`, `jsconfig.json`).
 
 ## Conventions for AI agents
