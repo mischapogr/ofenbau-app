@@ -13,3 +13,10 @@ monolith system (`assets/3824a26f7e40400292d99c26618d270f`).
 
 See [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md) → *Design systems (Stitch
 sync)* for how to keep the repo, this file, and Stitch in sync.
+
+> **AI agents:** read [`AI.md`](../AI.md) → *Design system* before touching styles.
+> It has the token usage, type scale, and the do/don't rules (single light
+> "hearth" theme, **no dark mode**, single burnt-orange accent, `ink` panels —
+> never the dark "Max Mustermann" look). The live source of truth is
+> `src/styles/tokens.css`; this file is its Stitch mirror — change tokens first,
+> then update this `design.md` to match.
