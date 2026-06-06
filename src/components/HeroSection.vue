@@ -55,6 +55,7 @@ const stats = [
         <BaseImage
           fill
           rounded="rounded-none"
+          src="/images/hero.svg"
           motif="flame"
           tone="ember"
           eager

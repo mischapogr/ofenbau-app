@@ -57,6 +57,7 @@ const details = [
 
           <div class="mt-8 overflow-hidden rounded-2xl">
             <BaseImage
+              src="/images/contact-map.svg"
               motif="pin"
               tone="slate"
               ratio="16/9"

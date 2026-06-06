@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Fertiges Projekt">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1200" height="900" fill="#fbf8f4"/>
+  <g>
+    
+    <rect x="324" y="54" width="552" height="594" rx="10" fill="#e9dfd1" stroke="#d3c4ad" stroke-width="2"/>
+    <rect x="462" y="149" width="276" height="238" rx="6" fill="#231b16"/>
+    <ellipse cx="600" cy="379" rx="165.6" ry="119" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M600 377 C 497.48571428571427 242.94285714285712, 529.0285714285715 140.42857142857142, 600 69.45714285714286
+            C 678.8571428571429 148.3142857142857, 702.5142857142857 258.7142857142857, 600 377 Z" fill="#e35205"/>
+    <path d="M600 377 C 536.9142857142857 282.37142857142857, 556.6285714285714 203.5142857142857, 600 148.3142857142857
+            C 651.2571428571429 211.39999999999998, 663.0857142857143 290.25714285714287, 600 377 Z" fill="#f6a23a"/>
+    <path d="M600 377 C 568.4571428571428 321.8, 576.3428571428572 266.6, 600 227.17142857142858
+            C 627.6 274.48571428571427, 631.5428571428572 325.74285714285713, 600 377 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="513.3333333333334" cy="381" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="513.3333333333334" cy="381" rx="34.333333333333336" ry="5" fill="#7c5230"/><ellipse cx="600" cy="381" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="600" cy="381" rx="34.333333333333336" ry="5" fill="#7c5230"/><ellipse cx="686.6666666666667" cy="381" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="686.6666666666667" cy="381" rx="34.333333333333336" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="1200" height="900" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="840" width="244" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="862" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">FERTIGES PROJEKT</text>
+  </g>
+</svg>

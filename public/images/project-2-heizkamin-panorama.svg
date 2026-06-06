@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Heizkamin Panorama">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1200" height="800" fill="url(#wall)"/>
+  <rect y="576" width="1200" height="224" fill="url(#floor)"/>
+  <rect y="574" width="1200" height="3" fill="#d3c4ad" opacity="0.5"/>
+  
+  <g>
+    
+    <rect x="324" y="48" width="552" height="528" rx="10" fill="#e9dfd1" stroke="#d3c4ad" stroke-width="2"/>
+    <rect x="462" y="132" width="276" height="211" rx="6" fill="#231b16"/>
+    <ellipse cx="600" cy="335" rx="165.6" ry="105.5" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M600 333 C 497.48571428571427 198.94285714285712, 529.0285714285715 96.42857142857142, 600 25.457142857142856
+            C 678.8571428571429 104.31428571428569, 702.5142857142857 214.71428571428572, 600 333 Z" fill="#e35205"/>
+    <path d="M600 333 C 536.9142857142857 238.37142857142857, 556.6285714285714 159.5142857142857, 600 104.31428571428569
+            C 651.2571428571429 167.39999999999998, 663.0857142857143 246.25714285714287, 600 333 Z" fill="#f6a23a"/>
+    <path d="M600 333 C 568.4571428571428 277.8, 576.3428571428572 222.6, 600 183.17142857142858
+            C 627.6 230.48571428571427, 631.5428571428572 281.74285714285713, 600 333 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="513.3333333333334" cy="337" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="513.3333333333334" cy="337" rx="34.333333333333336" ry="5" fill="#7c5230"/><ellipse cx="600" cy="337" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="600" cy="337" rx="34.333333333333336" ry="5" fill="#7c5230"/><ellipse cx="686.6666666666667" cy="337" rx="40.333333333333336" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="686.6666666666667" cy="337" rx="34.333333333333336" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="1200" height="800" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="740" width="270" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="762" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">HEIZKAMIN PANORAMA</text>
+  </g>
+</svg>

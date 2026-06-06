@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-label="Kachelofen Landhaus">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="900" height="1200" fill="url(#wall)"/>
+  <rect y="864" width="900" height="336" fill="url(#floor)"/>
+  <rect y="862" width="900" height="3" fill="#d3c4ad" opacity="0.5"/>
+  
+  <g>
+    
+    <rect x="243" y="72" width="414" height="792" rx="10" fill="#e9dfd1" stroke="#d3c4ad" stroke-width="2"/>
+    <rect x="347" y="199" width="207" height="317" rx="6" fill="#231b16"/>
+    <ellipse cx="450" cy="508" rx="124.19999999999999" ry="158.5" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M450 506 C 373.1142857142857 405.45714285714286, 396.7714285714286 328.57142857142856, 450 275.34285714285716
+            C 509.14285714285717 334.48571428571427, 526.8857142857142 417.2857142857143, 450 506 Z" fill="#e35205"/>
+    <path d="M450 506 C 402.6857142857143 435.0285714285714, 417.4714285714286 375.88571428571424, 450 334.48571428571427
+            C 488.4428571428571 381.8, 497.3142857142857 440.9428571428571, 450 506 Z" fill="#f6a23a"/>
+    <path d="M450 506 C 426.34285714285716 464.6, 432.25714285714287 423.2, 450 393.62857142857143
+            C 470.7 429.1142857142857, 473.65714285714284 467.5571428571429, 450 506 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="386.8333333333333" cy="510" rx="28.833333333333332" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="386.8333333333333" cy="510" rx="22.833333333333332" ry="5" fill="#7c5230"/><ellipse cx="450.5" cy="510" rx="28.833333333333332" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="450.5" cy="510" rx="22.833333333333332" ry="5" fill="#7c5230"/><ellipse cx="514.1666666666666" cy="510" rx="28.833333333333332" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="514.1666666666666" cy="510" rx="22.833333333333332" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="900" height="1200" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="1140" width="283" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="1162" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">KACHELOFEN LANDHAUS</text>
+  </g>
+</svg>
