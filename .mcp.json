@@ -29,9 +29,10 @@
     },
     "stitch": {
       "command": "npx",
-      "args": ["-y", "stitch-mcp"],
+      "args": ["-y", "@_davideast/stitch-mcp", "proxy"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "${GOOGLE_CLOUD_PROJECT}"
+        "STITCH_API_KEY": "${STITCH_API_KEY}",
+        "STITCH_PROJECT_ID": "${STITCH_PROJECT_ID}"
       }
     },
     "docker": {
