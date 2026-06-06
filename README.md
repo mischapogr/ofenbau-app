@@ -110,12 +110,10 @@ docker run -p 8080:80 ofenbau-mustermann:prod
 ├─ docker-compose.prod.yml    # nginx-served prod build
 ├─ nginx.conf                 # SPA fallback + caching + security headers
 ├─ .env.example
-├─ .mcp.json                  # canonical MCP server list
-├─ .cursor/mcp.json           # Cursor MCP config
-├─ .vscode/mcp.json           # VS Code / Copilot MCP config
+├─ .mcp.json                  # canonical MCP server list (source of truth)
 ├─ docs/
 │  ├─ MCP.md                  # MCP setup & usage guide (read this)
-│  └─ mcp/                    # Claude Desktop + Windsurf config examples
+│  └─ mcp/                    # Claude Desktop config example
 └─ src/
    ├─ main.js                 # app bootstrap (Pinia + Router)
    ├─ App.vue                 # layout + router view + theme init
@@ -168,7 +166,8 @@ Only `VITE_`-prefixed variables are exposed to the client. See `.env.example`.
 
 This repo is configured for **Claude Code, Codex, Google Antigravity, Qoder,
 Cursor, Windsurf and VS Code / Copilot**. The canonical MCP server list is
-[`.mcp.json`](./.mcp.json); per-agent configs mirror it.
+[`.mcp.json`](./.mcp.json); each tool reads it directly or you copy its
+`mcpServers` block into the tool's own config (see [`docs/MCP.md`](./docs/MCP.md)).
 
 **Read [`docs/MCP.md`](./docs/MCP.md) for the full guide.** In short:
 
