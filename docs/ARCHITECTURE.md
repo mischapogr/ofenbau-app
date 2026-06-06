@@ -86,9 +86,46 @@ All copy/structure is data-driven so components stay presentational:
 - **Performance** — routes are lazy-loaded (per-route chunks), images are
   `loading="lazy"` + `decoding="async"`, fonts use `display=swap` + preconnect.
 
-## Swapping in real photography
+## Design systems (Stitch sync)
 
-`BaseImage` renders a styled placeholder until a real `src` is provided. To use
-photos, set `image` on the relevant `data/*` entry (e.g.
-`image: '/images/kachelofen.jpg'` in `data/services.js`) or pass `:src` directly;
-it falls back to the placeholder automatically if the file is missing.
+The canonical, authoritative design system is the repo itself
+(`src/styles/tokens.css` + this doc), exported as a Stitch-format design.md at
+[`design/ofenbau-mustermann.design.md`](../design/ofenbau-mustermann.design.md).
+
+The configured Stitch project (`6396586097530756068`) holds **two** design
+systems that must never be mixed:
+
+| Stitch design system | Asset id | Role |
+| --- | --- | --- |
+| **Ofenbau Mustermann** (light "hearth") | `assets/5933609171211310555` | **Primary** — mirrors this repo (light, `#e35205`, ROUND_EIGHT, Fraunces/Inter/Space Mono) |
+| **Max Mustermann** (dark "monolith") | `assets/3824a26f7e40400292d99c26618d270f` | Kept, unused by the app (dark brutalist variant) |
+
+The light system was re-created from `design.md` (it had been removed from the
+project by mistake). To re-sync after editing tokens: update
+`design/ofenbau-mustermann.design.md` and apply it in Stitch (or re-run
+`create_design_system` with the updated theme).
+
+## Imagery & photography
+
+`BaseImage` renders an on-brand gradient/motif **placeholder** until a real `src`
+is provided, so the site is clean and error-free out of the box.
+
+The intended photography is specified in
+[`public/images/PROMPTS.md`](../public/images/PROMPTS.md) (human-readable) and
+[`public/images/manifest.json`](../public/images/manifest.json) (machine-readable)
+— 16 slots (hero, 3 services, about-craft, 8 projects, 3D before/after, contact
+map), each with a ratio, the data field it maps to, and a photorealistic
+generation prompt. Prompts follow the legal guidance in `_tmp/TODO`: tight crops
+on the craftsmanship, warm light interiors, **no recognizable people**, no private
+clutter, anonymized.
+
+To activate a photo: generate (or shoot) it per the prompt, save it as
+`public/images/<id>.jpg`, and set the matching `image` field — e.g.
+`image: '/images/service-kachelofen.jpg'` on the `kachelofen-kaminbau` entry in
+`data/services.js`, or `image` on a `data/projects.js` item. `BaseImage` falls
+back to the placeholder automatically if a file is missing.
+
+> Note: Stitch (in this environment) exposes only composite full-page screen
+> *screenshots*, not discrete image assets, so photos can't be auto-exported from
+> it. With the **Ofenbau Mustermann** design system now in the project, you can
+> also generate fresh on-brand screens directly in the Stitch UI.
