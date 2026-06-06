@@ -73,8 +73,29 @@ npm run dev        # http://localhost:5173
 | `npm run lint:check` | ESLint without fixing (CI) |
 | `npm run format` | Prettier write |
 | `npm run format:check` | Prettier check (CI) |
+| `npm run gen:images` | Regenerate the on-brand SVG imagery (`public/images/*.svg`) |
+| `npm run test:e2e` | Run the recorded Playwright demo (video + screenshots + trace) |
+| `npm run test:e2e:report` | Open the demo HTML report (video, trace, steps) |
 
 ---
+
+## Demo walkthrough (Playwright)
+
+A guided end-to-end demo records the whole site and its functionality for the
+customer — every page, the service detail + 3D pages, the project gallery filter
+and lightbox, contact-form validation and success, the mobile nav drawer, and the
+legal pages.
+
+```bash
+npm run test:e2e          # runs the demo and records video + screenshots + trace
+npm run test:e2e:report   # opens the HTML report (embedded video, step trace)
+```
+
+Artifacts land in `demo-artifacts/` — a `video.webm` per run, numbered step
+screenshots under `demo-artifacts/shots/{desktop,mobile}/`, and a Playwright
+`trace.zip` (open with `npx playwright show-trace <file>`). Specs live in
+`tests/e2e/` (`demo.spec.js` desktop tour, `mobile.spec.js` responsive nav);
+`playwright.config.js` records everything and boots the dev server automatically.
 
 ## Production build
 

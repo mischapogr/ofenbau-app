@@ -22,6 +22,15 @@ const tag = computed(() => {
   return 'button'
 })
 
+// Bind only the attributes relevant to the resolved tag. Passing an unset
+// `:href` through to <RouterLink> clobbers the href it computes from `to`,
+// which would strip the link role (breaking a11y, keyboard nav and SEO).
+const bindings = computed(() => {
+  if (props.to) return { to: props.to }
+  if (props.href) return { href: props.href }
+  return { type: props.type, disabled: props.disabled }
+})
+
 const classes = computed(() => {
   const base =
     'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:pointer-events-none'
@@ -46,14 +55,7 @@ const classes = computed(() => {
 </script>
 
 <template>
-  <component
-    :is="tag"
-    :to="to || undefined"
-    :href="href || undefined"
-    :type="tag === 'button' ? type : undefined"
-    :disabled="tag === 'button' ? disabled : undefined"
-    :class="classes"
-  >
+  <component :is="tag" v-bind="bindings" :class="classes">
     <slot />
   </component>
 </template>
