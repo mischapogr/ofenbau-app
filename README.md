@@ -87,21 +87,49 @@ customer — every page, the service detail + 3D pages, the project gallery filt
 and lightbox, contact-form validation and success, the mobile nav drawer, and the
 legal pages.
 
+Run it yourself (the config boots the dev server automatically — nothing else to
+start):
+
 ```bash
-npm run test:e2e          # runs the demo and records video + screenshots + trace
-npm run test:e2e:report   # opens the HTML report (embedded video, step trace)
-npm run demo:mp4          # converts the .webm recordings to shareable .mp4
+npm run test:e2e          # 1. runs the demo and records video + screenshots + trace
+npm run demo:mp4          # 2. converts the .webm recordings to shareable .mp4
+npm run test:e2e:report   #    (optional) open the HTML report — embedded video + step trace
 ```
 
-`demo:mp4` writes `demo-artifacts/walkthrough-desktop.mp4` and
-`walkthrough-mobile.mp4` (H.264, plays everywhere) using the bundled
-`ffmpeg-static` binary — no system ffmpeg required.
+`demo:mp4` uses the bundled `ffmpeg-static` binary, so **no system ffmpeg is
+required**. Specs live in `tests/e2e/` (`demo.spec.js` = desktop tour,
+`mobile.spec.js` = responsive nav); recording is configured in
+`playwright.config.js`.
 
-Artifacts land in `demo-artifacts/` — a `video.webm` per run, numbered step
-screenshots under `demo-artifacts/shots/{desktop,mobile}/`, and a Playwright
-`trace.zip` (open with `npx playwright show-trace <file>`). Specs live in
-`tests/e2e/` (`demo.spec.js` desktop tour, `mobile.spec.js` responsive nav);
-`playwright.config.js` records everything and boots the dev server automatically.
+### Where the recordings are
+
+Everything is written under `demo-artifacts/` (and `playwright-report/`). These
+folders are git-ignored — they are generated locally on each run, not committed.
+
+```
+demo-artifacts/
+├─ walkthrough-desktop.mp4                         ← shareable video (after `npm run demo:mp4`)
+├─ walkthrough-mobile.mp4                           ← shareable video (after `npm run demo:mp4`)
+├─ shots/
+│  ├─ desktop/01-home-hero.png … 17-datenschutz.png  ← numbered step screenshots (desktop)
+│  └─ mobile/01-home.png … 04-kontakt.png            ← numbered step screenshots (mobile)
+├─ demo-…-desktop-demo/
+│  ├─ video.webm                                   ← raw desktop recording
+│  └─ trace.zip                                     ← step-by-step trace
+└─ mobile-…-mobile-demo/
+   ├─ video.webm                                   ← raw mobile recording
+   └─ trace.zip
+
+playwright-report/index.html                        ← HTML report (`npm run test:e2e:report`)
+```
+
+| What | Where | How to open |
+| --- | --- | --- |
+| **Shareable videos (MP4)** | `demo-artifacts/walkthrough-desktop.mp4`, `…-mobile.mp4` | any video player |
+| Raw recordings (WebM) | `demo-artifacts/<run>/video.webm` | any video player |
+| Step screenshots | `demo-artifacts/shots/{desktop,mobile}/*.png` | any image viewer |
+| Interactive report | `playwright-report/index.html` | `npm run test:e2e:report` |
+| Trace (per step, DOM + network) | `demo-artifacts/<run>/trace.zip` | `npx playwright show-trace <file>` |
 
 ## Production build
 
