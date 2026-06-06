@@ -22,7 +22,7 @@ management, design generation, code-graph analysis and structured planning.
 | **playwright** | `@playwright/mcp` | – | Browser testing & visual checks |
 | **github** | `ghcr.io/github/github-mcp-server` (Docker) | `GITHUB_PERSONAL_ACCESS_TOKEN` | Issues, PRs, branches, commits, reviews |
 | **codegraphcontext** | `codegraphcontext` (via `uvx`) | – | Graph of components/routes/stores/services |
-| **stitch** | Google Stitch MCP *(placeholder cmd)* | `STITCH_API_KEY` | UI/UX generation, design-to-code |
+| **stitch** | `stitch-mcp` (Kargatharaakash) | `GOOGLE_CLOUD_PROJECT` + gcloud ADC | UI/UX generation, design-to-code |
 | **docker** *(optional)* | `docker-mcp` / Docker MCP toolkit | – | Inspect containers, logs, compose |
 
 ### When to use each (the development rules)
@@ -49,7 +49,7 @@ management, design generation, code-graph analysis and structured planning.
 - MCP **filesystem access is limited to the project directory** (`.` /
   `${workspaceFolder}` / an absolute project path — never `/` or `$HOME`).
 - Secrets are passed via environment variables (`GITHUB_PERSONAL_ACCESS_TOKEN`,
-  `STITCH_API_KEY`), never hard-coded. See [`.mcp.env.example`](../.mcp.env.example).
+  `GOOGLE_CLOUD_PROJECT`), never hard-coded. See [`.mcp.env.example`](../.mcp.env.example).
 - Docker Compose remains the standard local environment (`docker compose up -d`).
 
 ---
@@ -60,8 +60,10 @@ management, design generation, code-graph analysis and structured planning.
 - **Docker** running (for the GitHub MCP image, and the `docker` MCP).
 - **`uv`/`uvx`** (for `codegraphcontext`) — install from <https://docs.astral.sh/uv/>.
 - A **GitHub PAT** with `repo` scope for the GitHub server.
-- A **Stitch API key** + the actual Stitch MCP package name (the `stitch` entry
-  ships a placeholder command — see note below).
+- For **Stitch**: the [`stitch-mcp`](https://github.com/Kargatharaakash/stitch-mcp)
+  package (auto-fetched via `npx`) and a Google Cloud project with the Stitch API
+  enabled. It authenticates through gcloud Application Default Credentials — there
+  is **no API key**.
 
 Load secrets once per shell before starting an agent:
 
@@ -70,10 +72,20 @@ cp .mcp.env.example .mcp.env   # then fill in the values
 set -a; source .mcp.env; set +a
 ```
 
-> **Stitch note:** `stitch-mcp` in the configs is a **placeholder command shape**.
-> Replace it with the real Stitch MCP binary/package you have access to and set
-> `STITCH_API_KEY`. The design-to-code workflow (Stitch → tokens.css → Vue) is
-> documented above regardless of the exact package.
+> **Stitch setup:** `stitch-mcp` runs via `npx -y stitch-mcp` and authenticates
+> with Google Cloud (not an API key). One-time:
+>
+> ```bash
+> gcloud auth login
+> gcloud auth application-default login
+> gcloud auth application-default set-quota-project YOUR_GCP_PROJECT_ID
+> gcloud beta services mcp enable stitch.googleapis.com
+> ```
+>
+> Then set `GOOGLE_CLOUD_PROJECT` (your project id) in the server's `env`.
+> In **Antigravity**, install Stitch from the built-in MCP marketplace instead
+> (Agent pane → ⋯ → MCP Servers → search "Stitch" → Install) and paste the project
+> there. The design-to-code workflow (Stitch → `tokens.css` → Vue) is unchanged.
 
 ---
 
@@ -98,18 +110,23 @@ args = ["-y", "@upstash/context7-mcp@latest"]
 ```
 
 ### Cursor
-Already provided at [`.cursor/mcp.json`](../.cursor/mcp.json). Cursor picks it up
-per-project; verify under **Settings → MCP**.
+Copy the `mcpServers` object from [`.mcp.json`](../.mcp.json) into
+`.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global), then verify under
+**Settings → MCP**. Cursor uses the same `mcpServers` schema and expands `${ENV}`
+from your shell.
 
 ### VS Code / GitHub Copilot
-Already provided at [`.vscode/mcp.json`](../.vscode/mcp.json). It uses the VS Code
-`servers` + `inputs` schema, so tokens are prompted securely on first use
-(no secrets on disk). Start servers from the **MCP: List Servers** command.
+Add the servers via **MCP: Add Server** (or a `.vscode/mcp.json`). VS Code uses a
+`servers` + `inputs` schema (not `mcpServers`), so wrap secrets as `inputs` with
+`"password": true` to be prompted securely on first use instead of storing tokens
+on disk. Reuse the command/args from [`.mcp.json`](../.mcp.json). Start servers
+from the **MCP: List Servers** command.
 
 ### Windsurf (Cascade)
-Use [`docs/mcp/windsurf.json`](./mcp/windsurf.json). Merge `mcpServers` into
-`~/.codeium/windsurf/mcp_config.json` or add via **Settings → Cascade → MCP**.
-Set the filesystem path to your local checkout; replace token placeholders.
+Merge the `mcpServers` object from [`.mcp.json`](../.mcp.json) into
+`~/.codeium/windsurf/mcp_config.json` (or add via **Settings → Cascade → MCP →
+Add custom server**). Windsurf has no project root, so set the filesystem server
+to an **absolute path** and paste real values (it does not expand `${ENV}`).
 
 ### Claude Desktop
 Use [`docs/mcp/claude-desktop.json`](./mcp/claude-desktop.json). Merge into:
@@ -136,11 +153,14 @@ environment variables and keep filesystem scoped to the project.
 Because several agents (Claude Code, Codex, Antigravity, Qoder, Cursor, …) edit
 this repo:
 
-1. **`.mcp.json` is the source of truth.** Change it first.
-2. Mirror changes into `.cursor/mcp.json`, `.vscode/mcp.json`, and the
-   `docs/mcp/*.json` examples.
-3. Keep secrets out of git — only `*.example` files are committed; `.mcp.env`
-   and `.cursor/mcp.local.json` are git-ignored.
-4. Keep filesystem scope at the project root in every config.
-5. Project conventions for all agents live in [`AI.md`](../AI.md) and
+1. **`.mcp.json` is the single source of truth.** Change it first; every agent
+   either reads it directly or you copy its `mcpServers` block into the agent's
+   own config (see §3). The only committed mirror is
+   [`docs/mcp/claude-desktop.json`](./mcp/claude-desktop.json), kept because
+   Claude Desktop needs an absolute filesystem path and literal tokens.
+2. Keep secrets out of git — only `*.example` files are committed; `.mcp.env` is
+   git-ignored. Per-tool configs you create locally (`.cursor/mcp.json`,
+   `.vscode/mcp.json`) are git-ignored too.
+3. Keep filesystem scope at the project root in every config.
+4. Project conventions for all agents live in [`AI.md`](../AI.md) and
    [`CLAUDE.md`](../CLAUDE.md).

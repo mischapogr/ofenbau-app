@@ -1,5 +1,4 @@
 {
-  "_comment": "Claude Desktop config. Merge the 'mcpServers' object into your existing config file: macOS ~/Library/Application Support/Claude/claude_desktop_config.json — Windows %APPDATA%\\Claude\\claude_desktop_config.json. Claude Desktop has no per-project root, so the filesystem server is pinned to an ABSOLUTE path — change it to your checkout location. Replace token placeholders with real values (Claude Desktop does not expand ${ENV} variables).",
   "mcpServers": {
     "context7": {
       "command": "npx",
@@ -36,7 +35,7 @@
       "command": "npx",
       "args": ["-y", "stitch-mcp"],
       "env": {
-        "STITCH_API_KEY": "REPLACE_WITH_YOUR_STITCH_KEY"
+        "GOOGLE_CLOUD_PROJECT": "YOUR_GCP_PROJECT_ID"
       }
     }
   }

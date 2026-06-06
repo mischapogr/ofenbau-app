@@ -31,7 +31,7 @@
       "command": "npx",
       "args": ["-y", "stitch-mcp"],
       "env": {
-        "STITCH_API_KEY": "${STITCH_API_KEY}"
+        "GOOGLE_CLOUD_PROJECT": "${GOOGLE_CLOUD_PROJECT}"
       }
     },
     "docker": {

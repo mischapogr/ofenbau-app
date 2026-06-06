@@ -30,7 +30,6 @@ pnpm-debug.log*
 *.sw?
 .vscode/*
 !.vscode/extensions.json
-!.vscode/mcp.json
 
 # Test / coverage
 coverage/
@@ -40,7 +39,9 @@ coverage/
 
 # MCP secrets (commit only the *.example files)
 .mcp.env
-.cursor/mcp.local.json
+# Per-tool MCP configs are local — generate from .mcp.json (see docs/MCP.md).
+.cursor/
+.vscode/mcp.json
 
 # IDE / local scratch
 .idea/
