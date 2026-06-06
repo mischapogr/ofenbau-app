@@ -1,7 +1,7 @@
 /**
  * Completed projects — "Unsere Projekte" gallery. Each item carries a
- * category used by the gallery filter, plus a motif/tone for the placeholder
- * and an `image` (generated SVG scene; swap for a real photo any time).
+ * category used by the gallery filter, plus a motif/tone for the fallback
+ * and an `image` pointing at the project-local realistic WebP asset.
  */
 export const projectCategories = [
   { key: 'all', label: 'Alle' },
@@ -19,7 +19,7 @@ export const projects = [
     category: ['kachelofen', 'klassisch'],
     motif: 'flame',
     tone: 'ember',
-    image: '/images/project-1-kachelofen-landhaus.svg',
+    image: '/images/project-1-kachelofen-landhaus.webp',
   },
   {
     id: 'p2',
@@ -27,7 +27,7 @@ export const projects = [
     category: ['kaminofen', 'modern'],
     motif: 'flame',
     tone: 'slate',
-    image: '/images/project-2-heizkamin-panorama.svg',
+    image: '/images/project-2-heizkamin-panorama.webp',
   },
   {
     id: 'p3',
@@ -35,7 +35,7 @@ export const projects = [
     category: ['kachelofen', 'klassisch'],
     motif: 'flame',
     tone: 'sand',
-    image: '/images/project-3-kachelofen-sitzbank.svg',
+    image: '/images/project-3-kachelofen-sitzbank.webp',
   },
   {
     id: 'p4',
@@ -43,7 +43,7 @@ export const projects = [
     category: ['fliesen', 'modern'],
     motif: 'tile',
     tone: 'slate',
-    image: '/images/project-4-wohnraum-fliesen-xxl.svg',
+    image: '/images/project-4-wohnraum-fliesen-xxl.webp',
   },
   {
     id: 'p5',
@@ -51,7 +51,7 @@ export const projects = [
     category: ['kaminofen', 'modern'],
     motif: 'flame',
     tone: 'ink',
-    image: '/images/project-5-kaminofen-stahl.svg',
+    image: '/images/project-5-kaminofen-stahl.webp',
   },
   {
     id: 'p6',
@@ -59,7 +59,7 @@ export const projects = [
     category: ['fliesen', 'klassisch'],
     motif: 'tile',
     tone: 'sand',
-    image: '/images/project-6-bad-naturstein.svg',
+    image: '/images/project-6-bad-naturstein.webp',
   },
   {
     id: 'p7',
@@ -67,7 +67,7 @@ export const projects = [
     category: ['kachelofen', 'modern'],
     motif: 'flame',
     tone: 'ember',
-    image: '/images/project-7-grundofen-eck.svg',
+    image: '/images/project-7-grundofen-eck.webp',
   },
   {
     id: 'p8',
@@ -75,6 +75,6 @@ export const projects = [
     category: ['kaminofen', 'klassisch'],
     motif: 'flame',
     tone: 'sand',
-    image: '/images/project-8-kaminofen-speckstein.svg',
+    image: '/images/project-8-kaminofen-speckstein.webp',
   },
 ]

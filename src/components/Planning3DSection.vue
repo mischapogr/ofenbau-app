@@ -57,10 +57,10 @@ import { planningBenefits } from '@/data/planning'
           <div class="grid grid-cols-2 gap-4">
             <figure>
               <BaseImage
-                src="/images/planning-3d-before.svg"
+                src="/images/planning-3d-before.webp"
                 motif="render"
                 tone="slate"
-                ratio="3/4"
+                ratio="4/3"
                 alt="3D-Skizze des Entwurfs"
               />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">
@@ -69,10 +69,10 @@ import { planningBenefits } from '@/data/planning'
             </figure>
             <figure class="mt-8">
               <BaseImage
-                src="/images/planning-3d-after.svg"
+                src="/images/planning-3d-after.webp"
                 motif="flame"
                 tone="ember"
-                ratio="3/4"
+                ratio="4/3"
                 alt="Fertig umgesetztes Projekt"
               />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">

@@ -3,6 +3,9 @@
 How the Ofenbau Mustermann site is structured after the UX/UI refactor, and how
 the **Stitch** design system maps into the codebase.
 
+For implementation-facing design rules, see
+[`docs/DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md).
+
 ## Design system → tokens
 
 The visual language is driven by the configured Stitch project
@@ -107,25 +110,27 @@ project by mistake). To re-sync after editing tokens: update
 
 ## Imagery
 
-All 16 image slots ship with **generated, on-brand SVG scene illustrations**
-(`public/images/*.svg`) wired into the app (hero, 3 services, about-craft, 8
-projects, 3D before/after, contact map). They are produced by
-[`scripts/generate-images.mjs`](../scripts/generate-images.mjs) — regenerate with
-`npm run gen:images` — from the warm "hearth" palette: stylized, anonymized stove,
-tile, wireframe, render, craft and map scenes (no people, no real places). This
-keeps the site visually complete and **error-free** (no 404s, no missing assets).
+Primary customer-facing photography slots now use realistic generated WebP assets
+(`public/images/*.webp`) wired into the app: hero, three services, about craft,
+eight projects, and the 3D before/after pair. The contact map remains an
+illustrative SVG slot.
+
+The original generated SVG scenes are still kept as fallback/reference assets.
+They are produced by [`scripts/generate-images.mjs`](../scripts/generate-images.mjs)
+— regenerate with `npm run gen:images` — from the warm "hearth" palette:
+stylized, anonymized stove, tile, wireframe, render, craft and map scenes.
 
 The accompanying photography spec lives in
 [`public/images/PROMPTS.md`](../public/images/PROMPTS.md) (human-readable) and
 [`public/images/manifest.json`](../public/images/manifest.json) (machine-readable)
 — each slot has a ratio, the data field it maps to, and a photorealistic
-generation prompt following the legal guidance in `_tmp/TODO` (tight crops on the
-craftsmanship, warm light interiors, **no recognizable people**, anonymized).
+generation prompt following the legal guidance in `_tmp/TODO` (warm light
+interiors, no logos, no readable text, anonymized craft where people are implied).
 
-To upgrade a slot to a real photo: drop `public/images/<id>.jpg` and point the
-matching `image` field at it — e.g. `image: '/images/service-kachelofen.jpg'` on
-the `kachelofen-kaminbau` entry in `data/services.js`. `BaseImage` falls back to
-its in-DOM gradient placeholder if a referenced file is ever missing.
+To replace a photo slot: export `public/images/<id>.webp` and point the matching
+`image` field at it, e.g. `image: '/images/service-kachelofen.webp'` on the
+`kachelofen-kaminbau` entry in `data/services.js`. `BaseImage` falls back to its
+in-DOM gradient placeholder if a referenced file is ever missing.
 
 > Note: Stitch (in this environment) exposes only composite full-page screen
 > *screenshots*, not discrete image assets, so photos can't be auto-exported from
