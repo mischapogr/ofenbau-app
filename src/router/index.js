@@ -11,9 +11,9 @@ const routes = [
     name: 'home',
     component: () => import('@/pages/HomeView.vue'),
     meta: {
-      title: 'Ofenbau Mustermann — Kachelöfen, Kamine & Ofenbau',
+      title: 'Ofenbau Mustermann — Kachelöfen, Kamine & Fliesen',
       description:
-        'Meisterhafter Ofenbau, Kachelöfen und Kamine — handwerkliche Wärme für Ihr Zuhause.',
+        'Mit gesunder Wärme leben: individueller Kachel- & Kaminofenbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.',
     },
   },
   {
@@ -22,7 +22,22 @@ const routes = [
     component: () => import('@/pages/ServicesView.vue'),
     meta: {
       title: 'Leistungen — Ofenbau Mustermann',
-      description: 'Kachelöfen, Heizkamine, Kaminöfen, Sanierung und Wartung vom Meisterbetrieb.',
+      description: 'Kachelöfen, Kaminbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.',
+    },
+  },
+  {
+    path: '/leistungen/:slug',
+    name: 'service-detail',
+    component: () => import('@/pages/ServiceDetailView.vue'),
+    meta: { title: 'Leistung — Ofenbau Mustermann' },
+  },
+  {
+    path: '/projekte',
+    name: 'projects',
+    component: () => import('@/pages/ProjectsView.vue'),
+    meta: {
+      title: 'Projekte — Ofenbau Mustermann',
+      description: 'Ausgewählte Kachelöfen, Kamine und Fliesenarbeiten aus unserer Werkstatt.',
     },
   },
   {
@@ -42,6 +57,18 @@ const routes = [
       title: 'Kontakt — Ofenbau Mustermann',
       description: 'Vereinbaren Sie eine unverbindliche Beratung. Wir freuen uns auf Sie.',
     },
+  },
+  {
+    path: '/impressum',
+    name: 'imprint',
+    component: () => import('@/pages/LegalView.vue'),
+    meta: { title: 'Impressum — Ofenbau Mustermann' },
+  },
+  {
+    path: '/datenschutz',
+    name: 'privacy',
+    component: () => import('@/pages/LegalView.vue'),
+    meta: { title: 'Datenschutz — Ofenbau Mustermann' },
   },
   {
     path: '/:pathMatch(.*)*',

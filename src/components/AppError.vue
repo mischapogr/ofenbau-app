@@ -12,7 +12,7 @@ const emit = defineEmits(['retry'])
 
 <template>
   <div
-    class="flex flex-col items-center justify-center gap-3 rounded-2xl border border-red-300/40 bg-red-50/60 px-6 py-8 text-center dark:bg-red-950/20"
+    class="flex flex-col items-center justify-center gap-3 rounded-2xl border border-red-300/40 bg-red-50/60 px-6 py-8 text-center"
     role="alert"
   >
     <svg

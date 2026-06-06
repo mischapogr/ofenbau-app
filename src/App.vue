@@ -1,11 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { useTheme } from '@/composables/useTheme'
-
-// Initialise theme (reads stored/system preference, syncs the .dark class).
-const { initTheme } = useTheme()
-onMounted(initTheme)
 </script>
 
 <template>

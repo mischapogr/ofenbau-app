@@ -1,130 +1,93 @@
 <script setup>
-import { reactive } from 'vue'
+import PageHeader from '@/components/PageHeader.vue'
 import BaseContainer from '@/components/BaseContainer.vue'
-import BaseCard from '@/components/BaseCard.vue'
-import BaseButton from '@/components/BaseButton.vue'
-import AppError from '@/components/AppError.vue'
-import { useContactStore } from '@/stores/contact'
+import BaseImage from '@/components/BaseImage.vue'
+import ContactForm from '@/components/ContactForm.vue'
+import AppIcon from '@/components/AppIcon.vue'
+import { company } from '@/data/company'
 import { useSeo } from '@/composables/useSeo'
 
 useSeo(() => ({
   title: 'Kontakt',
-  description: 'Vereinbaren Sie eine unverbindliche Beratung. Wir freuen uns auf Sie.',
+  description: 'Vereinbaren Sie eine unverbindliche Beratung — wir freuen uns auf Ihr Projekt.',
   path: '/kontakt',
 }))
 
-const store = useContactStore()
-const form = reactive({ name: '', email: '', message: '' })
-
-async function onSubmit() {
-  const ok = await store.submit({ ...form })
-  if (ok) {
-    form.name = ''
-    form.email = ''
-    form.message = ''
-  }
-}
+const details = [
+  {
+    icon: 'pin',
+    label: 'Adresse',
+    value: `${company.address.street}, ${company.address.zip} ${company.address.city}`,
+  },
+  { icon: 'phone', label: 'Telefon', value: company.phone.label, href: company.phone.href },
+  { icon: 'mail', label: 'E-Mail', value: company.email.label, href: company.email.href },
+  { icon: 'clock', label: 'Öffnungszeiten', value: company.hours },
+]
 </script>
 
 <template>
-  <section class="section">
-    <BaseContainer class="grid gap-12 lg:grid-cols-2">
-      <div>
-        <h1 class="font-display text-4xl font-bold sm:text-5xl">Kontakt</h1>
-        <p class="mt-4 text-lg text-content-muted">
-          Schreiben Sie uns — wir melden uns zeitnah für eine unverbindliche Beratung.
-        </p>
-        <dl class="mt-8 space-y-4 text-sm">
-          <div>
-            <dt class="font-semibold text-content">Adresse</dt>
-            <dd class="text-content-muted">Musterstraße 1, 12345 Musterstadt</dd>
-          </div>
-          <div>
-            <dt class="font-semibold text-content">Telefon</dt>
-            <dd>
-              <a href="tel:+490000000000" class="text-brand-600 hover:underline"
-                >+49 (0) 000 000000</a
+  <div>
+    <PageHeader
+      eyebrow="Kontakt"
+      title="Lassen Sie uns über Ihr Projekt sprechen"
+      subtitle="Schreiben Sie uns — wir melden uns zeitnah für eine unverbindliche Beratung."
+      :crumbs="[{ name: 'Kontakt', to: { name: 'contact' } }]"
+    />
+
+    <section class="section bg-surface">
+      <BaseContainer class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <!-- Info -->
+        <div>
+          <dl class="space-y-5">
+            <div v-for="d in details" :key="d.label" class="flex items-start gap-4">
+              <span
+                class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600"
               >
-            </dd>
-          </div>
-          <div>
-            <dt class="font-semibold text-content">E-Mail</dt>
-            <dd>
-              <a href="mailto:info@ofenbau-mustermann.test" class="text-brand-600 hover:underline"
-                >info@ofenbau-mustermann.test</a
-              >
-            </dd>
-          </div>
-        </dl>
-      </div>
+                <AppIcon :name="d.icon" class="h-5 w-5" />
+              </span>
+              <div>
+                <dt class="text-sm font-medium text-content-muted">{{ d.label }}</dt>
+                <dd class="mt-0.5 text-content">
+                  <a v-if="d.href" :href="d.href" class="hover:text-brand-600">{{ d.value }}</a>
+                  <span v-else>{{ d.value }}</span>
+                </dd>
+              </div>
+            </div>
+          </dl>
 
-      <BaseCard class="p-6 sm:p-8">
-        <form class="space-y-5" @submit.prevent="onSubmit">
-          <div
-            v-if="store.succeeded"
-            class="rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700 dark:bg-green-950/30 dark:text-green-300"
-            role="status"
-          >
-            Vielen Dank! Ihre Nachricht wurde gesendet.
-          </div>
-
-          <AppError
-            v-if="store.error"
-            :retryable="false"
-            title="Senden fehlgeschlagen"
-            :message="store.error"
-          />
-
-          <div>
-            <label for="name" class="mb-1.5 block text-sm font-medium">Name</label>
-            <input
-              id="name"
-              v-model.trim="form.name"
-              type="text"
-              required
-              autocomplete="name"
-              class="w-full rounded-xl border border-content-muted/20 bg-surface px-4 py-2.5 text-content focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+          <div class="mt-8 overflow-hidden rounded-2xl">
+            <BaseImage
+              motif="pin"
+              tone="slate"
+              ratio="16/9"
+              alt="Karte mit Standort des Betriebs"
             />
           </div>
 
-          <div>
-            <label for="email" class="mb-1.5 block text-sm font-medium">E-Mail</label>
-            <input
-              id="email"
-              v-model.trim="form.email"
-              type="email"
-              required
-              autocomplete="email"
-              class="w-full rounded-xl border border-content-muted/20 bg-surface px-4 py-2.5 text-content focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-            />
-          </div>
-
-          <div>
-            <label for="message" class="mb-1.5 block text-sm font-medium">Nachricht</label>
-            <textarea
-              id="message"
-              v-model.trim="form.message"
-              rows="5"
-              required
-              class="w-full rounded-xl border border-content-muted/20 bg-surface px-4 py-2.5 text-content focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-            />
-          </div>
-
-          <BaseButton type="submit" block size="lg" :disabled="store.isSubmitting">
-            {{ store.isSubmitting ? 'Senden …' : 'Nachricht senden' }}
-          </BaseButton>
-          <p class="text-xs text-content-muted">
-            Im Entwicklungsmodus landen versendete E-Mails in Mailpit unter
+          <p class="mt-4 text-xs text-content-muted">
+            Im Entwicklungsmodus landen versendete Nachrichten in Mailpit unter
             <a
               href="http://localhost:8025"
-              class="text-brand-600 hover:underline"
               target="_blank"
               rel="noopener"
-              >localhost:8025</a
+              class="text-brand-600 hover:underline"
+            >
+              localhost:8025 </a
             >.
           </p>
-        </form>
-      </BaseCard>
-    </BaseContainer>
-  </section>
+        </div>
+
+        <!-- Form -->
+        <div class="rounded-2xl bg-surface-muted p-6 sm:p-8">
+          <h2 class="font-display text-2xl font-semibold">Anfrage senden</h2>
+          <p class="mt-2 text-sm text-content-muted">
+            Alle Felder mit Ausnahme der Telefonnummer sind erforderlich.
+          </p>
+          <div class="mt-6">
+            <ContactForm submit-label="Nachricht senden" />
+          </div>
+        </div>
+      </BaseContainer>
+    </section>
+  </div>
 </template>
