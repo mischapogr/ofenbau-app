@@ -23,6 +23,7 @@ const points = [
       <!-- Image left -->
       <div v-reveal class="relative">
         <BaseImage
+          src="/images/about-craft.svg"
           motif="portrait"
           tone="ink"
           ratio="4/5"

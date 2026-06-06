@@ -56,13 +56,25 @@ import { planningBenefits } from '@/data/planning'
           <!-- Right: before / after -->
           <div class="grid grid-cols-2 gap-4">
             <figure>
-              <BaseImage motif="render" tone="slate" ratio="3/4" alt="3D-Skizze des Entwurfs" />
+              <BaseImage
+                src="/images/planning-3d-before.svg"
+                motif="render"
+                tone="slate"
+                ratio="3/4"
+                alt="3D-Skizze des Entwurfs"
+              />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">
                 3D-Skizze
               </figcaption>
             </figure>
             <figure class="mt-8">
-              <BaseImage motif="flame" tone="ember" ratio="3/4" alt="Fertig umgesetztes Projekt" />
+              <BaseImage
+                src="/images/planning-3d-after.svg"
+                motif="flame"
+                tone="ember"
+                ratio="3/4"
+                alt="Fertig umgesetztes Projekt"
+              />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">
                 Fertiges Projekt
               </figcaption>

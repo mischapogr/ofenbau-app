@@ -2,9 +2,12 @@
 
 Generated from the configured Stitch design + the legal best-practices in `_tmp/TODO`
 (tight crops on the craftsmanship, warm light interiors, **no recognizable people**,
-no private clutter, anonymized). Drop a generated/real photo named `<id>.jpg` into this
-folder and set the matching `image` field (see `slot`) to `/images/<id>.jpg` to activate it —
-`BaseImage` falls back to the on-brand placeholder until then.
+no private clutter, anonymized).
+
+Each slot already ships with a generated on-brand **`<id>.svg`** scene (see
+`scripts/generate-images.mjs`, `npm run gen:images`) wired into the app. To upgrade a
+slot to a real photograph, generate/shoot it per the prompt below, drop `<id>.jpg` into
+this folder and point the matching `image` field (see `slot`) at `/images/<id>.jpg`.
 
 ## hero  
 - **file:** `public/images/hero.jpg` · **ratio:** 16/10

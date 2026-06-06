@@ -105,25 +105,27 @@ project by mistake). To re-sync after editing tokens: update
 `design/ofenbau-mustermann.design.md` and apply it in Stitch (or re-run
 `create_design_system` with the updated theme).
 
-## Imagery & photography
+## Imagery
 
-`BaseImage` renders an on-brand gradient/motif **placeholder** until a real `src`
-is provided, so the site is clean and error-free out of the box.
+All 16 image slots ship with **generated, on-brand SVG scene illustrations**
+(`public/images/*.svg`) wired into the app (hero, 3 services, about-craft, 8
+projects, 3D before/after, contact map). They are produced by
+[`scripts/generate-images.mjs`](../scripts/generate-images.mjs) — regenerate with
+`npm run gen:images` — from the warm "hearth" palette: stylized, anonymized stove,
+tile, wireframe, render, craft and map scenes (no people, no real places). This
+keeps the site visually complete and **error-free** (no 404s, no missing assets).
 
-The intended photography is specified in
+The accompanying photography spec lives in
 [`public/images/PROMPTS.md`](../public/images/PROMPTS.md) (human-readable) and
 [`public/images/manifest.json`](../public/images/manifest.json) (machine-readable)
-— 16 slots (hero, 3 services, about-craft, 8 projects, 3D before/after, contact
-map), each with a ratio, the data field it maps to, and a photorealistic
-generation prompt. Prompts follow the legal guidance in `_tmp/TODO`: tight crops
-on the craftsmanship, warm light interiors, **no recognizable people**, no private
-clutter, anonymized.
+— each slot has a ratio, the data field it maps to, and a photorealistic
+generation prompt following the legal guidance in `_tmp/TODO` (tight crops on the
+craftsmanship, warm light interiors, **no recognizable people**, anonymized).
 
-To activate a photo: generate (or shoot) it per the prompt, save it as
-`public/images/<id>.jpg`, and set the matching `image` field — e.g.
-`image: '/images/service-kachelofen.jpg'` on the `kachelofen-kaminbau` entry in
-`data/services.js`, or `image` on a `data/projects.js` item. `BaseImage` falls
-back to the placeholder automatically if a file is missing.
+To upgrade a slot to a real photo: drop `public/images/<id>.jpg` and point the
+matching `image` field at it — e.g. `image: '/images/service-kachelofen.jpg'` on
+the `kachelofen-kaminbau` entry in `data/services.js`. `BaseImage` falls back to
+its in-DOM gradient placeholder if a referenced file is ever missing.
 
 > Note: Stitch (in this environment) exposes only composite full-page screen
 > *screenshots*, not discrete image assets, so photos can't be auto-exported from

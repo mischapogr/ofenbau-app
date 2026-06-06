@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="Kachel- &amp; Kaminofenbau">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1600" height="1000" fill="url(#wall)"/>
+  <rect y="720" width="1600" height="280" fill="url(#floor)"/>
+  <rect y="718" width="1600" height="3" fill="#d3c4ad" opacity="0.5"/>
+  
+  <g>
+    
+    <rect x="432" y="60" width="736" height="660" rx="10" fill="#e9dfd1" stroke="#d3c4ad" stroke-width="2"/>
+    <rect x="616" y="166" width="368" height="264" rx="6" fill="#231b16"/>
+    <ellipse cx="800" cy="422" rx="220.79999999999998" ry="132" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M800 420 C 663.3142857142857 241.25714285714287, 705.3714285714286 104.57142857142856, 800 9.942857142857122
+            C 905.1428571428571 115.08571428571429, 936.6857142857143 262.2857142857143, 800 420 Z" fill="#e35205"/>
+    <path d="M800 420 C 715.8857142857142 293.8285714285714, 742.1714285714286 188.68571428571428, 800 115.08571428571429
+            C 868.3428571428572 199.2, 884.1142857142858 304.34285714285716, 800 420 Z" fill="#f6a23a"/>
+    <path d="M800 420 C 757.9428571428572 346.4, 768.4571428571428 272.8, 800 220.22857142857143
+            C 836.8 283.3142857142857, 842.0571428571428 351.65714285714284, 800 420 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="682.6666666666666" cy="424" rx="55.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="682.6666666666666" cy="424" rx="49.666666666666664" ry="5" fill="#7c5230"/><ellipse cx="800" cy="424" rx="55.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="800" cy="424" rx="49.666666666666664" ry="5" fill="#7c5230"/><ellipse cx="917.3333333333333" cy="424" rx="55.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="917.3333333333333" cy="424" rx="49.666666666666664" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="1600" height="1000" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="940" width="322" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="962" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">KACHEL- &amp; KAMINOFENBAU</text>
+  </g>
+</svg>

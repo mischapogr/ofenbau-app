@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="Musterstadt &amp; Umgebung">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1600" height="1000" fill="#f3ece3"/><g><line x1="0" y1="166.66666666666666" x2="1600" y2="184.66666666666666" stroke="#fff" stroke-width="7" opacity="0.9"/><line x1="0" y1="333.3333333333333" x2="1600" y2="351.3333333333333" stroke="#fff" stroke-width="7" opacity="0.9"/><line x1="0" y1="500" x2="1600" y2="518" stroke="#fff" stroke-width="7" opacity="0.9"/><line x1="0" y1="666.6666666666666" x2="1600" y2="684.6666666666666" stroke="#fff" stroke-width="7" opacity="0.9"/><line x1="0" y1="833.3333333333334" x2="1600" y2="851.3333333333334" stroke="#fff" stroke-width="7" opacity="0.9"/><line x1="200" y1="0" x2="186" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="400" y1="0" x2="386" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="600" y1="0" x2="586" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="800" y1="0" x2="786" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="1000" y1="0" x2="986" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="1200" y1="0" x2="1186" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><line x1="1400" y1="0" x2="1386" y2="1000" stroke="#fff" stroke-width="6" opacity="0.85"/><rect x="192" y="550" width="256" height="180" rx="8" fill="#cdbfa0" opacity="0.7"/>
+    <rect x="992" y="200" width="320" height="160" rx="8" fill="#cdbfa0" opacity="0.7"/>
+    <path d="M800 628 C 709 502, 730 390, 800 390
+            C 870 390, 891 502, 800 628 Z" fill="#e35205"/>
+    <circle cx="800" cy="456.5" r="29.4" fill="#fff"/></g>
+  <rect width="1600" height="1000" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="940" width="322" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="962" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">MUSTERSTADT &amp; UMGEBUNG</text>
+  </g>
+</svg>
