@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files (never commit real secrets — commit .env.example only)
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vscode/*
+!.vscode/extensions.json
+!.vscode/mcp.json
+
+# Test / coverage
+coverage/
+
+# Vite
+.vite/
+
+# MCP secrets (commit only the *.example files)
+.mcp.env
+.cursor/mcp.local.json
+
+# IDE / local scratch
+.idea/
+_tmp/

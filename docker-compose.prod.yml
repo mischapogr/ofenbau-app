@@ -1,0 +1,16 @@
+# Production-style build + serve, locally verifiable.
+#   docker compose -f docker-compose.prod.yml up -d --build
+#   → static site served by nginx on http://localhost:8080
+services:
+  web:
+    container_name: ofenbau-web
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000/api}
+        VITE_APP_TITLE: ${VITE_APP_TITLE:-Ofenbau Mustermann}
+        VITE_APP_URL: ${VITE_APP_URL:-http://localhost:8080}
+    ports:
+      - '8080:80'
+    restart: unless-stopped
