@@ -9,7 +9,14 @@ export default [
   },
   {
     name: 'app/files-to-ignore',
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      'playwright-report/**',
+      'demo-artifacts/**',
+      'test-results/**',
+    ],
   },
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
