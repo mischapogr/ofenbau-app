@@ -76,6 +76,7 @@ npm run dev        # http://localhost:5173
 | `npm run gen:images` | Regenerate the on-brand SVG imagery (`public/images/*.svg`) |
 | `npm run test:e2e` | Run the recorded Playwright demo (video + screenshots + trace) |
 | `npm run test:e2e:report` | Open the demo HTML report (video, trace, steps) |
+| `npm run demo:mp4` | Convert the recorded demo videos (`.webm`) to shareable `.mp4` |
 
 ---
 
@@ -89,7 +90,12 @@ legal pages.
 ```bash
 npm run test:e2e          # runs the demo and records video + screenshots + trace
 npm run test:e2e:report   # opens the HTML report (embedded video, step trace)
+npm run demo:mp4          # converts the .webm recordings to shareable .mp4
 ```
+
+`demo:mp4` writes `demo-artifacts/walkthrough-desktop.mp4` and
+`walkthrough-mobile.mp4` (H.264, plays everywhere) using the bundled
+`ffmpeg-static` binary — no system ffmpeg required.
 
 Artifacts land in `demo-artifacts/` — a `video.webm` per run, numbered step
 screenshots under `demo-artifacts/shots/{desktop,mobile}/`, and a Playwright
