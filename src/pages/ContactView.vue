@@ -68,12 +68,12 @@ const details = [
           <p class="mt-4 text-xs text-content-muted">
             Im Entwicklungsmodus landen versendete Nachrichten in Mailpit unter
             <a
-              href="http://localhost:8025"
+              href="http://localhost:8023"
               target="_blank"
               rel="noopener"
               class="text-brand-600 hover:underline"
             >
-              localhost:8025 </a
+              localhost:8023 </a
             >.
           </p>
         </div>

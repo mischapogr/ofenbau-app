@@ -28,7 +28,7 @@ fireplace (Kachelofen / Kamin) craft business. Content is German.
 | Format | `npm run format` · `npm run format:check` |
 | Prod build (Docker) | `docker compose -f docker-compose.prod.yml up -d --build` |
 
-Mailpit web UI (dev mail catcher): http://localhost:8025
+Mailpit web UI (dev mail catcher): http://localhost:8023
 
 ## Architecture
 
