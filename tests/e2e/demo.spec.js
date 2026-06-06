@@ -44,7 +44,9 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
   })
 
   await test.step('Leistungen — Service-Karten', async () => {
-    await page.getByRole('heading', { name: 'Handwerk für Wärme und Raum' }).scrollIntoViewIfNeeded()
+    await page
+      .getByRole('heading', { name: 'Handwerk für Wärme und Raum' })
+      .scrollIntoViewIfNeeded()
     await revealAll(page)
     await page.waitForTimeout(600)
     await shot(page, 'home-services')
@@ -58,7 +60,9 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
   })
 
   await test.step('Unser Prozess (Timeline)', async () => {
-    await page.getByRole('heading', { name: 'In vier Schritten zu Ihrem Ofen' }).scrollIntoViewIfNeeded()
+    await page
+      .getByRole('heading', { name: 'In vier Schritten zu Ihrem Ofen' })
+      .scrollIntoViewIfNeeded()
     await revealAll(page)
     await page.waitForTimeout(500)
     await shot(page, 'home-process')
@@ -77,7 +81,10 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
 
   await test.step('Service-Detail: Kachelöfen & Kaminbau', async () => {
     await page.goto('/')
-    await page.getByRole('link', { name: /Kachelöfen & Kaminbau/ }).first().click()
+    await page
+      .getByRole('link', { name: /Kachelöfen & Kaminbau/ })
+      .first()
+      .click()
     await expect(page).toHaveURL(/leistungen\/kachelofen-kaminbau/)
     await expect(page.getByRole('heading', { name: 'Kachelöfen & Kaminbau' })).toBeVisible()
     await revealAll(page)
@@ -115,7 +122,9 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
 
   await test.step('Über uns (Seite)', async () => {
     await page.goto('/ueber-uns')
-    await expect(page.getByRole('heading', { name: /Ein Meisterbetrieb mit Geschichte/ })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: /Ein Meisterbetrieb mit Geschichte/ })
+    ).toBeVisible()
     await revealAll(page)
     await page.waitForTimeout(500)
     await shot(page, 'ueber-uns', true)
@@ -142,7 +151,9 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
     await page.getByLabel('Name').fill('Maria Beispiel')
     await page.getByLabel(/Telefon/).fill('012345 678900')
     await page.getByLabel('E-Mail').fill('maria@example.com')
-    await page.getByLabel('Nachricht').fill('Ich interessiere mich für einen Kachelofen im Wohnzimmer und bitte um eine Beratung.')
+    await page
+      .getByLabel('Nachricht')
+      .fill('Ich interessiere mich für einen Kachelofen im Wohnzimmer und bitte um eine Beratung.')
     await page.getByRole('checkbox').check()
     await page.getByRole('button', { name: 'Nachricht senden' }).click()
     await expect(page.getByText('Vielen Dank!')).toBeVisible()

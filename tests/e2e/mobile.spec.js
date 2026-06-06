@@ -42,7 +42,9 @@ test('Mobile — Layout & Navigation', async ({ page }) => {
 
   await test.step('Mobiles Kontaktformular', async () => {
     await page.goto('/kontakt')
-    await expect(page.getByRole('heading', { name: /Lassen Sie uns über Ihr Projekt sprechen/ })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: /Lassen Sie uns über Ihr Projekt sprechen/ })
+    ).toBeVisible()
     await page.waitForTimeout(400)
     await shot(page, 'kontakt')
   })
