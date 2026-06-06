@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-label="Kaminofen Stahl">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="900" height="1200" fill="url(#wall)"/>
+  <rect y="864" width="900" height="336" fill="url(#floor)"/>
+  <rect y="862" width="900" height="3" fill="#d3c4ad" opacity="0.5"/>
+  
+  <g>
+    
+    <rect x="306" y="144" width="288" height="720" rx="144" fill="#2a2522" stroke="#161310" stroke-width="2"/>
+    <rect x="364" y="259" width="173" height="302" rx="6" fill="#231b16"/>
+    <ellipse cx="450" cy="553" rx="103.8" ry="151" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M450 551 C 385.74285714285713 466.97142857142853, 405.51428571428573 402.7142857142857, 450 358.2285714285714
+            C 499.42857142857144 407.65714285714284, 514.2571428571429 476.8571428571429, 450 551 Z" fill="#e35205"/>
+    <path d="M450 551 C 410.45714285714286 491.6857142857143, 422.8142857142857 442.25714285714287, 450 407.65714285714284
+            C 482.12857142857143 447.2, 489.54285714285714 496.62857142857143, 450 551 Z" fill="#f6a23a"/>
+    <path d="M450 551 C 430.2285714285714 516.4, 435.1714285714286 481.8, 450 457.0857142857143
+            C 467.3 486.74285714285713, 469.7714285714286 518.8714285714286, 450 551 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="398.1666666666667" cy="555" rx="23.166666666666668" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="398.1666666666667" cy="555" rx="17.166666666666668" ry="5" fill="#7c5230"/><ellipse cx="450.5" cy="555" rx="23.166666666666668" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="450.5" cy="555" rx="17.166666666666668" ry="5" fill="#7c5230"/><ellipse cx="502.83333333333337" cy="555" rx="23.166666666666668" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="502.83333333333337" cy="555" rx="17.166666666666668" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="900" height="1200" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="1140" width="231" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="1162" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">KAMINOFEN STAHL</text>
+  </g>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="img" aria-label="Kachelöfen &amp; Kaminbau">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1000" height="1250" fill="url(#wall)"/>
+  <rect y="900" width="1000" height="350" fill="url(#floor)"/>
+  <rect y="898" width="1000" height="3" fill="#d3c4ad" opacity="0.5"/>
+  
+  <g>
+    
+    <rect x="270" y="75" width="460" height="825" rx="10" fill="#e9dfd1" stroke="#d3c4ad" stroke-width="2"/>
+    <rect x="385" y="207" width="230" height="330" rx="6" fill="#231b16"/>
+    <ellipse cx="500" cy="529" rx="138" ry="165" fill="#e35205" opacity="0.45"/>
+    
+  <g opacity="0.96">
+    <path d="M500 527 C 414.57142857142856 415.2857142857143, 440.8571428571429 329.8571428571429, 500 270.7142857142857
+            C 565.7142857142857 336.42857142857144, 585.4285714285714 428.42857142857144, 500 527 Z" fill="#e35205"/>
+    <path d="M500 527 C 447.42857142857144 448.1428571428571, 463.8571428571429 382.42857142857144, 500 336.42857142857144
+            C 542.7142857142857 389, 552.5714285714286 454.7142857142857, 500 527 Z" fill="#f6a23a"/>
+    <path d="M500 527 C 473.7142857142857 481, 480.2857142857143 435, 500 402.14285714285717
+            C 523 441.57142857142856, 526.2857142857143 484.2857142857143, 500 527 Z" fill="#ffd27a"/>
+  </g>
+    <g><ellipse cx="428.6666666666667" cy="531" rx="32.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="428.6666666666667" cy="531" rx="26.666666666666664" ry="5" fill="#7c5230"/><ellipse cx="500" cy="531" rx="32.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="500" cy="531" rx="26.666666666666664" ry="5" fill="#7c5230"/><ellipse cx="571.3333333333333" cy="531" rx="32.666666666666664" ry="9" fill="#9b6b3f"/>
+          <ellipse cx="571.3333333333333" cy="531" rx="26.666666666666664" ry="5" fill="#7c5230"/></g>
+  </g>
+  <rect width="1000" height="1250" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="1190" width="309" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="1212" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">KACHELÖFEN &amp; KAMINBAU</text>
+  </g>
+</svg>

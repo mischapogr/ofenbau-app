@@ -15,8 +15,11 @@ runs entirely in **Docker Compose** for local development, and is configured for
 - **Pinia 2** state management
 - **Tailwind CSS 3** with CSS-variable design tokens (`src/styles/tokens.css`)
 - **Axios** API service layer with interceptors & error normalisation
-- Dark / light mode (class strategy, no flash on load)
-- SEO-friendly meta tags (`useSeo` composable + per-route meta)
+- Single warm **light theme** mapped from the configured Stitch project
+  (cream surfaces, charcoal `ink` panels, burnt-orange accent; Fraunces + Inter)
+- Scroll-reveal animations (`v-reveal` directive, respects reduced motion)
+- SEO-friendly meta tags (`useSeo` composable) + LocalBusiness / BreadcrumbList
+  structured data (`useJsonLd`)
 - ESLint (flat config) + Prettier
 - Docker (Node 22 LTS) dev + production images, **Mailpit** for local mail
 
@@ -36,7 +39,7 @@ Then open:
 | Service | URL |
 | --- | --- |
 | **App** (Vite dev server, hot reload) | <http://localhost:5173> |
-| **Mailpit** (catches dev emails) | <http://localhost:8025> |
+| **Mailpit** (catches dev emails) | <http://localhost:8023> |
 
 Useful commands:
 
@@ -70,8 +73,63 @@ npm run dev        # http://localhost:5173
 | `npm run lint:check` | ESLint without fixing (CI) |
 | `npm run format` | Prettier write |
 | `npm run format:check` | Prettier check (CI) |
+| `npm run gen:images` | Regenerate the on-brand SVG imagery (`public/images/*.svg`) |
+| `npm run test:e2e` | Run the recorded Playwright demo (video + screenshots + trace) |
+| `npm run test:e2e:report` | Open the demo HTML report (video, trace, steps) |
+| `npm run demo:mp4` | Convert the recorded demo videos (`.webm`) to shareable `.mp4` |
 
 ---
+
+## Demo walkthrough (Playwright)
+
+A guided end-to-end demo records the whole site and its functionality for the
+customer — every page, the service detail + 3D pages, the project gallery filter
+and lightbox, contact-form validation and success, the mobile nav drawer, and the
+legal pages.
+
+Run it yourself (the config boots the dev server automatically — nothing else to
+start):
+
+```bash
+npm run test:e2e          # 1. runs the demo and records video + screenshots + trace
+npm run demo:mp4          # 2. converts the .webm recordings to shareable .mp4
+npm run test:e2e:report   #    (optional) open the HTML report — embedded video + step trace
+```
+
+`demo:mp4` uses the bundled `ffmpeg-static` binary, so **no system ffmpeg is
+required**. Specs live in `tests/e2e/` (`demo.spec.js` = desktop tour,
+`mobile.spec.js` = responsive nav); recording is configured in
+`playwright.config.js`.
+
+### Where the recordings are
+
+Everything is written under `demo-artifacts/` (and `playwright-report/`). These
+folders are git-ignored — they are generated locally on each run, not committed.
+
+```
+demo-artifacts/
+├─ walkthrough-desktop.mp4                         ← shareable video (after `npm run demo:mp4`)
+├─ walkthrough-mobile.mp4                           ← shareable video (after `npm run demo:mp4`)
+├─ shots/
+│  ├─ desktop/01-home-hero.png … 17-datenschutz.png  ← numbered step screenshots (desktop)
+│  └─ mobile/01-home.png … 04-kontakt.png            ← numbered step screenshots (mobile)
+├─ demo-…-desktop-demo/
+│  ├─ video.webm                                   ← raw desktop recording
+│  └─ trace.zip                                     ← step-by-step trace
+└─ mobile-…-mobile-demo/
+   ├─ video.webm                                   ← raw mobile recording
+   └─ trace.zip
+
+playwright-report/index.html                        ← HTML report (`npm run test:e2e:report`)
+```
+
+| What | Where | How to open |
+| --- | --- | --- |
+| **Shareable videos (MP4)** | `demo-artifacts/walkthrough-desktop.mp4`, `…-mobile.mp4` | any video player |
+| Raw recordings (WebM) | `demo-artifacts/<run>/video.webm` | any video player |
+| Step screenshots | `demo-artifacts/shots/{desktop,mobile}/*.png` | any image viewer |
+| Interactive report | `playwright-report/index.html` | `npm run test:e2e:report` |
+| Trace (per step, DOM + network) | `demo-artifacts/<run>/trace.zip` | `npx playwright show-trace <file>` |
 
 ## Production build
 
@@ -98,9 +156,9 @@ docker run -p 8080:80 ofenbau-mustermann:prod
 
 ```
 .
-├─ index.html                 # SEO meta + no-flash theme bootstrap
+├─ index.html                 # SEO meta + fonts + LocalBusiness JSON-LD
 ├─ vite.config.js             # @ alias, dev server (host/port/polling)
-├─ tailwind.config.js         # token-driven theme, darkMode: 'class'
+├─ tailwind.config.js         # token-driven theme (brand / ink / surface / content)
 ├─ postcss.config.js
 ├─ eslint.config.js           # flat config (Vue + Prettier)
 ├─ .prettierrc.json
@@ -115,35 +173,47 @@ docker run -p 8080:80 ofenbau-mustermann:prod
 │  ├─ MCP.md                  # MCP setup & usage guide (read this)
 │  └─ mcp/                    # Claude Desktop config example
 └─ src/
-   ├─ main.js                 # app bootstrap (Pinia + Router)
-   ├─ App.vue                 # layout + router view + theme init
+   ├─ main.js                 # app bootstrap (Pinia + Router + v-reveal)
+   ├─ App.vue                 # layout + router view + page transition
    ├─ assets/                 # static imported assets
-   ├─ components/             # reusable UI (BaseButton, BaseCard, AppLoader, AppError, ThemeToggle, …)
-   ├─ layouts/                # DefaultLayout, AppHeader, AppFooter
-   ├─ pages/                  # Home, Services, About, Contact, NotFound
+   ├─ components/             # Base* primitives, section blocks (HeroSection,
+   │                          #   ServiceCards, AboutSection, ProcessTimeline,
+   │                          #   ProjectGallery, Planning3DSection, CTASection,
+   │                          #   ContactForm, SiteFooter), AppIcon, …
+   ├─ data/                   # content modules (company, services, projects, …)
+   ├─ directives/             # reveal.js (scroll-reveal directive)
+   ├─ layouts/                # DefaultLayout, AppHeader
+   ├─ pages/                  # Home, Services, ServiceDetail, Projects, About,
+   │                          #   Contact, Legal, NotFound
    ├─ router/                 # routes + meta + scroll behaviour
-   ├─ stores/                 # Pinia stores (theme, contact)
-   ├─ services/               # Axios httpClient + API services
-   ├─ composables/            # useTheme, useApi, useSeo
+   ├─ stores/                 # Pinia store (contact)
+   ├─ services/               # Axios httpClient + contactService
+   ├─ composables/            # useApi, useSeo, useJsonLd
    └─ styles/                 # tokens.css (design tokens) + main.css (Tailwind)
 ```
+
+See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for the full component/route
+map and how the Stitch design DNA is mapped into tokens.
 
 ---
 
 ## Architecture notes
 
 - **Design tokens** are CSS custom properties in `src/styles/tokens.css`, surfaced
-  to Tailwind (`brand`, `surface`, `content`) so utilities and dark mode stay in
-  sync from one place. This is the target for Stitch design DNA.
-- **Theme**: `useTheme` composable owns the DOM `.dark` toggle; `stores/theme.js`
-  holds + persists the mode. `index.html` applies the stored/system theme before
-  paint to avoid a flash.
-- **API layer**: all requests go through `services/httpClient.js` (base URL,
-  timeout, auth header, normalised errors). The `useApi` composable wraps any
-  request with `isLoading` / `error` / `data` / `execute`, paired with the
-  `AppLoader` and `AppError` components (demoed on the Home page).
-- **SEO**: `useSeo` sets title + Open Graph / Twitter meta per route; routes also
-  carry `meta.title` / `meta.description`.
+  to Tailwind (`brand`, `ink`, `surface`, `content`) so the whole UI follows from
+  one place. Values are mapped from the configured Stitch project (warm light
+  "hearth" direction). See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
+- **Content** lives in `src/data/*` (company NAP/nav, services, projects, process,
+  3D benefits) so copy/structure changes never require touching components.
+- **Sections** are self-contained components composed by the pages; subpages share
+  `PageHeader` (breadcrumbs + banner) and `BaseSection` (rhythm + header).
+- **Motion**: the `v-reveal` directive (`src/directives/reveal.js`) fades sections
+  in on scroll via IntersectionObserver, and no-ops under `prefers-reduced-motion`.
+- **API layer**: requests go through `services/httpClient.js` (base URL, timeout,
+  auth header, normalised errors); `useApi` wraps any request with
+  `isLoading` / `error` / `data` / `execute` (`AppLoader` / `AppError`).
+- **SEO**: `useSeo` sets title + Open Graph / Twitter meta per route; `useJsonLd`
+  injects BreadcrumbList on subpages; `index.html` carries the LocalBusiness schema.
 
 ---
 
@@ -180,9 +250,11 @@ Cursor, Windsurf and VS Code / Copilot**. The canonical MCP server list is
 - **filesystem** — project-scoped file access only.
 - **docker** *(optional)* — containers, logs, compose.
 
-Secrets (`GITHUB_PERSONAL_ACCESS_TOKEN`, `STITCH_API_KEY`) are passed via env
-vars — copy `.mcp.env.example` → `.mcp.env`. Never commit real tokens; never
-widen filesystem access beyond the project root.
+Secrets (e.g. `GITHUB_PERSONAL_ACCESS_TOKEN`, and Stitch's `STITCH_API_KEY` /
+`STITCH_PROJECT_ID`) are passed via env vars — copy `.mcp.env.example` →
+`.mcp.env`. The project ships a `.envrc`, so with [direnv](https://direnv.net)
+those load automatically (`direnv allow`); otherwise `source .mcp.env` per shell.
+Never commit real tokens; never widen filesystem access beyond the project root.
 
 ---
 

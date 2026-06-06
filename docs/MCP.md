@@ -22,7 +22,7 @@ management, design generation, code-graph analysis and structured planning.
 | **playwright** | `@playwright/mcp` | – | Browser testing & visual checks |
 | **github** | `ghcr.io/github/github-mcp-server` (Docker) | `GITHUB_PERSONAL_ACCESS_TOKEN` | Issues, PRs, branches, commits, reviews |
 | **codegraphcontext** | `codegraphcontext` (via `uvx`) | – | Graph of components/routes/stores/services |
-| **stitch** | `stitch-mcp` (Kargatharaakash) | `GOOGLE_CLOUD_PROJECT` + gcloud ADC | UI/UX generation, design-to-code |
+| **stitch** | `@_davideast/stitch-mcp` (proxy) | `STITCH_API_KEY` + `STITCH_PROJECT_ID` | UI/UX generation, design-to-code |
 | **docker** *(optional)* | `docker-mcp` / Docker MCP toolkit | – | Inspect containers, logs, compose |
 
 ### When to use each (the development rules)
@@ -48,8 +48,8 @@ management, design generation, code-graph analysis and structured planning.
 - Never expose `.env` values or secrets to MCP tools unless explicitly required.
 - MCP **filesystem access is limited to the project directory** (`.` /
   `${workspaceFolder}` / an absolute project path — never `/` or `$HOME`).
-- Secrets are passed via environment variables (`GITHUB_PERSONAL_ACCESS_TOKEN`,
-  `GOOGLE_CLOUD_PROJECT`), never hard-coded. See [`.mcp.env.example`](../.mcp.env.example).
+- Secrets are passed via environment variables (e.g. `GITHUB_PERSONAL_ACCESS_TOKEN`),
+  never hard-coded. See [`.mcp.env.example`](../.mcp.env.example).
 - Docker Compose remains the standard local environment (`docker compose up -d`).
 
 ---
@@ -60,32 +60,25 @@ management, design generation, code-graph analysis and structured planning.
 - **Docker** running (for the GitHub MCP image, and the `docker` MCP).
 - **`uv`/`uvx`** (for `codegraphcontext`) — install from <https://docs.astral.sh/uv/>.
 - A **GitHub PAT** with `repo` scope for the GitHub server.
-- For **Stitch**: the [`stitch-mcp`](https://github.com/Kargatharaakash/stitch-mcp)
-  package (auto-fetched via `npx`) and a Google Cloud project with the Stitch API
-  enabled. It authenticates through gcloud Application Default Credentials — there
-  is **no API key**.
+- For **Stitch**: the `@_davideast/stitch-mcp` package (auto-fetched via `npx`),
+  run in `proxy` mode. It needs a `STITCH_API_KEY` (Stitch → Profile → Stitch
+  settings → API keys → Create key) and a `STITCH_PROJECT_ID`. In **Antigravity**,
+  install Stitch from the built-in MCP marketplace instead (Agent pane → ⋯ → MCP
+  Servers → search "Stitch" → Install).
 
-Load secrets once per shell before starting an agent:
+Load secrets before starting an agent. This project ships a `.envrc`, so with
+[direnv](https://direnv.net) the env loads automatically on `cd`:
 
 ```bash
 cp .mcp.env.example .mcp.env   # then fill in the values
-set -a; source .mcp.env; set +a
+direnv allow                   # one-time; re-run after editing .envrc
 ```
 
-> **Stitch setup:** `stitch-mcp` runs via `npx -y stitch-mcp` and authenticates
-> with Google Cloud (not an API key). One-time:
->
-> ```bash
-> gcloud auth login
-> gcloud auth application-default login
-> gcloud auth application-default set-quota-project YOUR_GCP_PROJECT_ID
-> gcloud beta services mcp enable stitch.googleapis.com
-> ```
->
-> Then set `GOOGLE_CLOUD_PROJECT` (your project id) in the server's `env`.
-> In **Antigravity**, install Stitch from the built-in MCP marketplace instead
-> (Agent pane → ⋯ → MCP Servers → search "Stitch" → Install) and paste the project
-> there. The design-to-code workflow (Stitch → `tokens.css` → Vue) is unchanged.
+Without direnv, source it manually each shell: `set -a; source .mcp.env; set +a`.
+
+> **Stitch:** runs via `npx -y @_davideast/stitch-mcp proxy`; auth is via
+> `STITCH_API_KEY` + `STITCH_PROJECT_ID` (put them in `.mcp.env`). The
+> design-to-code workflow (Stitch → `tokens.css` → Vue) is unchanged.
 
 ---
 

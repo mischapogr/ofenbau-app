@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="img" aria-label="Fliesenarbeiten">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6f1"/><stop offset="1" stop-color="#f3ece3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8c3a4"/><stop offset="1" stop-color="#c6ac84"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1816" stop-opacity="0.16"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1000" height="1250" fill="url(#wall)"/>
+  <rect y="900" width="1000" height="350" fill="url(#floor)"/>
+  <rect y="898" width="1000" height="3" fill="#d3c4ad" opacity="0.5"/>
+  <g><rect x="4" y="4" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="4" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="4" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="4" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="4" y="154" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="154" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="154" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="154" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="4" y="304" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="304" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="304" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="304" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="4" y="454" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="454" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="454" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="454" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="4" y="604" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="604" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="604" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="604" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="4" y="754" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="254" y="754" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/><rect x="504" y="754" width="242" height="142" rx="3" fill="#e2d6c4" stroke="#cdbfa9" stroke-width="1.5"/><rect x="754" y="754" width="242" height="142" rx="3" fill="#ece3d6" stroke="#cdbfa9" stroke-width="1.5"/></g>
+  <rect width="1000" height="1250" fill="url(#vig)"/>
+  <g>
+    <rect x="28" y="1190" width="231" height="34" rx="17" fill="#1c1816" opacity="0.82"/>
+    <text x="46" y="1212" font-family="'Space Mono','Courier New',monospace" font-size="16" letter-spacing="2" fill="#fff" text-transform="uppercase">FLIESENARBEITEN</text>
+  </g>
+</svg>

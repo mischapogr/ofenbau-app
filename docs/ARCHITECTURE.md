@@ -1,0 +1,133 @@
+# Architecture
+
+How the Ofenbau Mustermann site is structured after the UX/UI refactor, and how
+the **Stitch** design system maps into the codebase.
+
+## Design system → tokens
+
+The visual language is driven by the configured Stitch project
+**"Modern Stove Builder Homepage"** (warm, light "hearth" direction). Its design
+DNA is mapped into CSS custom properties in [`src/styles/tokens.css`](../src/styles/tokens.css)
+and surfaced to Tailwind in [`tailwind.config.js`](../tailwind.config.js):
+
+| Token group | Stitch source | Tailwind utilities |
+| --- | --- | --- |
+| `brand` (50–950) | Burnt-orange accent `#e35205` / `#ec6d13` | `bg-brand-500`, `text-brand-600`, … |
+| `ink` (50–950) | Warm charcoal panels & text `#1c1816` | `bg-ink-900`, `text-white` on ink |
+| `surface` / `surface-muted` / `surface-sand` | Cream / off-white backgrounds | `bg-surface-muted`, … |
+| `content` / `content-muted` | Charcoal body text | `text-content`, `text-content-muted` |
+| radius `lg` (8px) | Stitch `ROUND_EIGHT` | `rounded-lg` |
+| shadows `sm` / `card` / `lift` | Soft warm elevation | `shadow-card`, `hover:shadow-lift` |
+| fonts | Display **Fraunces** (serif) + body **Inter** + labels **Space Mono** | `font-display`, `font-sans`, `font-mono` |
+
+The site is a **single light theme** — the previous dark-mode toggle, `useTheme`
+composable and `theme` store were removed. To re-skin, edit `tokens.css` only.
+
+> The Stitch project also carries a saved *dark "monolith"* design-system asset
+> ("Max Mustermann"). It was intentionally **not** used — the rendered Stitch
+> screens and the brief both call for the warm, light direction implemented here.
+
+## Information architecture
+
+```
+/                      Home — full conversion flow (one section per block)
+/leistungen            Services overview (cards + process + CTA)
+/leistungen/:slug      Service detail (kachelofen-kaminbau | fliesenarbeiten | 3d-planung)
+/projekte              Project gallery (filters + lightbox)
+/ueber-uns             About (story + values + process)
+/kontakt               Contact (NAP + form)
+/impressum /datenschutz  Legal (shared LegalView)
+/* (catch-all)         NotFound
+```
+
+The **Home** page composes the brief's flow in order:
+`HeroSection → ServiceCards → AboutSection → ProcessTimeline → ProjectGallery →
+Planning3DSection → CTASection`.
+
+## Components
+
+Reusable UI lives flat in `src/components/`:
+
+**Primitives** — `BaseButton`, `BaseCard`, `BaseContainer`, `BaseSection`
+(rhythm + section header), `BaseBadge`, `BaseImage` (lazy photo with an on-brand
+gradient/motif placeholder fallback), `AppIcon` (single line-icon set),
+`AppLoader`, `AppError`.
+
+**Sections / blocks** — `HeroSection`, `ServiceCards` (+ `ServiceCard`),
+`AboutSection`, `ProcessTimeline`, `ProjectGallery`, `Planning3DSection`,
+`CTASection`, `ContactForm`, `PageHeader`, `Breadcrumbs`, `SiteFooter`.
+
+Layout: `layouts/DefaultLayout.vue` (skip-link + `AppHeader` + `<main>` +
+`SiteFooter`) and `layouts/AppHeader.vue` (sticky, scroll shadow, persistent CTA,
+accessible mobile menu).
+
+## Content (data layer)
+
+All copy/structure is data-driven so components stay presentational:
+
+- `data/company.js` — name, NAP, primary nav, social links, trust badges
+- `data/services.js` — the three services (drives cards, overview, detail pages)
+- `data/projects.js` — gallery items + filter categories
+- `data/process.js` — the four process steps
+- `data/planning.js` — 3D benefits + service columns
+
+## Cross-cutting concerns
+
+- **Motion** — `directives/reveal.js` registers `v-reveal` globally in `main.js`;
+  it adds `.reveal` (hidden) then `.reveal-in` on intersection, and no-ops under
+  `prefers-reduced-motion`. Styles live in `styles/main.css`.
+- **SEO** — `composables/useSeo.js` (title + OG/Twitter per route);
+  `composables/useJsonLd.js` injects `BreadcrumbList` from `Breadcrumbs.vue`;
+  `index.html` holds the static `LocalBusiness` JSON-LD + font preconnects.
+- **Forms** — `ContactForm.vue` does client-side validation (required fields,
+  email pattern, GDPR consent) with inline errors and success/error states, and
+  submits through the existing `stores/contact.js` → `services/contactService.js`
+  → Axios `httpClient`.
+- **Performance** — routes are lazy-loaded (per-route chunks), images are
+  `loading="lazy"` + `decoding="async"`, fonts use `display=swap` + preconnect.
+
+## Design systems (Stitch sync)
+
+The canonical, authoritative design system is the repo itself
+(`src/styles/tokens.css` + this doc), exported as a Stitch-format design.md at
+[`design/ofenbau-mustermann.design.md`](../design/ofenbau-mustermann.design.md).
+
+The configured Stitch project (`6396586097530756068`) holds **two** design
+systems that must never be mixed:
+
+| Stitch design system | Asset id | Role |
+| --- | --- | --- |
+| **Ofenbau Mustermann** (light "hearth") | `assets/5933609171211310555` | **Primary** — mirrors this repo (light, `#e35205`, ROUND_EIGHT, Fraunces/Inter/Space Mono) |
+| **Max Mustermann** (dark "monolith") | `assets/3824a26f7e40400292d99c26618d270f` | Kept, unused by the app (dark brutalist variant) |
+
+The light system was re-created from `design.md` (it had been removed from the
+project by mistake). To re-sync after editing tokens: update
+`design/ofenbau-mustermann.design.md` and apply it in Stitch (or re-run
+`create_design_system` with the updated theme).
+
+## Imagery
+
+All 16 image slots ship with **generated, on-brand SVG scene illustrations**
+(`public/images/*.svg`) wired into the app (hero, 3 services, about-craft, 8
+projects, 3D before/after, contact map). They are produced by
+[`scripts/generate-images.mjs`](../scripts/generate-images.mjs) — regenerate with
+`npm run gen:images` — from the warm "hearth" palette: stylized, anonymized stove,
+tile, wireframe, render, craft and map scenes (no people, no real places). This
+keeps the site visually complete and **error-free** (no 404s, no missing assets).
+
+The accompanying photography spec lives in
+[`public/images/PROMPTS.md`](../public/images/PROMPTS.md) (human-readable) and
+[`public/images/manifest.json`](../public/images/manifest.json) (machine-readable)
+— each slot has a ratio, the data field it maps to, and a photorealistic
+generation prompt following the legal guidance in `_tmp/TODO` (tight crops on the
+craftsmanship, warm light interiors, **no recognizable people**, anonymized).
+
+To upgrade a slot to a real photo: drop `public/images/<id>.jpg` and point the
+matching `image` field at it — e.g. `image: '/images/service-kachelofen.jpg'` on
+the `kachelofen-kaminbau` entry in `data/services.js`. `BaseImage` falls back to
+its in-DOM gradient placeholder if a referenced file is ever missing.
+
+> Note: Stitch (in this environment) exposes only composite full-page screen
+> *screenshots*, not discrete image assets, so photos can't be auto-exported from
+> it. With the **Ofenbau Mustermann** design system now in the project, you can
+> also generate fresh on-brand screens directly in the Stitch UI.

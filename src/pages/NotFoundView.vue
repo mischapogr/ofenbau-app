@@ -11,10 +11,10 @@ useSeo(() => ({
 </script>
 
 <template>
-  <section class="section">
+  <section class="section bg-surface">
     <BaseContainer class="flex flex-col items-center py-24 text-center">
-      <p class="font-display text-7xl font-bold text-brand-600">404</p>
-      <h1 class="mt-4 text-2xl font-bold">Seite nicht gefunden</h1>
+      <p class="font-display text-7xl font-semibold text-brand-500">404</p>
+      <h1 class="mt-4 font-display text-2xl font-semibold">Seite nicht gefunden</h1>
       <p class="mt-2 max-w-md text-content-muted">
         Die angeforderte Seite existiert nicht oder wurde verschoben.
       </p>

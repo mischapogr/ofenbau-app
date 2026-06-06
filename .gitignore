@@ -34,6 +34,13 @@ pnpm-debug.log*
 # Test / coverage
 coverage/
 
+# Playwright (recorded demo artifacts are generated, not committed)
+/test-results/
+/playwright-report/
+/demo-artifacts/
+/blob-report/
+/playwright/.cache/
+
 # Vite
 .vite/
 
@@ -46,3 +53,6 @@ coverage/
 # IDE / local scratch
 .idea/
 _tmp/
+
+# direnv (commit .envrc; ignore its local cache)
+.direnv/
