@@ -1,12 +1,15 @@
 <script setup>
 import CookieConsent from '@/components/CookieConsent.vue'
+import DemoProtection from '@/components/DemoProtection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { useDemoProtection } from '@/composables/useDemoProtection'
 import { useJsonLd } from '@/composables/useJsonLd'
 import { useAnalytics } from '@/composables/useAnalytics'
 import { company } from '@/data/company'
 
 const SITE_URL = (import.meta.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const googleSiteVerification = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
+const demoProtection = useDemoProtection()
 
 if (googleSiteVerification) {
   let verificationMeta = document.head.querySelector('meta[name="google-site-verification"]')
@@ -56,14 +59,15 @@ useJsonLd(
 </script>
 
 <template>
-  <DefaultLayout>
+  <DemoProtection :protection="demoProtection" />
+  <DefaultLayout v-if="!demoProtection.blocksApp">
     <RouterView v-slot="{ Component, route }">
       <Transition name="fade" mode="out-in">
         <component :is="Component" :key="route.path" />
       </Transition>
     </RouterView>
   </DefaultLayout>
-  <CookieConsent />
+  <CookieConsent v-if="!demoProtection.blocksApp" />
 </template>
 
 <style>

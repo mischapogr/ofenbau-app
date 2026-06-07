@@ -67,8 +67,12 @@ npm run dev        # http://localhost:5173
 | Script | Description |
 | --- | --- |
 | `npm run dev` | Start Vite dev server on `0.0.0.0:5173` |
+| `npm run dev:demo` | Start Vite dev server in demo mode on `0.0.0.0:5174` |
 | `npm run build` | Production build to `dist/` |
+| `npm run build:dev` | Development-mode static build to `dist/` |
+| `npm run build:demo` | Demo build with noindex assets, host gate, watermark and demo JS obfuscation |
 | `npm run preview` | Preview the production build |
+| `npm run preview:demo` | Preview the current `dist/` build on `0.0.0.0:5174` |
 | `npm run lint` | ESLint with `--fix` |
 | `npm run lint:check` | ESLint without fixing (CI) |
 | `npm run format` | Prettier write |
@@ -171,6 +175,61 @@ docker run -p 8080:80 ofenbau-mustermann:prod
 
 ---
 
+## Environments and demo protection
+
+The app has three committed public Vite mode files:
+
+| Mode | File | Build command | Purpose |
+| --- | --- | --- | --- |
+| `development` | `.env.development` | `npm run build:dev` | Local/dev defaults, demo protection disabled |
+| `demo` | `.env.demo` | `npm run build:demo` | Unsigned customer demos, noindex, watermark, host gate and obfuscated JS |
+| `production` | `.env.production` | `npm run build` | Normal production build, demo protection disabled |
+
+Demo protection is a deterrent layer for potential customers before contract
+signature. It does not replace hosting-level access control such as Basic Auth,
+Cloudflare Access or a private preview URL. The static app can only make copying
+less convenient and more attributable.
+
+Demo-specific public variables:
+
+| Variable | Purpose |
+| --- | --- |
+| `VITE_APP_ENV` | `development`, `demo` or `production` |
+| `VITE_DEMO_PROTECTION_ENABLED` | Enables the runtime demo gate |
+| `VITE_DEMO_CUSTOMER_NAME` | Name shown in the gate and watermark |
+| `VITE_DEMO_AUTHOR_NAME` | Author name shown in demo watermark and copyright notice |
+| `VITE_DEMO_AUTHOR_EMAIL` | Author contact shown in demo copyright notice |
+| `VITE_DEMO_COPYRIGHT_NOTICE` | German copyright/protection text shown in demo mode |
+| `VITE_DEMO_ALLOWED_HOSTS` | Comma-separated host allow-list; supports `*.example.de` |
+| `VITE_DEMO_WATERMARK_ENABLED` | Enables the repeated visual watermark |
+| `VITE_DEMO_ACCESS_CODE_HASH` | Optional SHA-256 hex hash for a client-side access code |
+| `VITE_DEMO_OBFUSCATE` | Enables demo bundle obfuscation during `build:demo` |
+| `VITE_DEMO_OBFUSCATE_AGGRESSIVE` | Enables heavier control-flow flattening; test carefully |
+
+Generate a demo access-code hash:
+
+```bash
+node -e "const {createHash}=require('node:crypto'); console.log(createHash('sha256').update(process.argv[1]).digest('hex'))" "demo-passcode"
+```
+
+Production-style Docker can build either target:
+
+```bash
+# Production
+docker compose -f docker-compose.prod.yml up -d --build
+
+# Demo
+BUILD_MODE=demo \
+VITE_APP_ENV=demo \
+VITE_APP_URL=https://demo.example.de \
+VITE_DEMO_CUSTOMER_NAME="Musterkunde GmbH" \
+VITE_DEMO_ALLOWED_HOSTS=demo.example.de \
+VITE_DEMO_ACCESS_CODE_HASH=<sha256-hex> \
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+---
+
 ## Project structure
 
 ```
@@ -246,6 +305,7 @@ Only `VITE_`-prefixed variables are exposed to the client. See `.env.example`.
 
 | Variable | Purpose |
 | --- | --- |
+| `VITE_APP_ENV` | Build/runtime mode: `development`, `demo` or `production` |
 | `VITE_APP_TITLE` | Optional site-title override; omit to use `src/data/company.js` -> `company.name` |
 | `VITE_APP_DESCRIPTION` | Default meta description |
 | `VITE_APP_URL` | Canonical base URL |
@@ -253,6 +313,7 @@ Only `VITE_`-prefixed variables are exposed to the client. See `.env.example`.
 | `VITE_API_TIMEOUT` | Axios timeout (ms) |
 | `VITE_GA_MEASUREMENT_ID` | Optional GA4 measurement ID, loaded only after analytics consent |
 | `VITE_GOOGLE_SITE_VERIFICATION` | Optional Search Console verification token |
+| `VITE_DEMO_*` | Demo-only deterrence settings; see "Environments and demo protection" |
 | `MAIL_HOST`, `MAIL_PORT`, `MAIL_FROM`, `MAIL_TO`, `SMTP_TIMEOUT_MS` | Contact API SMTP delivery settings; not exposed to the client |
 
 ---

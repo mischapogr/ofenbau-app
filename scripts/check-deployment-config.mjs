@@ -35,7 +35,9 @@ const envExample = file('.env.production.example')
 const nginxAssetsLocation = locationBlock(nginx, '\\/assets\\/')
 
 check(/FROM\s+node:22[\w.-]*\s+AS\s+build/i.test(dockerfileProd), 'Dockerfile.prod has a Node build stage')
-check(/RUN\s+npm\s+run\s+build/.test(dockerfileProd), 'Dockerfile.prod runs the production build')
+check(/ARG\s+BUILD_MODE=production/.test(dockerfileProd), 'Dockerfile.prod exposes BUILD_MODE')
+check(/npm\s+run\s+build:demo/.test(dockerfileProd), 'Dockerfile.prod can run the demo build')
+check(/npm\s+run\s+build/.test(dockerfileProd), 'Dockerfile.prod runs the production build by default')
 check(/FROM\s+nginx:1\.27-alpine\s+AS\s+production/i.test(dockerfileProd), 'Dockerfile.prod serves with nginx 1.27 alpine')
 check(/COPY\s+nginx\.conf\s+\/etc\/nginx\/conf\.d\/default\.conf/.test(dockerfileProd), 'Dockerfile.prod copies nginx.conf')
 check(/COPY\s+--from=build\s+\/app\/dist\s+\/usr\/share\/nginx\/html/.test(dockerfileProd), 'Dockerfile.prod copies built dist output')
@@ -51,7 +53,10 @@ check(/services:\s*[\s\S]*\bapi:/.test(compose), 'docker-compose.prod.yml define
 check(/dockerfile:\s*Dockerfile\.prod/.test(compose), 'web service builds Dockerfile.prod')
 check(/dockerfile:\s*Dockerfile\.contact/.test(compose), 'api service builds Dockerfile.contact')
 check(/depends_on:[\s\S]*api:[\s\S]*condition:\s*service_healthy/.test(compose), 'web waits for healthy api service')
+check(/BUILD_MODE:\s*\$\{BUILD_MODE:-production\}/.test(compose), 'web defaults to production BUILD_MODE')
+check(/VITE_APP_ENV:\s*\$\{VITE_APP_ENV:-production\}/.test(compose), 'web defaults to production VITE_APP_ENV')
 check(/VITE_API_BASE_URL:\s*\$\{VITE_API_BASE_URL:-\/api\}/.test(compose), 'web defaults to same-origin /api')
+check(/VITE_DEMO_PROTECTION_ENABLED:\s*\$\{VITE_DEMO_PROTECTION_ENABLED:-false\}/.test(compose), 'web disables demo protection by default')
 check(/MAIL_HOST:\s*\$\{MAIL_HOST:-mailpit\}/.test(compose), 'api exposes MAIL_HOST deployment override')
 check(/MAIL_PORT:\s*\$\{MAIL_PORT:-1025\}/.test(compose), 'api exposes MAIL_PORT deployment override')
 check(/MAIL_FROM:\s*\$\{MAIL_FROM:-[^}]+\}/.test(compose), 'api exposes MAIL_FROM deployment override')
@@ -86,6 +91,7 @@ check(
 )
 
 for (const key of [
+  'VITE_APP_ENV',
   'VITE_APP_URL',
   'VITE_API_BASE_URL',
   'VITE_GOOGLE_SITE_VERIFICATION',

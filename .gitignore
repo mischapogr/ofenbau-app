@@ -20,6 +20,10 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!.env.development
+!.env.demo
+!.env.production
+!.env.production.example
 
 # Editor / OS
 .DS_Store

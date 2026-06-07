@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import net from 'node:net'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import JavaScriptObfuscator from 'javascript-obfuscator'
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -169,12 +170,63 @@ function contactDevApiPlugin(env) {
   }
 }
 
+function isTruthy(value) {
+  return ['1', 'true', 'yes', 'on'].includes(String(value || '').toLowerCase())
+}
+
+function demoObfuscationPlugin(env) {
+  return {
+    name: 'demo-javascript-obfuscation',
+    apply: 'build',
+    enforce: 'post',
+    generateBundle(_options, bundle) {
+      for (const item of Object.values(bundle)) {
+        if (item.type !== 'chunk' || !item.fileName.endsWith('.js')) continue
+
+        const result = JavaScriptObfuscator.obfuscate(item.code, {
+          compact: true,
+          controlFlowFlattening: isTruthy(env.VITE_DEMO_OBFUSCATE_AGGRESSIVE),
+          controlFlowFlatteningThreshold: 0.45,
+          deadCodeInjection: false,
+          disableConsoleOutput: false,
+          identifierNamesGenerator: 'hexadecimal',
+          numbersToExpressions: true,
+          renameGlobals: false,
+          selfDefending: false,
+          simplify: true,
+          splitStrings: true,
+          splitStringsChunkLength: 8,
+          stringArray: true,
+          stringArrayCallsTransform: true,
+          stringArrayEncoding: ['base64'],
+          stringArrayRotate: true,
+          stringArrayShuffle: true,
+          stringArrayThreshold: 0.75,
+          transformObjectKeys: true,
+          unicodeEscapeSequence: false,
+        })
+
+        item.code = result.getObfuscatedCode()
+      }
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const isDemo = mode === 'demo' || env.VITE_APP_ENV === 'demo'
+  const shouldObfuscateDemo = isDemo && env.VITE_DEMO_OBFUSCATE !== 'false'
 
   return {
-    plugins: [contactDevApiPlugin(env), vue()],
+    plugins: [
+      contactDevApiPlugin(env),
+      vue(),
+      ...(shouldObfuscateDemo ? [demoObfuscationPlugin(env)] : []),
+    ],
+    build: {
+      sourcemap: false,
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
