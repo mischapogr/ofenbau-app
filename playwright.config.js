@@ -55,6 +55,14 @@ export default defineConfig({
         launchOptions: { slowMo: 250 },
       },
     },
+    {
+      name: 'tablet-demo',
+      testMatch: /tablet\.spec\.js/,
+      use: {
+        ...devices['iPad Mini'],
+        launchOptions: { slowMo: 250 },
+      },
+    },
   ],
   webServer,
 })
