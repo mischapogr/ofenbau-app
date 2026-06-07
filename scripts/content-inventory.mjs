@@ -31,6 +31,7 @@ const inventory = {
     googleBusinessProfileAligned: companyProfileReview.googleBusinessProfileAligned,
     googleMapsRouteVerified: companyProfileReview.mapRouteVerified,
     services: services.length,
+    serviceFaqs: services.reduce((total, service) => total + (service.faqs?.length || 0), 0),
     serviceContentApprovedForLaunch: serviceContentReview.approvedForLaunch,
     projects: projects.length,
     projectCategories: projectCategories.length,
@@ -96,6 +97,10 @@ const inventory = {
       ...(service.proofPoints || []).map((point, index) =>
         entry('services', `${service.slug}.proofPoints.${index}`, point)
       ),
+      ...(service.faqs || []).flatMap((item, index) => [
+        entry('services', `${service.slug}.faqs.${index}.question`, item.question),
+        entry('services', `${service.slug}.faqs.${index}.answer`, item.answer),
+      ]),
     ],
   })),
   projects: projects.map((project) => ({

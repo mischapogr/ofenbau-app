@@ -38,6 +38,15 @@ for (const service of services) {
   if (!Array.isArray(service.proofPoints) || service.proofPoints.length < 2) {
     warnings.push(`services:${service.slug} should have at least two proof points`)
   }
+  if (!Array.isArray(service.faqs) || service.faqs.length < 2) {
+    warnings.push(`services:${service.slug} should have at least two FAQ entries`)
+  } else {
+    for (const [index, item] of service.faqs.entries()) {
+      if (!item.question || !item.answer) {
+        warnings.push(`services:${service.slug}.faqs.${index} should have question and answer`)
+      }
+    }
+  }
 }
 
 if (serviceContentReview.approvedForLaunch !== true) {

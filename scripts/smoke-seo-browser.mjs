@@ -50,6 +50,21 @@ try {
       isLocalTarget || !headHtml.includes('localhost'),
       isLocalTarget ? `${route} localhost head URLs allowed for local target` : `${route} head does not contain localhost`
     )
+
+    const service = services.find((item) => route === `/leistungen/${item.slug}`)
+    if (service?.faqs?.length) {
+      const faqJsonLd = await page.locator('#service-faq-jsonld').textContent()
+      check(Boolean(faqJsonLd), `${route} FAQPage JSON-LD exists`)
+      if (faqJsonLd) {
+        const parsed = JSON.parse(faqJsonLd)
+        check(parsed['@type'] === 'FAQPage', `${route} FAQPage JSON-LD has FAQPage type`)
+        check(
+          parsed.mainEntity?.length === service.faqs.length,
+          `${route} FAQPage JSON-LD contains ${service.faqs.length} questions`
+        )
+        check(parsed.url === expectedCanonical(route), `${route} FAQPage JSON-LD url is canonical`)
+      }
+    }
   }
 
   await page.goto(`${siteUrl}/`, { waitUntil: 'networkidle' })
