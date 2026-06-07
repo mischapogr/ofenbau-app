@@ -1,0 +1,1170 @@
+{
+  "generatedAt": "2026-06-07T11:32:32.354Z",
+  "summary": {
+    "companyNapApprovedForLaunch": false,
+    "googleBusinessProfileAligned": false,
+    "googleMapsRouteVerified": false,
+    "services": 4,
+    "serviceContentApprovedForLaunch": false,
+    "projects": 9,
+    "projectCategories": 7,
+    "processSteps": 4,
+    "planningBenefits": 3,
+    "planningServices": 3,
+    "planningExamples": 4,
+    "projectReferencesApprovedForLaunch": false,
+    "projectReferencesWithIncompleteApproval": 9
+  },
+  "company": [
+    {
+      "area": "company",
+      "key": "name",
+      "value": "Ofenbau Mustermann",
+      "placeholder": true,
+      "notes": "Header, footer, JSON-LD and copyright."
+    },
+    {
+      "area": "company",
+      "key": "legalName",
+      "value": "Ofenbau Mustermann — Ofen- & Fliesenmeister",
+      "placeholder": true,
+      "notes": "Impressum, Datenschutz and JSON-LD."
+    },
+    {
+      "area": "company",
+      "key": "tagline",
+      "value": "Ofen- & Fliesenmeister",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "claim",
+      "value": "Mit gesunder Wärme leben.",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "address.street",
+      "value": "Musterstraße 1",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "address.zip",
+      "value": "12345",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "address.city",
+      "value": "Musterstadt",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "address.region",
+      "value": "Musterstadt und Umgebung",
+      "placeholder": true,
+      "notes": "Local SEO service area."
+    },
+    {
+      "area": "company",
+      "key": "phone.label",
+      "value": "+49 (0) 000 000000",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "phone.href",
+      "value": "tel:+49000000000",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "whatsapp.label",
+      "value": "+49 (0) 000 000000",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "whatsapp.href",
+      "value": "https://wa.me/49000000000",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "email.label",
+      "value": "info@ofenbau-mustermann.test",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "email.href",
+      "value": "mailto:info@ofenbau-mustermann.test",
+      "placeholder": true,
+      "notes": ""
+    },
+    {
+      "area": "company",
+      "key": "hours",
+      "value": "Mo–Fr 08:00–17:00 Uhr",
+      "placeholder": false,
+      "notes": ""
+    }
+  ],
+  "companyProfileReview": {
+    "napApprovedForLaunch": false,
+    "googleBusinessProfileAligned": false,
+    "mapRouteVerified": false,
+    "note": "Company NAP, opening hours, service area and social links must match the final operator data and Google Business Profile before launch."
+  },
+  "socialLinks": [
+    {
+      "area": "socialLinks",
+      "key": "Instagram",
+      "value": "https://instagram.com",
+      "placeholder": false,
+      "notes": "Replace generic platform URLs with real profiles."
+    },
+    {
+      "area": "socialLinks",
+      "key": "Facebook",
+      "value": "https://facebook.com",
+      "placeholder": false,
+      "notes": "Replace generic platform URLs with real profiles."
+    },
+    {
+      "area": "socialLinks",
+      "key": "Pinterest",
+      "value": "https://pinterest.com",
+      "placeholder": false,
+      "notes": "Replace generic platform URLs with real profiles."
+    }
+  ],
+  "trustBadges": [
+    {
+      "area": "trustBadges",
+      "key": "0",
+      "value": "Meisterbetrieb",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "trustBadges",
+      "key": "1",
+      "value": "Handwerk seit Generationen",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "trustBadges",
+      "key": "2",
+      "value": "Regional in Musterstadt",
+      "placeholder": true,
+      "notes": ""
+    }
+  ],
+  "serviceContentReview": {
+    "approvedForLaunch": false,
+    "note": "Service wording and proof points must be reviewed against the final operator offer before launch."
+  },
+  "projectReferenceReview": {
+    "approvedForLaunch": false,
+    "note": "Demo/generated project references must be replaced with approved real customer references before launch."
+  },
+  "services": [
+    {
+      "slug": "kachelofen-kaminbau",
+      "title": "Kachelöfen & Kaminbau",
+      "fields": [
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.title",
+          "value": "Kachelöfen & Kaminbau",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.short",
+          "value": "Individueller Ofenbau",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.description",
+          "value": "Handgesetzte Kachel- und Grundöfen für gleichmäßige, gesunde Strahlungswärme — als Maßanfertigung für Ihren Raum.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.intro",
+          "value": "Ein Ofen ist das Herz des Hauses. Wir planen und bauen Kachelöfen, Grund- und Heizkamine als individuelle Maßanfertigung — abgestimmt auf Raum, Heizbedarf und Architektur.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.image",
+          "value": "/images/service-kachelofen.webp",
+          "placeholder": false,
+          "notes": "Must point to an existing public image."
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.bullets.0",
+          "value": "Grundöfen & Kachelöfen mit hoher Speicherwärme",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.bullets.1",
+          "value": "Heizkamine mit großzügigem Sichtfeuer",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.bullets.2",
+          "value": "Moderne Kaminöfen in vielen Designs",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.bullets.3",
+          "value": "Effiziente, emissionsarme Verbrennungstechnik",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.proofPoints.0",
+          "value": "Planung nach Raum, Heizbedarf und Architektur",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.proofPoints.1",
+          "value": "Material- und Ausführungsdetails vor Baubeginn abgestimmt",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.proofPoints.2",
+          "value": "Ausführung durch den Ofen- und Fliesenmeisterbetrieb",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "slug": "schornsteinbau",
+      "title": "Schornsteinbau & Sanierung",
+      "fields": [
+        {
+          "area": "services",
+          "key": "schornsteinbau.title",
+          "value": "Schornsteinbau & Sanierung",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.short",
+          "value": "Sicherer Anschluss",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.description",
+          "value": "Neue Schornsteinsysteme, Edelstahlschornsteine und Sanierungen für Kaminofen, Kachelofen und Heizkamin — fachgerecht geplant und montiert.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.intro",
+          "value": "Damit ein Ofen zuverlässig und sicher zieht, muss der Schornstein zum Gerät und zum Gebäude passen. Wir planen und montieren passende Schornsteinsysteme, sanieren bestehende Anlagen und stimmen Anschlüsse sauber auf die Feuerstätte ab.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.image",
+          "value": "/images/planning-example-schornstein-kaminofen.webp",
+          "placeholder": false,
+          "notes": "Must point to an existing public image."
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.bullets.0",
+          "value": "Edelstahl-Außenschornsteine für neue Feuerstätten",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.bullets.1",
+          "value": "Schornsteinsanierung und Querschnittsanpassung",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.bullets.2",
+          "value": "Ofenanschluss, Wanddurchführung und Brandschutzdetails",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.bullets.3",
+          "value": "Abstimmung mit dem zuständigen Schornsteinfeger",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.proofPoints.0",
+          "value": "Anschlussdetails werden vor Montage geprüft",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.proofPoints.1",
+          "value": "Brandschutz und Wanddurchführung sind Teil der Planung",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.proofPoints.2",
+          "value": "Abstimmung mit dem zuständigen Schornsteinfeger vorgesehen",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "slug": "fliesenarbeiten",
+      "title": "Fliesenarbeiten",
+      "fields": [
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.title",
+          "value": "Fliesenarbeiten",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.short",
+          "value": "Bad, Wohnraum & Sanierung",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.description",
+          "value": "Präzise verlegte Fliesen für Bäder, Wohnräume und Sanierungen — vom großformatigen Feinsteinzeug bis zum klassischen Mosaik.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.intro",
+          "value": "Als Fliesenmeister setzen wir Flächen, die bleiben: sauber im Detail, exakt im Fugenbild und langlebig in der Ausführung — für Bad, Wohnraum und Sanierung.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.image",
+          "value": "/images/service-fliesen.webp",
+          "placeholder": false,
+          "notes": "Must point to an existing public image."
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.bullets.0",
+          "value": "Bäder & Wohnräume",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.bullets.1",
+          "value": "Großformate & Feinsteinzeug",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.bullets.2",
+          "value": "Natursteine & Mosaik",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.bullets.3",
+          "value": "Komplette Sanierungen aus einer Hand",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.proofPoints.0",
+          "value": "Fugenbild und Verlegeplan werden vorab abgestimmt",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.proofPoints.1",
+          "value": "Materialauswahl passend zu Raum, Nutzung und Pflegebedarf",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.proofPoints.2",
+          "value": "Saubere Detailausführung für Anschlüsse, Kanten und Übergänge",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "slug": "3d-planung",
+      "title": "3D-Planung & Entwürfe",
+      "fields": [
+        {
+          "area": "services",
+          "key": "3d-planung.title",
+          "value": "3D-Planung & Entwürfe",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.short",
+          "value": "Sehen vor dem Bauen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.description",
+          "value": "Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Materialauswahl und präziser Kalkulation, bevor gebaut wird.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.intro",
+          "value": "Bevor der erste Handgriff getan ist, sehen Sie Ihr Projekt fertig: Wir visualisieren Ofen und Flächen in fotorealistischem 3D, wählen Materialien am Modell und kalkulieren präzise.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.image",
+          "value": "/images/service-3d-planung.webp",
+          "placeholder": false,
+          "notes": "Must point to an existing public image."
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.bullets.0",
+          "value": "Räumliche Visualisierung in 3D",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.bullets.1",
+          "value": "Materialauswahl am Modell",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.bullets.2",
+          "value": "Präzise Kalkulation vorab",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.bullets.3",
+          "value": "Sicher entscheiden — ohne böse Überraschungen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.proofPoints.0",
+          "value": "Entwurf basiert auf Maßen, Fotos und Materialwünschen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.proofPoints.1",
+          "value": "Ansichten machen Proportionen und Details vor Ausführung sichtbar",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.proofPoints.2",
+          "value": "Kalkulation und Machbarkeit werden vor Umsetzung geprüft",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "p1",
+      "title": "Kachelofen Landhaus",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p1.title",
+          "value": "Kachelofen Landhaus",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.description",
+          "value": "Handgesetzter Kachelofen mit klassischer Keramik und lang anhaltender Speicherwärme.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.material",
+          "value": "Keramik & Putz",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.image",
+          "value": "/images/project-1-kachelofen-landhaus.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p1.category",
+          "value": "kachelofen, klassisch",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p1.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "title": "Heizkamin Panorama",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p2.title",
+          "value": "Heizkamin Panorama",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.description",
+          "value": "Moderner Heizkamin mit breitem Sichtfeuer und ruhiger Putzfläche.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.material",
+          "value": "Stahl, Glas & Putz",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.image",
+          "value": "/images/project-2-heizkamin-panorama.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p2.category",
+          "value": "kaminofen, modern",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p2.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "title": "Kachelofen mit Sitzbank",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p3.title",
+          "value": "Kachelofen mit Sitzbank",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.description",
+          "value": "Individuelle Ofenanlage mit Sitzbank, warmem Keramikton und Speichertechnik.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.material",
+          "value": "Keramik & Speicherstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.image",
+          "value": "/images/project-3-kachelofen-sitzbank.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p3.category",
+          "value": "kachelofen, klassisch",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p3.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "title": "Wohnraum-Fliesen XXL",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p4.title",
+          "value": "Wohnraum-Fliesen XXL",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.description",
+          "value": "Großformatige Bodenfliesen mit präzisem Fugenbild für einen offenen Wohnbereich.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.material",
+          "value": "Feinsteinzeug",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.image",
+          "value": "/images/project-4-wohnraum-fliesen-xxl.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p4.category",
+          "value": "fliesen, modern",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p4.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "title": "Kaminofen Stahl",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p5.title",
+          "value": "Kaminofen Stahl",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.description",
+          "value": "Kompakter Kaminofen mit reduziertem Anschlussdetail und modernem Stahlkörper.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.material",
+          "value": "Stahl & Glas",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.image",
+          "value": "/images/project-5-kaminofen-stahl.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p5.category",
+          "value": "kaminofen, modern",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p5.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "title": "Bad in Naturstein",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p6.title",
+          "value": "Bad in Naturstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.description",
+          "value": "Natursteinoptik, ruhiges Raster und hochwertige Detailausbildung im Nassbereich.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.material",
+          "value": "Naturstein & Feinsteinzeug",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.image",
+          "value": "/images/project-6-bad-naturstein.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p6.category",
+          "value": "fliesen, klassisch",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p6.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "title": "Grundofen Eck",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p7.title",
+          "value": "Grundofen Eck",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.description",
+          "value": "Ecklösung mit hoher Speicherleistung und harmonischer Einbindung in den Wohnraum.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.material",
+          "value": "Putz & Speicherkeramik",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.image",
+          "value": "/images/project-7-grundofen-eck.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p7.category",
+          "value": "kachelofen, modern",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p7.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "title": "Kaminofen Speckstein",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p8.title",
+          "value": "Kaminofen Speckstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.description",
+          "value": "Kaminofen mit Specksteincharakter, kompakter Aufstellung und angenehmer Strahlungswärme.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.material",
+          "value": "Speckstein & Stahl",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.image",
+          "value": "/images/project-8-kaminofen-speckstein.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p8.category",
+          "value": "kaminofen, klassisch",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p8.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "title": "Edelstahl-Außenschornstein",
+      "fields": [
+        {
+          "area": "projects",
+          "key": "p9.title",
+          "value": "Edelstahl-Außenschornstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.description",
+          "value": "Nachgerüsteter Schornstein für einen Kaminofen mit sauberer Wanddurchführung und Fassadenbefestigung.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.material",
+          "value": "Edelstahl & Brandschutzdurchführung",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.image",
+          "value": "/images/planning-example-schornstein-kaminofen.webp",
+          "placeholder": false,
+          "notes": "Must point to approved project media."
+        },
+        {
+          "area": "projects",
+          "key": "p9.category",
+          "value": "schornstein, modern",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.review.realReference",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.review.photoRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.review.customerApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "projects",
+          "key": "p9.review.note",
+          "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": false,
+          "notes": ""
+        }
+      ]
+    }
+  ]
+}

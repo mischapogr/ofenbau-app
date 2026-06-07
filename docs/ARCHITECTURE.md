@@ -74,6 +74,10 @@ All copy/structure is data-driven so components stay presentational:
 - `data/process.js` — the four process steps
 - `data/planning.js` — 3D benefits + service columns
 
+For handover/editing guidance see [`docs/CONTENT_GUIDE.md`](./CONTENT_GUIDE.md).
+Run `npm run content:inventory` to export `docs/CONTENT_INVENTORY.json` with
+placeholder flags and editable field references.
+
 ## Cross-cutting concerns
 
 - **Motion** — `directives/reveal.js` registers `v-reveal` globally in `main.js`;
@@ -88,6 +92,11 @@ All copy/structure is data-driven so components stay presentational:
   → Axios `httpClient`.
 - **Performance** — routes are lazy-loaded (per-route chunks), images are
   `loading="lazy"` + `decoding="async"`, fonts use `display=swap` + preconnect.
+  Run `npm run perf:budget` after `npm run build` to check hard JS/CSS budgets
+  and flag oversized image assets for review.
+- **Static checks** — `npm run a11y:static` checks common accessibility mistakes
+  in Vue templates; `npm run content:assets` verifies data-driven image
+  references exist in `public/images/`.
 
 ## Design systems (Stitch sync)
 
