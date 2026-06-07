@@ -15,6 +15,11 @@ export const company = {
     region: 'Musterstadt und Umgebung',
   },
   phone: { label: '+49 (0) 000 000000', href: 'tel:+49000000000' },
+  whatsapp: {
+    label: '+49 (0) 000 000000',
+    href: 'https://wa.me/49000000000',
+    availability: 'Mo-Fr 08:00-17:00 Uhr erreichbar',
+  },
   email: { label: 'info@ofenbau-mustermann.test', href: 'mailto:info@ofenbau-mustermann.test' },
   hours: 'Mo–Fr 08:00–17:00 Uhr',
 }

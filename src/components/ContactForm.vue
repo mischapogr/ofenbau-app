@@ -1,20 +1,24 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import BaseButton from './BaseButton.vue'
 import AppError from './AppError.vue'
 import AppIcon from './AppIcon.vue'
 import { useContactStore } from '@/stores/contact'
+import { contactTopics, getContactTopic } from '@/data/contactTopics'
 
 const props = defineProps({
   // Label shown on the submit button + first field placeholder context.
   submitLabel: { type: String, default: 'Anfrage senden' },
   // Pre-fill the subject (e.g. "3D-Entwurf") when embedded on a service page.
   subject: { type: String, default: '' },
+  showTopic: { type: Boolean, default: false },
 })
 
 const store = useContactStore()
+const initialTopic = computed(() => getContactTopic(props.subject))
 
 const form = reactive({
+  topic: initialTopic.value.value,
   name: '',
   email: '',
   phone: '',
@@ -26,8 +30,20 @@ const errors = reactive({})
 const touched = ref(false)
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const selectedTopic = computed(() => getContactTopic(form.topic))
+const selectedSubject = computed(() =>
+  props.showTopic ? selectedTopic.value?.subject : props.subject || undefined
+)
+
+watch(
+  () => props.subject,
+  () => {
+    form.topic = initialTopic.value.value
+  }
+)
 
 function validate() {
+  errors.topic = props.showTopic && !selectedTopic.value ? 'Bitte wählen Sie ein Thema aus.' : ''
   errors.name = form.name.trim() ? '' : 'Bitte geben Sie Ihren Namen an.'
   errors.email = !form.email.trim()
     ? 'Bitte geben Sie Ihre E-Mail an.'
@@ -36,7 +52,7 @@ function validate() {
       : 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
   errors.message = form.message.trim() ? '' : 'Bitte beschreiben Sie kurz Ihr Anliegen.'
   errors.gdpr = form.gdpr ? '' : 'Bitte stimmen Sie der Datenschutzerklärung zu.'
-  return !errors.name && !errors.email && !errors.message && !errors.gdpr
+  return !errors.topic && !errors.name && !errors.email && !errors.message && !errors.gdpr
 }
 
 async function onSubmit() {
@@ -47,9 +63,10 @@ async function onSubmit() {
     email: form.email,
     phone: form.phone,
     message: form.message,
-    subject: props.subject || undefined,
+    subject: selectedSubject.value,
   })
   if (ok) {
+    form.topic = initialTopic.value.value
     form.name = ''
     form.email = ''
     form.phone = ''
@@ -101,6 +118,21 @@ function borderFor(key) {
       title="Senden fehlgeschlagen"
       :message="store.error"
     />
+
+    <div v-if="showTopic">
+      <label for="cf-topic" class="mb-1.5 block text-sm font-medium">Thema</label>
+      <select
+        id="cf-topic"
+        v-model="form.topic"
+        :class="[fieldClass, borderFor('topic')]"
+        :aria-invalid="!!(errors.topic && touched)"
+      >
+        <option v-for="topic in contactTopics" :key="topic.value" :value="topic.value">
+          {{ topic.label }}
+        </option>
+      </select>
+      <p v-if="errors.topic && touched" class="mt-1 text-xs text-red-600">{{ errors.topic }}</p>
+    </div>
 
     <div class="grid gap-5 sm:grid-cols-2">
       <div>

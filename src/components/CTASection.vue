@@ -31,7 +31,12 @@ defineProps({
         <div class="relative">
           <h2 class="font-display text-3xl font-semibold sm:text-4xl">{{ title }}</h2>
           <p class="mx-auto mt-4 max-w-xl text-lg text-white/85">{{ text }}</p>
-          <BaseButton :to="{ name: 'contact' }" variant="light" size="lg" class="mt-8">
+          <BaseButton
+            :to="{ name: 'contact', query: { topic: 'beratung' } }"
+            variant="light"
+            size="lg"
+            class="mt-8"
+          >
             Beratung vereinbaren
             <AppIcon name="arrow" class="h-4 w-4" />
           </BaseButton>

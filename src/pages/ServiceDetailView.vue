@@ -6,17 +6,21 @@ import BaseContainer from '@/components/BaseContainer.vue'
 import BaseImage from '@/components/BaseImage.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import ServiceCard from '@/components/ServiceCard.vue'
-import Planning3DSection from '@/components/Planning3DSection.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import CTASection from '@/components/CTASection.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { getService, services } from '@/data/services'
+import { planningBenefits, planningServices } from '@/data/planning'
+import { topicForService } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
 
 const route = useRoute()
 const service = computed(() => getService(route.params.slug))
 const others = computed(() => services.filter((s) => s.slug !== route.params.slug))
 const is3d = computed(() => route.params.slug === '3d-planung')
+const contactTopic = computed(() =>
+  service.value ? topicForService(service.value.slug).value : 'beratung'
+)
 
 useSeo(() => ({
   title: service.value ? service.value.title : 'Leistung',
@@ -27,84 +31,240 @@ useSeo(() => ({
 
 <template>
   <div v-if="service">
-    <PageHeader
-      eyebrow="Leistung"
-      :title="service.title"
-      :subtitle="service.intro"
-      :crumbs="[
-        { name: 'Leistungen', to: { name: 'services' } },
-        { name: service.title, to: { name: 'service-detail', params: { slug: service.slug } } },
-      ]"
-    />
-
-    <!-- Intro: image + key points -->
-    <section class="section bg-surface">
-      <BaseContainer class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        <div v-reveal>
-          <BaseImage
-            :src="service.image"
-            :motif="service.motif"
-            :tone="service.tone"
-            ratio="4/3"
-            :alt="service.title"
-          />
-        </div>
-        <div v-reveal="{ delay: 100 }">
-          <p class="eyebrow">{{ service.short }}</p>
-          <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
-            Das bieten wir Ihnen
-          </h2>
-          <ul class="mt-6 space-y-3.5">
-            <li v-for="b in service.bullets" :key="b" class="flex items-start gap-3">
-              <span
-                class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
-              >
-                <AppIcon name="check" class="h-4 w-4" />
-              </span>
-              <span class="text-content">{{ b }}</span>
-            </li>
-          </ul>
-          <BaseButton :to="{ name: 'contact' }" size="lg" class="mt-8">
-            Beratung anfragen
-            <AppIcon name="arrow" class="h-4 w-4" />
-          </BaseButton>
-        </div>
-      </BaseContainer>
-    </section>
-
-    <!-- 3D-specific premium block + inline request form -->
     <template v-if="is3d">
-      <Planning3DSection />
+      <PageHeader
+        eyebrow="Leistung"
+        title="Ihre Vision in 3D"
+        :subtitle="service.intro"
+        :crumbs="[
+          { name: 'Leistungen', to: { name: 'services' } },
+          { name: service.title, to: { name: 'service-detail', params: { slug: service.slug } } },
+        ]"
+      />
+
+      <section class="bg-surface pb-16 pt-10 sm:pb-20 sm:pt-14 lg:pb-24">
+        <BaseContainer class="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+          <div v-reveal>
+            <p class="eyebrow">{{ service.short }}</p>
+            <h2 class="mt-4 max-w-xl font-display text-4xl font-semibold leading-tight sm:text-5xl">
+              Planen, prüfen und entscheiden, bevor gebaut wird
+            </h2>
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-content-muted">
+              Aus Skizzen, Maßen und Materialwünschen entsteht ein räumlicher Entwurf, der Wirkung,
+              Proportionen und Details sichtbar macht.
+            </p>
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <BaseButton :to="{ name: 'contact', query: { topic: contactTopic } }" size="lg">
+                3D-Entwurf anfragen
+                <AppIcon name="arrow" class="h-4 w-4" />
+              </BaseButton>
+              <BaseButton :to="{ name: 'projects' }" variant="outline" size="lg">
+                Projekte ansehen
+              </BaseButton>
+            </div>
+          </div>
+
+          <div v-reveal="{ delay: 100 }" class="relative">
+            <div
+              class="absolute -left-4 top-8 hidden h-48 w-48 rounded-full bg-brand-100/60 blur-3xl lg:block"
+            />
+            <div class="relative grid grid-cols-2 gap-4">
+              <figure class="rounded-xl bg-surface-muted p-3 shadow-card">
+                <BaseImage
+                  src="/images/planning-3d-before.webp"
+                  motif="render"
+                  tone="slate"
+                  ratio="4/5"
+                  alt="Technische 3D-Skizze eines Ofenentwurfs"
+                  rounded="rounded-lg"
+                  eager
+                />
+                <figcaption class="mt-3 flex items-center justify-between text-xs">
+                  <span class="font-mono uppercase tracking-label text-content-muted"
+                    >3D-Skizze</span
+                  >
+                  <span class="rounded-full bg-surface px-2 py-1 text-brand-600">01</span>
+                </figcaption>
+              </figure>
+              <figure class="mt-10 rounded-xl bg-surface-muted p-3 shadow-card sm:mt-14">
+                <BaseImage
+                  src="/images/planning-3d-after.webp"
+                  motif="flame"
+                  tone="ember"
+                  ratio="4/5"
+                  alt="Fotorealistischer 3D-Entwurf eines Kaminofens"
+                  rounded="rounded-lg"
+                  eager
+                />
+                <figcaption class="mt-3 flex items-center justify-between text-xs">
+                  <span class="font-mono uppercase tracking-label text-content-muted"
+                    >Fertiger Entwurf</span
+                  >
+                  <span class="rounded-full bg-surface px-2 py-1 text-brand-600">02</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </BaseContainer>
+      </section>
+
       <section class="section bg-surface-muted">
-        <BaseContainer class="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
+        <BaseContainer class="grid gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
+          <div v-reveal>
+            <p class="eyebrow">Vorteile der 3D-Planung</p>
+            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+              Mehr Sicherheit für Form, Material und Budget
+            </h2>
+          </div>
+          <div v-reveal="{ delay: 100 }" class="grid gap-5">
+            <article
+              v-for="benefit in planningBenefits"
+              :key="benefit.title"
+              class="flex gap-4 rounded-xl bg-surface p-5 shadow-sm ring-1 ring-content-muted/10"
+            >
+              <span
+                class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
+              >
+                <AppIcon :name="benefit.icon" class="h-5 w-5" />
+              </span>
+              <div>
+                <h3 class="font-semibold">{{ benefit.title }}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-content-muted">{{ benefit.text }}</p>
+              </div>
+            </article>
+          </div>
+        </BaseContainer>
+      </section>
+
+      <section class="section bg-surface">
+        <BaseContainer>
+          <div v-reveal class="max-w-2xl">
+            <p class="eyebrow">Unser 3D-Service</p>
+            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+              Vom ersten Raumgefühl bis zur machbaren Umsetzung
+            </h2>
+          </div>
+          <div class="mt-10 grid gap-5 md:grid-cols-3">
+            <article
+              v-for="item in planningServices"
+              :key="item.title"
+              v-reveal
+              class="rounded-xl bg-surface-muted p-6 shadow-sm ring-1 ring-content-muted/10"
+            >
+              <span
+                class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-500 text-white"
+              >
+                <AppIcon name="cube" class="h-5 w-5" />
+              </span>
+              <h3 class="mt-5 font-semibold">{{ item.title }}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-content-muted">{{ item.text }}</p>
+            </article>
+          </div>
+        </BaseContainer>
+      </section>
+
+      <section class="section bg-surface-muted">
+        <BaseContainer class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div v-reveal>
             <p class="eyebrow">3D-Entwurf anfragen</p>
-            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
-              Senden Sie uns Ihre Idee
+            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+              Senden Sie uns Maße, Idee oder Fotos
             </h2>
             <p class="mt-4 text-lg leading-relaxed text-content-muted">
-              Beschreiben Sie kurz Ihr Vorhaben — wir erstellen Ihnen einen unverbindlichen
-              3D-Entwurf und melden uns mit den nächsten Schritten.
+              Wir prüfen Ihr Vorhaben und melden uns mit einem klaren nächsten Schritt für den
+              unverbindlichen 3D-Entwurf.
             </p>
+            <div class="mt-8 grid grid-cols-2 gap-4">
+              <BaseImage
+                src="/images/planning-3d-before.webp"
+                motif="render"
+                tone="slate"
+                ratio="4/3"
+                alt="3D-Skizze"
+                rounded="rounded-xl"
+              />
+              <BaseImage
+                src="/images/planning-3d-after.webp"
+                motif="flame"
+                tone="ember"
+                ratio="4/3"
+                alt="3D-Entwurf"
+                rounded="rounded-xl"
+              />
+            </div>
           </div>
-          <div>
+          <div
+            v-reveal="{ delay: 100 }"
+            class="rounded-xl bg-surface p-5 shadow-card ring-1 ring-content-muted/10 sm:p-7"
+          >
             <ContactForm subject="3D-Entwurf" submit-label="Anfrage senden" />
           </div>
         </BaseContainer>
       </section>
     </template>
 
-    <!-- Other services -->
-    <section v-else class="section bg-surface-muted">
-      <BaseContainer>
-        <h2 class="mb-10 font-display text-2xl font-semibold sm:text-3xl">Weitere Leistungen</h2>
-        <div class="grid gap-6 sm:grid-cols-2">
-          <ServiceCard v-for="s in others" :key="s.slug" :service="s" />
-        </div>
-      </BaseContainer>
-    </section>
+    <template v-else>
+      <PageHeader
+        eyebrow="Leistung"
+        :title="service.title"
+        :subtitle="service.intro"
+        :crumbs="[
+          { name: 'Leistungen', to: { name: 'services' } },
+          { name: service.title, to: { name: 'service-detail', params: { slug: service.slug } } },
+        ]"
+      />
 
-    <CTASection v-if="!is3d" />
+      <!-- Intro: image + key points -->
+      <section class="section bg-surface">
+        <BaseContainer class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div v-reveal>
+            <BaseImage
+              :src="service.image"
+              :motif="service.motif"
+              :tone="service.tone"
+              ratio="4/3"
+              :alt="service.title"
+            />
+          </div>
+          <div v-reveal="{ delay: 100 }">
+            <p class="eyebrow">{{ service.short }}</p>
+            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
+              Das bieten wir Ihnen
+            </h2>
+            <ul class="mt-6 space-y-3.5">
+              <li v-for="b in service.bullets" :key="b" class="flex items-start gap-3">
+                <span
+                  class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
+                >
+                  <AppIcon name="check" class="h-4 w-4" />
+                </span>
+                <span class="text-content">{{ b }}</span>
+              </li>
+            </ul>
+            <BaseButton
+              :to="{ name: 'contact', query: { topic: contactTopic } }"
+              size="lg"
+              class="mt-8"
+            >
+              Beratung anfragen
+              <AppIcon name="arrow" class="h-4 w-4" />
+            </BaseButton>
+          </div>
+        </BaseContainer>
+      </section>
+
+      <!-- Other services -->
+      <section class="section bg-surface-muted">
+        <BaseContainer>
+          <h2 class="mb-10 font-display text-2xl font-semibold sm:text-3xl">Weitere Leistungen</h2>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <ServiceCard v-for="s in others" :key="s.slug" :service="s" />
+          </div>
+        </BaseContainer>
+      </section>
+
+      <CTASection />
+    </template>
   </div>
 
   <!-- Unknown slug -->

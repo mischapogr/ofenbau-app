@@ -98,6 +98,17 @@ const year = new Date().getFullYear()
             <AppIcon name="phone" class="h-4 w-4 shrink-0 text-brand-400" />
             <a :href="company.phone.href" class="hover:text-brand-400">{{ company.phone.label }}</a>
           </p>
+          <p class="flex items-start gap-2.5">
+            <AppIcon name="whatsapp" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
+            <span>
+              <a :href="company.whatsapp.href" class="hover:text-brand-400">
+                WhatsApp {{ company.whatsapp.label }}
+              </a>
+              <span class="mt-0.5 block text-xs text-white/45">
+                {{ company.whatsapp.availability }}
+              </span>
+            </span>
+          </p>
           <p class="flex items-center gap-2.5">
             <AppIcon name="mail" class="h-4 w-4 shrink-0 text-brand-400" />
             <a :href="company.email.href" class="hover:text-brand-400">{{ company.email.label }}</a>

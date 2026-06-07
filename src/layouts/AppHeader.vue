@@ -54,7 +54,11 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       </nav>
 
       <div class="flex items-center gap-2">
-        <BaseButton :to="{ name: 'contact' }" size="sm" class="hidden sm:inline-flex">
+        <BaseButton
+          :to="{ name: 'contact', query: { topic: 'beratung' } }"
+          size="sm"
+          class="hidden sm:inline-flex"
+        >
           Beratung vereinbaren
         </BaseButton>
 
@@ -89,7 +93,12 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           >
             {{ item.name }}
           </RouterLink>
-          <BaseButton :to="{ name: 'contact' }" block class="mt-3" @click="mobileOpen = false">
+          <BaseButton
+            :to="{ name: 'contact', query: { topic: 'beratung' } }"
+            block
+            class="mt-3"
+            @click="mobileOpen = false"
+          >
             Beratung vereinbaren
           </BaseButton>
         </BaseContainer>

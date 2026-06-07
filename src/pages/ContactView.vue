@@ -1,11 +1,23 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
 import BaseContainer from '@/components/BaseContainer.vue'
 import BaseImage from '@/components/BaseImage.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { company } from '@/data/company'
+import { getContactTopic } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
+
+const route = useRoute()
+const selectedTopic = computed(() => getContactTopic(route.query.topic))
+const mapHref = computed(
+  () =>
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      `${company.address.street}, ${company.address.zip} ${company.address.city}`
+    )}`
+)
 
 useSeo(() => ({
   title: 'Kontakt',
@@ -20,6 +32,13 @@ const details = [
     value: `${company.address.street}, ${company.address.zip} ${company.address.city}`,
   },
   { icon: 'phone', label: 'Telefon', value: company.phone.label, href: company.phone.href },
+  {
+    icon: 'whatsapp',
+    label: 'WhatsApp',
+    value: company.whatsapp.label,
+    href: company.whatsapp.href,
+    note: company.whatsapp.availability,
+  },
   { icon: 'mail', label: 'E-Mail', value: company.email.label, href: company.email.href },
   { icon: 'clock', label: 'Öffnungszeiten', value: company.hours },
 ]
@@ -51,31 +70,39 @@ const details = [
                   <a v-if="d.href" :href="d.href" class="hover:text-brand-600">{{ d.value }}</a>
                   <span v-else>{{ d.value }}</span>
                 </dd>
+                <dd v-if="d.note" class="mt-1 text-xs text-content-muted">{{ d.note }}</dd>
               </div>
             </div>
           </dl>
 
-          <div class="mt-8 overflow-hidden rounded-2xl">
+          <div class="mt-8 overflow-hidden rounded-2xl bg-ink-900 shadow-card">
             <BaseImage
               src="/images/contact-map.svg"
               motif="pin"
               tone="slate"
               ratio="16/9"
               alt="Karte mit Standort des Betriebs"
+              rounded="rounded-none"
             />
+            <div class="grid gap-4 p-5 text-white sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <p class="font-display text-xl font-semibold">Werkstatt & Beratung</p>
+                <p class="mt-1 text-sm text-white/70">
+                  {{ company.address.street }}, {{ company.address.zip }}
+                  {{ company.address.city }}
+                </p>
+              </div>
+              <a
+                :href="mapHref"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-ink-900 transition-colors hover:bg-surface-muted"
+              >
+                Route planen
+                <AppIcon name="arrow" class="h-4 w-4" />
+              </a>
+            </div>
           </div>
-
-          <p class="mt-4 text-xs text-content-muted">
-            Im Entwicklungsmodus landen versendete Nachrichten in Mailpit unter
-            <a
-              href="http://localhost:8023"
-              target="_blank"
-              rel="noopener"
-              class="text-brand-600 hover:underline"
-            >
-              localhost:8023 </a
-            >.
-          </p>
         </div>
 
         <!-- Form -->
@@ -85,7 +112,12 @@ const details = [
             Alle Felder mit Ausnahme der Telefonnummer sind erforderlich.
           </p>
           <div class="mt-6">
-            <ContactForm submit-label="Nachricht senden" />
+            <ContactForm
+              :key="selectedTopic.value"
+              show-topic
+              :subject="selectedTopic.value"
+              submit-label="Nachricht senden"
+            />
           </div>
         </div>
       </BaseContainer>

@@ -33,7 +33,7 @@ const stats = [
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">
-          <BaseButton :to="{ name: 'contact' }" size="lg">
+          <BaseButton :to="{ name: 'contact', query: { topic: 'beratung' } }" size="lg">
             Beratung vereinbaren
             <AppIcon name="arrow" class="h-4 w-4" />
           </BaseButton>

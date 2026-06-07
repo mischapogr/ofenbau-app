@@ -132,7 +132,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
 
   await test.step('3D-Planung (Detailseite)', async () => {
     await page.goto('/leistungen/3d-planung')
-    await expect(page.getByRole('heading', { name: '3D-Planung & Entwürfe' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Ihre Vision in 3D' })).toBeVisible()
     await revealAll(page)
     await page.waitForTimeout(500)
     await shot(page, '3d-planung', true)
@@ -140,6 +140,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
 
   await test.step('Kontakt — Formular-Validierung', async () => {
     await page.goto('/kontakt')
+    await expect(page.getByLabel('Thema')).toHaveValue('beratung')
     await page.getByRole('button', { name: 'Nachricht senden' }).click()
     await expect(page.getByText('Bitte geben Sie Ihren Namen an.')).toBeVisible()
     await expect(page.getByText('Bitte stimmen Sie der Datenschutzerklärung zu.')).toBeVisible()
@@ -148,6 +149,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
   })
 
   await test.step('Kontakt — erfolgreiche Anfrage', async () => {
+    await page.getByLabel('Thema').selectOption('kachelofen-kaminbau')
     await page.getByLabel('Name').fill('Maria Beispiel')
     await page.getByLabel(/Telefon/).fill('012345 678900')
     await page.getByLabel('E-Mail').fill('maria@example.com')
