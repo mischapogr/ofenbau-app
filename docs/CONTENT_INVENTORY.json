@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-06-07T11:32:32.354Z",
+  "generatedAt": "2026-06-07T11:40:00.328Z",
   "summary": {
     "companyNapApprovedForLaunch": false,
     "googleBusinessProfileAligned": false,
     "googleMapsRouteVerified": false,
     "services": 4,
+    "serviceFaqs": 8,
     "serviceContentApprovedForLaunch": false,
     "projects": 9,
     "projectCategories": 7,
@@ -270,6 +271,34 @@
           "value": "Ausführung durch den Ofen- und Fliesenmeisterbetrieb",
           "placeholder": false,
           "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.faqs.0.question",
+          "value": "Wann lohnt sich ein individuell gebauter Kachelofen?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.faqs.0.answer",
+          "value": "Ein individueller Kachelofen lohnt sich, wenn Raum, Heizverhalten und Gestaltung zusammen geplant werden sollen. Besonders sinnvoll ist er bei regelmäßig genutzten Wohnbereichen und dem Wunsch nach lang anhaltender Strahlungswärme.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.faqs.1.question",
+          "value": "Welche Informationen brauchen Sie für die erste Beratung?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "kachelofen-kaminbau.faqs.1.answer",
+          "value": "Hilfreich sind Grundriss oder Raummaße, Fotos der Einbausituation, vorhandene Schornsteinangaben und erste Wünsche zu Material, Sichtfeuer und Nutzung.",
+          "placeholder": false,
+          "notes": ""
         }
       ]
     },
@@ -358,6 +387,34 @@
           "area": "services",
           "key": "schornsteinbau.proofPoints.2",
           "value": "Abstimmung mit dem zuständigen Schornsteinfeger vorgesehen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.faqs.0.question",
+          "value": "Kann ein Schornstein nachträglich montiert werden?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.faqs.0.answer",
+          "value": "In vielen Gebäuden ist eine nachträgliche Lösung möglich, zum Beispiel als Edelstahl-Außenschornstein. Entscheidend sind Feuerstätte, Gebäudesituation, Wanddurchführung und Abstimmung mit dem zuständigen Schornsteinfeger.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.faqs.1.question",
+          "value": "Wer klärt die Anforderungen mit dem Schornsteinfeger?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "schornsteinbau.faqs.1.answer",
+          "value": "Die technischen Eckpunkte werden vor der Ausführung geprüft und die Abstimmung mit dem zuständigen Schornsteinfeger ist Teil der Planung.",
           "placeholder": false,
           "notes": ""
         }
@@ -450,6 +507,34 @@
           "value": "Saubere Detailausführung für Anschlüsse, Kanten und Übergänge",
           "placeholder": false,
           "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.faqs.0.question",
+          "value": "Welche Fliesen eignen sich für Bad und Wohnraum?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.faqs.0.answer",
+          "value": "Die Auswahl hängt von Nutzung, Rutschhemmung, Pflegebedarf und gewünschter Optik ab. Häufig kommen Feinsteinzeug, Natursteinoptik, Großformate oder Mosaikdetails zum Einsatz.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.faqs.1.question",
+          "value": "Wird das Fugenbild vor der Verlegung abgestimmt?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "fliesenarbeiten.faqs.1.answer",
+          "value": "Ja. Verlegeplan, Fugenbild, Kanten und Übergänge werden vorab besprochen, damit Proportionen und Details zur Raumsituation passen.",
+          "placeholder": false,
+          "notes": ""
         }
       ]
     },
@@ -538,6 +623,34 @@
           "area": "services",
           "key": "3d-planung.proofPoints.2",
           "value": "Kalkulation und Machbarkeit werden vor Umsetzung geprüft",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.faqs.0.question",
+          "value": "Was bringt eine 3D-Planung vor der Umsetzung?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.faqs.0.answer",
+          "value": "Die 3D-Planung macht Proportionen, Materialien und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.faqs.1.question",
+          "value": "Welche Unterlagen werden für einen 3D-Entwurf benötigt?",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "services",
+          "key": "3d-planung.faqs.1.answer",
+          "value": "Für den Start reichen meist Raummaße, Fotos, vorhandene Pläne und erste Material- oder Stilwünsche. Je genauer die Angaben sind, desto verbindlicher kann der Entwurf vorbereitet werden.",
           "placeholder": false,
           "notes": ""
         }
