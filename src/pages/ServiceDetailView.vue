@@ -14,6 +14,7 @@ import { getService, services } from '@/data/services'
 import { planningBenefits, planningServices } from '@/data/planning'
 import { topicForService } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
+import { useJsonLd } from '@/composables/useJsonLd'
 
 const route = useRoute()
 const service = computed(() => getService(route.params.slug))
@@ -22,12 +23,32 @@ const is3d = computed(() => route.params.slug === '3d-planung')
 const contactTopic = computed(() =>
   service.value ? topicForService(service.value.slug).value : 'beratung'
 )
+const siteUrl = (import.meta.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
+const faqJsonLd = computed(() => {
+  if (!service.value?.faqs?.length) return null
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.value.faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+    url: `${siteUrl}/leistungen/${service.value.slug}`,
+  }
+})
 
 useSeo(() => ({
   title: service.value ? service.value.title : 'Leistung',
   description: service.value?.description,
   path: `/leistungen/${route.params.slug}`,
 }))
+
+useJsonLd(() => faqJsonLd.value, 'service-faq-jsonld')
 </script>
 
 <template>
@@ -313,6 +334,31 @@ useSeo(() => ({
 
       <CTASection />
     </template>
+
+    <section v-if="service.faqs?.length" class="section bg-surface">
+      <BaseContainer class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div v-reveal>
+          <p class="eyebrow">Häufige Fragen</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+            Fragen zu {{ service.title }}
+          </h2>
+          <p class="mt-4 text-content-muted">
+            Kurze Antworten für die erste Einordnung. Die konkrete Planung klären wir anhand Ihrer
+            Räume, Wünsche und technischen Rahmenbedingungen.
+          </p>
+        </div>
+        <div v-reveal="{ delay: 100 }" class="grid gap-4">
+          <article
+            v-for="item in service.faqs"
+            :key="item.question"
+            class="rounded-xl bg-surface-muted p-5 ring-1 ring-content-muted/10"
+          >
+            <h3 class="font-semibold text-content">{{ item.question }}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-content-muted">{{ item.answer }}</p>
+          </article>
+        </div>
+      </BaseContainer>
+    </section>
   </div>
 
   <!-- Unknown slug -->
