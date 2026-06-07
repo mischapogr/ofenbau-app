@@ -1,11 +1,20 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { company, companyProfileReview, socialLinks } from '../src/data/company.js'
+import {
+  contactTopicReview,
+  contactTopicRoutingReview,
+  contactTopics,
+} from '../src/data/contactTopics.js'
+import { homepageContentReview, homepageReviewSections } from '../src/data/home.js'
 import { legalProfile } from '../src/data/legal.js'
+import { publicPageContentReview, publicPageReviewSections } from '../src/data/pages.js'
+import { planningContentReview, planningExamples } from '../src/data/planning.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 import { projectReferenceReview, projects } from '../src/data/projects.js'
 
 const strict = process.argv.includes('--strict')
+const appTitle = process.env.VITE_APP_TITLE || ''
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const apiBaseUrl = process.env.VITE_API_BASE_URL || '/api'
 const mailHost = process.env.MAIL_HOST || ''
@@ -56,6 +65,15 @@ checkBlocker(
   `VITE_APP_URL looks like a placeholder: ${siteUrl}`
 )
 checkBlocker(hasPlaceholder(company.name), `Company name looks like a placeholder: ${company.name}`, 'Company name does not match placeholder patterns')
+checkBlocker(
+  appTitle && hasPlaceholder(appTitle),
+  `VITE_APP_TITLE looks like a placeholder: ${appTitle}`,
+  appTitle ? 'VITE_APP_TITLE does not match placeholder patterns' : ''
+)
+checkWarning(
+  appTitle && !hasPlaceholder(appTitle) && !hasPlaceholder(company.name) && appTitle !== company.name,
+  `VITE_APP_TITLE (${appTitle}) differs from configured company.name (${company.name})`
+)
 checkBlocker(hasPlaceholder(company.legalName), `Legal name looks like a placeholder: ${company.legalName}`, 'Legal name does not match placeholder patterns')
 checkBlocker(
   hasPlaceholder(`${company.address.street} ${company.address.zip} ${company.address.city}`),
@@ -183,6 +201,41 @@ if (fileExists('public/robots.txt')) {
 
 checkBlocker(services.length < 4, `Expected at least 4 services, found ${services.length}`, `Service coverage is sufficient: ${services.length}`)
 checkBlocker(
+  homepageReviewSections.length < 4,
+  `Expected at least 4 homepage review sections, found ${homepageReviewSections.length}`,
+  `Homepage review section coverage is sufficient: ${homepageReviewSections.length}`
+)
+checkBlocker(
+  homepageContentReview.approvedForLaunch !== true,
+  `Homepage content is not approved for launch: ${homepageContentReview.note}`,
+  'Homepage content is approved for launch'
+)
+checkBlocker(
+  publicPageReviewSections.length < 4,
+  `Expected at least 4 public page review sections, found ${publicPageReviewSections.length}`,
+  `Public page review section coverage is sufficient: ${publicPageReviewSections.length}`
+)
+checkBlocker(
+  publicPageContentReview.approvedForLaunch !== true,
+  `Public page content is not approved for launch: ${publicPageContentReview.note}`,
+  'Public page content is approved for launch'
+)
+checkBlocker(
+  contactTopics.length < 4,
+  `Expected at least 4 contact topics, found ${contactTopics.length}`,
+  `Contact topic coverage is sufficient: ${contactTopics.length}`
+)
+checkBlocker(
+  contactTopicReview.approvedForLaunch !== true,
+  `Contact topics are not approved for launch: ${contactTopicReview.note}`,
+  'Contact topics are approved for launch'
+)
+checkBlocker(
+  contactTopicRoutingReview.approvedForLaunch !== true,
+  `Contact topic routing is not approved for launch: ${contactTopicRoutingReview.note}`,
+  'Contact topic routing is approved for launch'
+)
+checkBlocker(
   serviceContentReview.approvedForLaunch !== true,
   `Service content is not approved for launch: ${serviceContentReview.note}`,
   'Service content is approved for launch'
@@ -192,6 +245,16 @@ checkBlocker(
   projectReferenceReview.approvedForLaunch !== true,
   `Project/reference gallery is not approved for launch: ${projectReferenceReview.note}`,
   'Project/reference gallery is approved for launch'
+)
+checkBlocker(
+  planningExamples.length < 3,
+  `Expected at least 3 planning examples, found ${planningExamples.length}`,
+  `3D planning example coverage is sufficient: ${planningExamples.length}`
+)
+checkBlocker(
+  planningContentReview.approvedForLaunch !== true,
+  `3D planning examples are not approved for launch: ${planningContentReview.note}`,
+  '3D planning examples are approved for launch'
 )
 
 console.log('Launch readiness report')

@@ -26,6 +26,11 @@ fireplace (Kachelofen / Kamin) craft business. Content is German.
 | Preview build | `npm run preview` |
 | Lint | `npm run lint` (fix) · `npm run lint:check` (CI) |
 | Format | `npm run format` · `npm run format:check` |
+| Full local launch gate | `npm run preflight` |
+| Launch readiness report | `npm run launch:report` (non-failing) · `npm run launch:check` (strict) |
+| Launch handoff docs | `npm run launch:actions` · `npm run launch:evidence` |
+| Deployment smoke | `npm run deploy:all -- https://domain.example` |
+| Demo walkthrough | `npm run test:e2e` · `npm run demo:mp4` |
 | Prod build (Docker) | `docker compose -f docker-compose.prod.yml up -d --build` |
 
 Mailpit web UI (dev mail catcher): http://localhost:8023

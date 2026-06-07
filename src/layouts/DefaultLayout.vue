@@ -12,7 +12,7 @@ import SiteFooter from '@/components/SiteFooter.vue'
       Zum Inhalt springen
     </a>
     <AppHeader />
-    <main id="main" class="flex-1">
+    <main id="main" class="min-h-screen flex-1">
       <slot />
     </main>
     <SiteFooter />

@@ -5,6 +5,7 @@ import BaseCard from '@/components/BaseCard.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import ProcessTimeline from '@/components/ProcessTimeline.vue'
 import CTASection from '@/components/CTASection.vue'
+import { aboutValues } from '@/data/pages'
 import { useSeo } from '@/composables/useSeo'
 
 useSeo(() => ({
@@ -13,20 +14,6 @@ useSeo(() => ({
   path: '/ueber-uns',
 }))
 
-const values = [
-  {
-    title: 'Handwerk',
-    text: 'Jeder Ofen entsteht in präziser Handarbeit — kein Stück gleicht dem anderen.',
-  },
-  {
-    title: 'Qualität',
-    text: 'Wir setzen auf langlebige Materialien und saubere, geprüfte Ausführung.',
-  },
-  {
-    title: 'Vertrauen',
-    text: 'Transparente Beratung und verlässliche Termine, von Anfang bis Übergabe.',
-  },
-]
 </script>
 
 <template>
@@ -44,7 +31,7 @@ const values = [
       <BaseContainer>
         <div class="grid gap-6 sm:grid-cols-3">
           <BaseCard
-            v-for="(v, i) in values"
+            v-for="(v, i) in aboutValues"
             :key="v.title"
             v-reveal="{ delay: i * 90 }"
             class="p-7"

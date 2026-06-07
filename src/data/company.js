@@ -46,8 +46,20 @@ export const socialLinks = [
   { name: 'Pinterest', href: 'https://pinterest.com', icon: 'pinterest' },
 ]
 
+export function isGenericSocialLink(link) {
+  return /^https:\/\/(instagram|facebook|pinterest)\.com\/?$/i.test(link?.href || '')
+}
+
+export const publicSocialLinks = socialLinks.filter((link) => !isGenericSocialLink(link))
+
 export const trustBadges = [
   'Meisterbetrieb',
   'Handwerk seit Generationen',
   'Regional in Musterstadt',
 ]
+
+export function isGenericTrustBadge(badge) {
+  return /muster|beispiel|demo|placeholder/i.test(String(badge || ''))
+}
+
+export const publicTrustBadges = trustBadges.filter((badge) => !isGenericTrustBadge(badge))

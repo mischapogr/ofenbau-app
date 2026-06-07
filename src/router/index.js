@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { company } from '@/data/company'
+
+const siteName = import.meta.env.VITE_APP_TITLE || company.name
 
 /**
  * Routes use lazy-loaded page components so each route is its own chunk.
@@ -11,7 +14,7 @@ const routes = [
     name: 'home',
     component: () => import('@/pages/HomeView.vue'),
     meta: {
-      title: 'Ofenbau Mustermann — Kachelöfen, Kamine & Fliesen',
+      title: `${siteName} — Kachelöfen, Kamine & Fliesen`,
       description:
         'Mit gesunder Wärme leben: individueller Kachel- & Kaminofenbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.',
     },
@@ -21,7 +24,7 @@ const routes = [
     name: 'services',
     component: () => import('@/pages/ServicesView.vue'),
     meta: {
-      title: 'Leistungen — Ofenbau Mustermann',
+      title: `Leistungen — ${siteName}`,
       description: 'Kachelöfen, Kaminbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.',
     },
   },
@@ -29,14 +32,14 @@ const routes = [
     path: '/leistungen/:slug',
     name: 'service-detail',
     component: () => import('@/pages/ServiceDetailView.vue'),
-    meta: { title: 'Leistung — Ofenbau Mustermann' },
+    meta: { title: `Leistung — ${siteName}` },
   },
   {
     path: '/projekte',
     name: 'projects',
     component: () => import('@/pages/ProjectsView.vue'),
     meta: {
-      title: 'Projekte — Ofenbau Mustermann',
+      title: `Projekte — ${siteName}`,
       description: 'Ausgewählte Kachelöfen, Kamine und Fliesenarbeiten aus unserer Werkstatt.',
     },
   },
@@ -45,7 +48,7 @@ const routes = [
     name: 'about',
     component: () => import('@/pages/AboutView.vue'),
     meta: {
-      title: 'Über uns — Ofenbau Mustermann',
+      title: `Über uns — ${siteName}`,
       description: 'Tradition, Handwerk und moderne Technik seit Generationen.',
     },
   },
@@ -54,7 +57,7 @@ const routes = [
     name: 'contact',
     component: () => import('@/pages/ContactView.vue'),
     meta: {
-      title: 'Kontakt — Ofenbau Mustermann',
+      title: `Kontakt — ${siteName}`,
       description: 'Vereinbaren Sie eine unverbindliche Beratung. Wir freuen uns auf Sie.',
     },
   },
@@ -62,19 +65,19 @@ const routes = [
     path: '/impressum',
     name: 'imprint',
     component: () => import('@/pages/LegalView.vue'),
-    meta: { title: 'Impressum — Ofenbau Mustermann' },
+    meta: { title: `Impressum — ${siteName}` },
   },
   {
     path: '/datenschutz',
     name: 'privacy',
     component: () => import('@/pages/LegalView.vue'),
-    meta: { title: 'Datenschutz — Ofenbau Mustermann' },
+    meta: { title: `Datenschutz — ${siteName}` },
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundView.vue'),
-    meta: { title: 'Seite nicht gefunden — Ofenbau Mustermann' },
+    meta: { title: `Seite nicht gefunden — ${siteName}` },
   },
 ]
 

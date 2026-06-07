@@ -2,6 +2,17 @@
  * 3D-Planning content — benefits + service columns for Planning3DSection
  * and the /leistungen/3d-planung detail page.
  */
+export const planningContentReview = {
+  approvedForLaunch: false,
+  note: '3D planning examples and generated planning visuals must be reviewed against the final operator workflow before launch.',
+}
+
+const pendingPlanningApproval = {
+  operatorApproved: false,
+  mediaRightsApproved: false,
+  note: 'Confirm the planning example reflects a real operator workflow and that generated/visual media is approved before launch.',
+}
+
 export const planningBenefits = [
   {
     icon: 'eye',
@@ -64,6 +75,7 @@ export const planningExamples = [
     description:
       'Räumlicher Entwurf eines handgesetzten Kachelofens mit Sitzbank, keramischer Oberfläche und Eck-Sichtfenster.',
     specs: ['Kachelkeramik', 'Sitzbank', 'Eckscheibe', 'Speicherwärme'],
+    review: { ...pendingPlanningApproval },
   },
   {
     id: 'schornstein-kaminofen',
@@ -93,6 +105,7 @@ export const planningExamples = [
     description:
       'Planungsansicht für Kaminofen, Wanddurchführung und Edelstahl-Außenschornstein inklusive Anschlussdetails.',
     specs: ['Edelstahl', 'Wanddurchführung', 'Brandschutz', 'Ofenanschluss'],
+    review: { ...pendingPlanningApproval },
   },
   {
     id: 'bad-fliesen',
@@ -122,6 +135,7 @@ export const planningExamples = [
     description:
       'Fotorealistischer Badentwurf mit Fliesenraster, Dusche, Wanne und Materialabstimmung vor Ausführung.',
     specs: ['Großformat', 'Natursteinoptik', 'Duschbereich', 'Fugenbild'],
+    review: { ...pendingPlanningApproval },
   },
   {
     id: 'materialien',
@@ -151,5 +165,6 @@ export const planningExamples = [
     description:
       'Detailansicht für Kachel, Naturstein, Putzstruktur und Feuerraumrahmen als Entscheidungshilfe.',
     specs: ['Keramik', 'Naturstein', 'Putz', 'Metallrahmen'],
+    review: { ...pendingPlanningApproval },
   },
 ]

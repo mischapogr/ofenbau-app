@@ -1,4 +1,5 @@
 import { chromium } from '@playwright/test'
+import { company } from '../src/data/company.js'
 import { services } from '../src/data/services.js'
 
 const rawUrl = process.argv[2] || process.env.VITE_APP_URL
@@ -9,6 +10,7 @@ if (!rawUrl) {
 }
 
 const siteUrl = rawUrl.replace(/\/+$/, '')
+const siteName = process.env.VITE_APP_TITLE || company.name
 const isLocalTarget = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(siteUrl)
 const checks = []
 const routes = [
@@ -30,6 +32,15 @@ function expectedCanonical(path) {
   return `${siteUrl}${path}`
 }
 
+async function imageResponds(url) {
+  try {
+    const response = await fetch(url, { redirect: 'follow' })
+    return response.ok
+  } catch {
+    return false
+  }
+}
+
 const browser = await chromium.launch({ headless: true })
 const page = await browser.newPage()
 
@@ -41,11 +52,34 @@ try {
     const title = await page.title()
     const description = await page.locator('meta[name="description"]').getAttribute('content')
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
+    const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content')
+    const ogDescription = await page.locator('meta[property="og:description"]').getAttribute('content')
+    const ogType = await page.locator('meta[property="og:type"]').getAttribute('content')
+    const ogUrl = await page.locator('meta[property="og:url"]').getAttribute('content')
+    const ogImage = await page.locator('meta[property="og:image"]').getAttribute('content')
+    const ogSiteName = await page.locator('meta[property="og:site_name"]').getAttribute('content')
+    const twitterTitle = await page.locator('meta[name="twitter:title"]').getAttribute('content')
+    const twitterDescription = await page.locator('meta[name="twitter:description"]').getAttribute('content')
+    const twitterCard = await page.locator('meta[name="twitter:card"]').getAttribute('content')
+    const twitterImage = await page.locator('meta[name="twitter:image"]').getAttribute('content')
     const headHtml = await page.locator('head').innerHTML()
 
-    check(title.includes('Ofenbau'), `${route} title contains Ofenbau`)
+    check(title.includes(siteName), `${route} title contains configured site name`)
     check(Boolean(description?.trim()), `${route} has meta description`)
     check(canonical === expectedCanonical(route), `${route} canonical is ${expectedCanonical(route)}`)
+    check(ogTitle === title, `${route} og:title matches document title`)
+    check(ogDescription === description, `${route} og:description matches meta description`)
+    check(ogSiteName === siteName, `${route} og:site_name matches configured site name`)
+    check(ogType === 'website', `${route} og:type is website`)
+    check(ogUrl === expectedCanonical(route), `${route} og:url is canonical`)
+    check(ogImage?.startsWith(`${siteUrl}/`), `${route} og:image is absolute and same-origin`)
+    check(twitterTitle === title, `${route} twitter:title matches document title`)
+    check(twitterDescription === description, `${route} twitter:description matches meta description`)
+    check(twitterCard === 'summary_large_image', `${route} twitter:card uses summary_large_image`)
+    check(twitterImage === ogImage, `${route} twitter:image matches og:image`)
+    if (ogImage) {
+      check(await imageResponds(ogImage), `${route} social preview image responds`)
+    }
     check(
       isLocalTarget || !headHtml.includes('localhost'),
       isLocalTarget ? `${route} localhost head URLs allowed for local target` : `${route} head does not contain localhost`

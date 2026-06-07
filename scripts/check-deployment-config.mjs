@@ -18,11 +18,21 @@ function file(path) {
   return exists ? read(path) : ''
 }
 
+function locationBlock(config, pathPattern) {
+  const match = config.match(new RegExp(`location\\s+${pathPattern}\\s*\\{([\\s\\S]*?)\\n\\s*\\}`, 'm'))
+  return match?.[1] || ''
+}
+
+function hasHeader(config, name, valuePattern) {
+  return new RegExp(`add_header\\s+${name}\\s+"${valuePattern}"\\s+always`, 'm').test(config)
+}
+
 const dockerfileProd = file('Dockerfile.prod')
 const dockerfileContact = file('Dockerfile.contact')
 const compose = file('docker-compose.prod.yml')
 const nginx = file('nginx.conf')
 const envExample = file('.env.production.example')
+const nginxAssetsLocation = locationBlock(nginx, '\\/assets\\/')
 
 check(/FROM\s+node:22[\w.-]*\s+AS\s+build/i.test(dockerfileProd), 'Dockerfile.prod has a Node build stage')
 check(/RUN\s+npm\s+run\s+build/.test(dockerfileProd), 'Dockerfile.prod runs the production build')
@@ -54,9 +64,26 @@ check(/gzip\s+on;/.test(nginx), 'nginx enables gzip')
 check(/location\s+\/assets\/[\s\S]*Cache-Control\s+"public, immutable"/.test(nginx), 'nginx gives hashed assets immutable cache headers')
 check(/location\s+\/api\/[\s\S]*proxy_pass\s+http:\/\/api:3000\/api\//.test(nginx), 'nginx proxies /api/ to the api service')
 check(/location\s+\/[\s\S]*try_files\s+\$uri\s+\$uri\/\s+\/index\.html;/.test(nginx), 'nginx has SPA history fallback')
-check(/X-Frame-Options\s+"SAMEORIGIN"\s+always/.test(nginx), 'nginx sets X-Frame-Options')
-check(/X-Content-Type-Options\s+"nosniff"\s+always/.test(nginx), 'nginx sets X-Content-Type-Options')
-check(/Referrer-Policy\s+"strict-origin-when-cross-origin"\s+always/.test(nginx), 'nginx sets Referrer-Policy')
+check(hasHeader(nginx, 'X-Frame-Options', 'SAMEORIGIN'), 'nginx sets X-Frame-Options')
+check(hasHeader(nginx, 'X-Content-Type-Options', 'nosniff'), 'nginx sets X-Content-Type-Options')
+check(hasHeader(nginx, 'Referrer-Policy', 'strict-origin-when-cross-origin'), 'nginx sets Referrer-Policy')
+check(
+  hasHeader(nginx, 'Permissions-Policy', 'camera=\\(\\), microphone=\\(\\), geolocation=\\(\\)'),
+  'nginx sets Permissions-Policy'
+)
+check(hasHeader(nginxAssetsLocation, 'X-Frame-Options', 'SAMEORIGIN'), 'nginx asset location keeps X-Frame-Options')
+check(
+  hasHeader(nginxAssetsLocation, 'X-Content-Type-Options', 'nosniff'),
+  'nginx asset location keeps X-Content-Type-Options'
+)
+check(
+  hasHeader(nginxAssetsLocation, 'Referrer-Policy', 'strict-origin-when-cross-origin'),
+  'nginx asset location keeps Referrer-Policy'
+)
+check(
+  hasHeader(nginxAssetsLocation, 'Permissions-Policy', 'camera=\\(\\), microphone=\\(\\), geolocation=\\(\\)'),
+  'nginx asset location keeps Permissions-Policy'
+)
 
 for (const key of [
   'VITE_APP_URL',

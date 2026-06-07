@@ -1,4 +1,5 @@
 import { chromium } from '@playwright/test'
+import { company } from '../src/data/company.js'
 
 const rawUrl = process.argv[2] || process.env.VITE_APP_URL
 
@@ -8,6 +9,8 @@ if (!rawUrl) {
 }
 
 const siteUrl = rawUrl.replace(/\/+$/, '')
+const addressLabel = `${company.address.street}, ${company.address.zip} ${company.address.city}`
+const encodedAddress = encodeURIComponent(addressLabel)
 const checks = []
 
 function check(condition, message) {
@@ -38,6 +41,10 @@ try {
   check(!beforeConsent.consent, 'cookie consent is reset before map smoke')
   check(beforeConsent.iframeSources.length === 0, 'Google Maps iframe is absent before comfort consent')
   check(beforeConsent.routeLinks.length > 0, 'Google Maps route link remains available before comfort consent')
+  check(
+    beforeConsent.routeLinks.some((href) => href.includes(encodedAddress)),
+    'Google Maps route link contains the configured company address'
+  )
 
   await page.getByRole('button', { name: 'Karte laden' }).click()
   await page.waitForSelector('iframe[title="Google Maps Standortkarte"]', { state: 'attached' })
@@ -46,6 +53,10 @@ try {
   check(afterMapButton.consent?.comfort === true, 'Karte laden persists comfort consent')
   check(afterMapButton.consent?.analytics !== true, 'Karte laden does not imply analytics consent')
   check(afterMapButton.iframeSources.length === 1, 'Google Maps iframe appears after comfort consent')
+  check(
+    afterMapButton.iframeSources[0]?.includes(encodedAddress),
+    'Google Maps iframe query contains the configured company address'
+  )
   check(
     afterMapButton.iframeSources[0]?.includes('output=embed'),
     'Google Maps iframe uses embed output'

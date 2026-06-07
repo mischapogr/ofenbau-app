@@ -74,6 +74,20 @@ npm run dev        # http://localhost:5173
 | `npm run format` | Prettier write |
 | `npm run format:check` | Prettier check (CI) |
 | `npm run gen:images` | Regenerate the on-brand SVG imagery (`public/images/*.svg`) |
+| `npm run company:check` | Validate structured company/NAP/contact/social data |
+| `npm run content:review` | Regenerate the content approval checklist |
+| `npm run content:placeholders` | Regenerate the placeholder/review finding report |
+| `npm run content:inventory` | Export structured content inventory to `docs/CONTENT_INVENTORY.json` |
+| `npm run content:assets` | Check referenced content media and approval state |
+| `npm run legal:review` | Regenerate the Impressum/Datenschutz handoff checklist |
+| `npm run privacy:check` | Verify privacy disclosure and consent coverage |
+| `npm run deploy:config` | Check Docker/nginx/.env production wiring |
+| `npm run deploy:all -- <url>` | Run aggregate deployment smoke checks against a target URL |
+| `npm run launch:actions` | Regenerate current production handoff action items |
+| `npm run launch:evidence` | Regenerate the local launch evidence snapshot |
+| `npm run launch:report` | Print non-failing launch readiness blockers/warnings |
+| `npm run launch:check` | Strict production launch gate |
+| `npm run preflight` | Full local launch gate: build, lint, audits, smoke checks and Playwright |
 | `npm run test:e2e` | Run the recorded Playwright demo (video + screenshots + trace) |
 | `npm run test:e2e:report` | Open the demo HTML report (video, trace, steps) |
 | `npm run demo:mp4` | Convert the recorded demo videos (`.webm`) to shareable `.mp4` |
@@ -84,8 +98,8 @@ npm run dev        # http://localhost:5173
 
 A guided end-to-end demo records the whole site and its functionality for the
 customer — every page, the service detail + 3D pages, the project gallery filter
-and lightbox, contact-form validation and success, the mobile nav drawer, and the
-legal pages.
+and lightbox, contact-form validation and success, responsive navigation on
+mobile/tablet, and the legal pages.
 
 Run it yourself (the config boots the dev server automatically — nothing else to
 start):
@@ -98,7 +112,7 @@ npm run test:e2e:report   #    (optional) open the HTML report — embedded vide
 
 `demo:mp4` uses the bundled `ffmpeg-static` binary, so **no system ffmpeg is
 required**. Specs live in `tests/e2e/` (`demo.spec.js` = desktop tour,
-`mobile.spec.js` = responsive nav); recording is configured in
+`mobile.spec.js` = mobile nav, `tablet.spec.js` = tablet breakpoint); recording is configured in
 `playwright.config.js`.
 
 ### Where the recordings are
@@ -110,14 +124,19 @@ folders are git-ignored — they are generated locally on each run, not committe
 demo-artifacts/
 ├─ walkthrough-desktop.mp4                         ← shareable video (after `npm run demo:mp4`)
 ├─ walkthrough-mobile.mp4                           ← shareable video (after `npm run demo:mp4`)
+├─ walkthrough-tablet.mp4                           ← shareable video (after `npm run demo:mp4`)
 ├─ shots/
 │  ├─ desktop/01-home-hero.png … 17-datenschutz.png  ← numbered step screenshots (desktop)
-│  └─ mobile/01-home.png … 04-kontakt.png            ← numbered step screenshots (mobile)
+│  ├─ mobile/01-home.png … 04-kontakt.png            ← numbered step screenshots (mobile)
+│  └─ tablet/01-home.png … 05-contact-success.png    ← numbered step screenshots (tablet)
 ├─ demo-…-desktop-demo/
 │  ├─ video.webm                                   ← raw desktop recording
 │  └─ trace.zip                                     ← step-by-step trace
-└─ mobile-…-mobile-demo/
+├─ mobile-…-mobile-demo/
    ├─ video.webm                                   ← raw mobile recording
+   └─ trace.zip
+└─ tablet-…-tablet-demo/
+   ├─ video.webm                                   ← raw tablet recording
    └─ trace.zip
 
 playwright-report/index.html                        ← HTML report (`npm run test:e2e:report`)
@@ -125,7 +144,7 @@ playwright-report/index.html                        ← HTML report (`npm run te
 
 | What | Where | How to open |
 | --- | --- | --- |
-| **Shareable videos (MP4)** | `demo-artifacts/walkthrough-desktop.mp4`, `…-mobile.mp4` | any video player |
+| **Shareable videos (MP4)** | `demo-artifacts/walkthrough-desktop.mp4`, `…-mobile.mp4`, `…-tablet.mp4` | any video player |
 | Raw recordings (WebM) | `demo-artifacts/<run>/video.webm` | any video player |
 | Step screenshots | `demo-artifacts/shots/{desktop,mobile}/*.png` | any image viewer |
 | Interactive report | `playwright-report/index.html` | `npm run test:e2e:report` |
@@ -171,7 +190,11 @@ docker run -p 8080:80 ofenbau-mustermann:prod
 ├─ .mcp.json                  # canonical MCP server list (source of truth)
 ├─ docs/
 │  ├─ MCP.md                  # MCP setup & usage guide (read this)
-│  └─ mcp/                    # Claude Desktop config example
+│  ├─ LAUNCH_RUNBOOK.md       # production launch and smoke-test runbook
+│  ├─ PRODUCTION_INPUTS.md    # real operator/env/legal input checklist
+│  ├─ LAUNCH_ACTION_ITEMS.md  # generated current handoff checklist
+│  ├─ LAUNCH_EVIDENCE_REPORT.md # generated local launch evidence snapshot
+│  └─ audits/                 # generated smoke-test audit artifacts
 └─ src/
    ├─ main.js                 # app bootstrap (Pinia + Router + v-reveal)
    ├─ App.vue                 # layout + router view + page transition
@@ -223,12 +246,14 @@ Only `VITE_`-prefixed variables are exposed to the client. See `.env.example`.
 
 | Variable | Purpose |
 | --- | --- |
-| `VITE_APP_TITLE` | Site name (titles, SEO) |
+| `VITE_APP_TITLE` | Optional site-title override; omit to use `src/data/company.js` -> `company.name` |
 | `VITE_APP_DESCRIPTION` | Default meta description |
 | `VITE_APP_URL` | Canonical base URL |
 | `VITE_API_BASE_URL` | Axios base URL |
 | `VITE_API_TIMEOUT` | Axios timeout (ms) |
-| `MAIL_*` | Mailpit/mailer reference (not exposed to client) |
+| `VITE_GA_MEASUREMENT_ID` | Optional GA4 measurement ID, loaded only after analytics consent |
+| `VITE_GOOGLE_SITE_VERIFICATION` | Optional Search Console verification token |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_FROM`, `MAIL_TO`, `SMTP_TIMEOUT_MS` | Contact API SMTP delivery settings; not exposed to the client |
 
 ---
 

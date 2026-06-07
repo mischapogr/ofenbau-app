@@ -1,7 +1,9 @@
 import { watchEffect, onBeforeUnmount } from 'vue'
+import { company } from '@/data/company'
 
-const SITE_NAME = import.meta.env.VITE_APP_TITLE || 'Ofenbau Mustermann'
-const SITE_URL = import.meta.env.VITE_APP_URL || 'http://localhost:5173'
+const SITE_NAME = import.meta.env.VITE_APP_TITLE || company.name
+const SITE_URL = (import.meta.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
+const DEFAULT_IMAGE = '/images/hero.webp'
 
 function upsertMeta(attr, key, content) {
   if (!content) return
@@ -24,6 +26,15 @@ function upsertCanonical(href) {
   el.setAttribute('href', href)
 }
 
+function absoluteUrl(value) {
+  if (!value) return ''
+  try {
+    return new URL(value, SITE_URL).href
+  } catch (_error) {
+    return value
+  }
+}
+
 /**
  * useSeo — declaratively set title + meta tags for a page.
  * Accepts reactive getters so values can depend on fetched data.
@@ -39,18 +50,24 @@ export function useSeo(getter) {
         : `${meta.title} — ${SITE_NAME}`
       : SITE_NAME
 
+    const canonical = meta.path ? `${SITE_URL}${meta.path}` : SITE_URL
+    const image = absoluteUrl(meta.image || DEFAULT_IMAGE)
+
     document.title = fullTitle
     upsertMeta('name', 'description', meta.description)
     upsertMeta('property', 'og:title', fullTitle)
     upsertMeta('property', 'og:description', meta.description)
     upsertMeta('property', 'og:site_name', SITE_NAME)
+    upsertMeta('property', 'og:type', meta.type || 'website')
+    upsertMeta('property', 'og:url', canonical)
     upsertMeta('name', 'twitter:title', fullTitle)
     upsertMeta('name', 'twitter:description', meta.description)
-    if (meta.image) {
-      upsertMeta('property', 'og:image', meta.image)
-      upsertMeta('name', 'twitter:image', meta.image)
+    upsertMeta('name', 'twitter:card', image ? 'summary_large_image' : 'summary')
+    if (image) {
+      upsertMeta('property', 'og:image', image)
+      upsertMeta('name', 'twitter:image', image)
     }
-    upsertCanonical(meta.path ? `${SITE_URL}${meta.path}` : SITE_URL)
+    upsertCanonical(canonical)
   })
 
   onBeforeUnmount(stop)

@@ -16,11 +16,47 @@ async function fetchText(path) {
   const url = `${siteUrl}${path}`
   const response = await fetch(url, { redirect: 'follow' })
   const body = await response.text()
-  return { url, status: response.status, body }
+  return { url, status: response.status, body, headers: response.headers }
 }
 
 function check(condition, message) {
   checks.push({ ok: !!condition, message })
+}
+
+function containsUrlOrLocalPath(body, path) {
+  return isLocalTarget ? body.includes(path) : body.includes(`${siteUrl}${path}`)
+}
+
+function expectHeader(response, name, pattern, label) {
+  const value = response.headers.get(name) || ''
+  check(pattern.test(value), `${label} header ${name} is ${value || '(missing)'}`)
+}
+
+function expectSecurityHeaders(response, label) {
+  expectHeader(response, 'x-frame-options', /^SAMEORIGIN$/i, label)
+  expectHeader(response, 'x-content-type-options', /^nosniff$/i, label)
+  expectHeader(response, 'referrer-policy', /^strict-origin-when-cross-origin$/i, label)
+  expectHeader(response, 'permissions-policy', /camera=\(\).*microphone=\(\).*geolocation=\(\)/i, label)
+}
+
+async function checkProductionHeaders(home) {
+  if (isLocalTarget) {
+    check(true, 'runtime security header checks skipped for local non-nginx target')
+    return
+  }
+
+  expectSecurityHeaders(home, 'Home')
+
+  const assetMatch = home.body.match(/(?:src|href)="([^"]*\/assets\/[^"]+)"/)
+  check(assetMatch, 'Home references a hashed build asset')
+  if (!assetMatch) return
+
+  const assetUrl = assetMatch[1].startsWith('http') ? assetMatch[1] : `${siteUrl}${assetMatch[1]}`
+  const assetResponse = await fetch(assetUrl, { redirect: 'follow' })
+  check(assetResponse.status === 200, `hashed asset responds with 200 (${assetResponse.status})`)
+  expectHeader(assetResponse, 'cache-control', /public/i, 'Hashed asset')
+  expectHeader(assetResponse, 'cache-control', /immutable/i, 'Hashed asset')
+  expectSecurityHeaders({ headers: assetResponse.headers }, 'Hashed asset')
 }
 
 try {
@@ -28,6 +64,7 @@ try {
   check(home.status === 200, `Home responds with 200 (${home.status})`)
   check(home.body.includes('<div id="app"></div>'), 'Home contains Vue mount point')
   check(home.body.includes('Ofenbau'), 'Home HTML contains site title content')
+  await checkProductionHeaders(home)
 
   const publicRoutes = [
     '/leistungen',
@@ -46,14 +83,14 @@ try {
 
   const robots = await fetchText('/robots.txt')
   check(robots.status === 200, `robots.txt responds with 200 (${robots.status})`)
-  check(robots.body.includes(`${siteUrl}/sitemap.xml`), 'robots.txt points to production sitemap')
+  check(containsUrlOrLocalPath(robots.body, '/sitemap.xml'), 'robots.txt points to sitemap')
 
   const sitemap = await fetchText('/sitemap.xml')
   check(sitemap.status === 200, `sitemap.xml responds with 200 (${sitemap.status})`)
-  check(sitemap.body.includes(`${siteUrl}/kontakt`), 'sitemap.xml contains contact route')
+  check(containsUrlOrLocalPath(sitemap.body, '/kontakt'), 'sitemap.xml contains contact route')
   for (const service of services) {
     const path = `/leistungen/${service.slug}`
-    check(sitemap.body.includes(`${siteUrl}${path}`), `sitemap.xml contains ${path}`)
+    check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
   }
   check(isLocalTarget || !sitemap.body.includes('localhost'), 'sitemap.xml does not contain localhost for production target')
 

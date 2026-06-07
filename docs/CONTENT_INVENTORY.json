@@ -1,10 +1,20 @@
 {
-  "generatedAt": "2026-06-07T11:40:00.328Z",
+  "generatedAt": "2026-06-07T18:14:02.695Z",
   "summary": {
     "companyNapApprovedForLaunch": false,
     "googleBusinessProfileAligned": false,
     "googleMapsRouteVerified": false,
     "services": 4,
+    "homepageSections": 4,
+    "homepageContentApprovedForLaunch": false,
+    "homepageSectionsWithIncompleteApproval": 4,
+    "publicPageSections": 4,
+    "publicPageContentApprovedForLaunch": false,
+    "publicPageSectionsWithIncompleteApproval": 4,
+    "contactTopics": 7,
+    "contactTopicsApprovedForLaunch": false,
+    "contactTopicRoutingApprovedForLaunch": false,
+    "contactTopicsWithIncompleteApproval": 7,
     "serviceFaqs": 8,
     "serviceContentApprovedForLaunch": false,
     "projects": 9,
@@ -13,6 +23,8 @@
     "planningBenefits": 3,
     "planningServices": 3,
     "planningExamples": 4,
+    "planningExamplesApprovedForLaunch": false,
+    "planningExamplesWithIncompleteApproval": 4,
     "projectReferencesApprovedForLaunch": false,
     "projectReferencesWithIncompleteApproval": 9
   },
@@ -127,7 +139,8 @@
     "napApprovedForLaunch": false,
     "googleBusinessProfileAligned": false,
     "mapRouteVerified": false,
-    "note": "Company NAP, opening hours, service area and social links must match the final operator data and Google Business Profile before launch."
+    "note": "Company NAP, opening hours, service area and social links must match the final operator data and Google Business Profile before launch.",
+    "notePlaceholder": true
   },
   "socialLinks": [
     {
@@ -175,13 +188,817 @@
       "notes": ""
     }
   ],
+  "homepageContentReview": {
+    "approvedForLaunch": false,
+    "note": "Homepage hero, about, process, CTA copy, public proof claims and media must be reviewed against the final operator material before launch.",
+    "notePlaceholder": true
+  },
+  "homepage": [
+    {
+      "area": "homepage",
+      "key": "heroStats.0.value",
+      "value": "30+",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "heroStats.0.label",
+      "value": "Jahre Erfahrung",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "heroStats.1.value",
+      "value": "800+",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "heroStats.1.label",
+      "value": "Öfen & Projekte",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "heroStats.2.value",
+      "value": "100%",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "heroStats.2.label",
+      "value": "Meisterarbeit",
+      "placeholder": false,
+      "notes": "Public proof claim shown in the hero."
+    },
+    {
+      "area": "homepage",
+      "key": "assets.hero.image",
+      "value": "/images/hero.webp",
+      "placeholder": false,
+      "notes": "Must point to approved homepage media."
+    },
+    {
+      "area": "homepage",
+      "key": "assets.hero.alt",
+      "value": "Moderner Kaminofen mit Sichtfeuer in einem hellen Wohnraum",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "homepage",
+      "key": "assets.about.image",
+      "value": "/images/about-craft.webp",
+      "placeholder": false,
+      "notes": "Must point to approved homepage media."
+    },
+    {
+      "area": "homepage",
+      "key": "assets.about.alt",
+      "value": "Ofen- und Fliesenmeister bei der Arbeit",
+      "placeholder": false,
+      "notes": ""
+    }
+  ],
+  "homepageReviewSections": [
+    {
+      "id": "hero",
+      "label": "Hero claim, introduction, proof stats and hero image",
+      "source": "src/components/HeroSection.vue",
+      "fields": [
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.label",
+          "value": "Hero claim, introduction, proof stats and hero image",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.source",
+          "value": "src/components/HeroSection.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.image",
+          "value": "/images/hero.webp",
+          "placeholder": false,
+          "notes": "Must point to approved homepage media when present."
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.review.mediaApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "hero.review.note",
+          "value": "Confirm this homepage section uses final approved copy, claims and media before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "label": "About teaser, craft claims, regional claim and about image",
+      "source": "src/components/AboutSection.vue",
+      "fields": [
+        {
+          "area": "homepageReviewSections",
+          "key": "about.label",
+          "value": "About teaser, craft claims, regional claim and about image",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "about.source",
+          "value": "src/components/AboutSection.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "about.image",
+          "value": "/images/about-craft.webp",
+          "placeholder": false,
+          "notes": "Must point to approved homepage media when present."
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "about.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "about.review.mediaApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "about.review.note",
+          "value": "Confirm this homepage section uses final approved copy, claims and media before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "process",
+      "label": "Homepage process timeline wording",
+      "source": "src/data/process.js and src/components/ProcessTimeline.vue",
+      "fields": [
+        {
+          "area": "homepageReviewSections",
+          "key": "process.label",
+          "value": "Homepage process timeline wording",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "process.source",
+          "value": "src/data/process.js and src/components/ProcessTimeline.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "process.image",
+          "value": "",
+          "placeholder": false,
+          "notes": "Must point to approved homepage media when present."
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "process.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "process.review.mediaApproved",
+          "value": true,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "process.review.note",
+          "value": "Confirm this homepage section uses final approved copy, claims and media before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "label": "Homepage consultation CTA wording",
+      "source": "src/components/CTASection.vue",
+      "fields": [
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.label",
+          "value": "Homepage consultation CTA wording",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.source",
+          "value": "src/components/CTASection.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.image",
+          "value": "",
+          "placeholder": false,
+          "notes": "Must point to approved homepage media when present."
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.review.mediaApproved",
+          "value": true,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "homepageReviewSections",
+          "key": "cta.review.note",
+          "value": "Confirm this homepage section uses final approved copy, claims and media before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "publicPageContentReview": {
+    "approvedForLaunch": false,
+    "note": "Standalone public page copy for about and contact pages must be reviewed against the final operator positioning before launch.",
+    "notePlaceholder": true
+  },
+  "aboutValues": [
+    {
+      "area": "aboutValues",
+      "key": "0.title",
+      "value": "Handwerk",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "aboutValues",
+      "key": "0.text",
+      "value": "Jeder Ofen entsteht in präziser Handarbeit — kein Stück gleicht dem anderen.",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "aboutValues",
+      "key": "1.title",
+      "value": "Qualität",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "aboutValues",
+      "key": "1.text",
+      "value": "Wir setzen auf langlebige Materialien und saubere, geprüfte Ausführung.",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "aboutValues",
+      "key": "2.title",
+      "value": "Vertrauen",
+      "placeholder": false,
+      "notes": ""
+    },
+    {
+      "area": "aboutValues",
+      "key": "2.text",
+      "value": "Transparente Beratung und verlässliche Termine, von Anfang bis Übergabe.",
+      "placeholder": false,
+      "notes": ""
+    }
+  ],
+  "publicPageReviewSections": [
+    {
+      "id": "about-header",
+      "page": "/ueber-uns",
+      "label": "About page header claim and subtitle",
+      "source": "src/pages/AboutView.vue",
+      "fields": [
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-header.page",
+          "value": "/ueber-uns",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-header.label",
+          "value": "About page header claim and subtitle",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-header.source",
+          "value": "src/pages/AboutView.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-header.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-header.review.note",
+          "value": "Confirm this public page section uses final approved copy before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "about-values",
+      "page": "/ueber-uns",
+      "label": "About page value cards",
+      "source": "src/data/pages.js -> aboutValues",
+      "fields": [
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-values.page",
+          "value": "/ueber-uns",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-values.label",
+          "value": "About page value cards",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-values.source",
+          "value": "src/data/pages.js -> aboutValues",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-values.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "about-values.review.note",
+          "value": "Confirm this public page section uses final approved copy before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "contact-header",
+      "page": "/kontakt",
+      "label": "Contact page header and consultation intro copy",
+      "source": "src/pages/ContactView.vue",
+      "fields": [
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-header.page",
+          "value": "/kontakt",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-header.label",
+          "value": "Contact page header and consultation intro copy",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-header.source",
+          "value": "src/pages/ContactView.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-header.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-header.review.note",
+          "value": "Confirm this public page section uses final approved copy before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "contact-form-intro",
+      "page": "/kontakt",
+      "label": "Contact form heading, helper text and submit wording",
+      "source": "src/pages/ContactView.vue and src/components/ContactForm.vue",
+      "fields": [
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-form-intro.page",
+          "value": "/kontakt",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-form-intro.label",
+          "value": "Contact form heading, helper text and submit wording",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-form-intro.source",
+          "value": "src/pages/ContactView.vue and src/components/ContactForm.vue",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-form-intro.review.copyApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "publicPageReviewSections",
+          "key": "contact-form-intro.review.note",
+          "value": "Confirm this public page section uses final approved copy before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "contactTopicReview": {
+    "approvedForLaunch": false,
+    "note": "Contact form topics, displayed labels, email subjects and service-topic routing must be reviewed against the final operator intake workflow before launch.",
+    "notePlaceholder": true
+  },
+  "contactTopicRoutingReview": {
+    "approvedForLaunch": false,
+    "note": "Service detail contact links and preselected contact topics must be checked against the final operator intake workflow before launch.",
+    "notePlaceholder": true
+  },
+  "contactTopics": [
+    {
+      "value": "beratung",
+      "label": "Beratung allgemein",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "beratung.label",
+          "value": "Beratung allgemein",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "beratung.subject",
+          "value": "Beratung allgemein",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "beratung.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "beratung.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "beratung.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "kachelofen-kaminbau",
+      "label": "Kachelöfen & Kaminbau",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "kachelofen-kaminbau.label",
+          "value": "Kachelöfen & Kaminbau",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "kachelofen-kaminbau.subject",
+          "value": "Kachelöfen & Kaminbau",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "kachelofen-kaminbau.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "kachelofen-kaminbau.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "kachelofen-kaminbau.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "fliesenarbeiten",
+      "label": "Fliesenarbeiten",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "fliesenarbeiten.label",
+          "value": "Fliesenarbeiten",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "fliesenarbeiten.subject",
+          "value": "Fliesenarbeiten",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "fliesenarbeiten.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "fliesenarbeiten.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "fliesenarbeiten.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "schornsteinbau",
+      "label": "Schornsteinbau & Sanierung",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "schornsteinbau.label",
+          "value": "Schornsteinbau & Sanierung",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "schornsteinbau.subject",
+          "value": "Schornsteinbau & Sanierung",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "schornsteinbau.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "schornsteinbau.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "schornsteinbau.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "3d-planung",
+      "label": "3D-Planung & Entwürfe",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "3d-planung.label",
+          "value": "3D-Planung & Entwürfe",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "3d-planung.subject",
+          "value": "3D-Planung & Entwürfe",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "3d-planung.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "3d-planung.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "3d-planung.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "sanierung",
+      "label": "Sanierung & Bestand",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "sanierung.label",
+          "value": "Sanierung & Bestand",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "sanierung.subject",
+          "value": "Sanierung & Bestand",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "sanierung.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "sanierung.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "sanierung.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "value": "rueckruf",
+      "label": "Rückruf wünschen",
+      "fields": [
+        {
+          "area": "contactTopics",
+          "key": "rueckruf.label",
+          "value": "Rückruf wünschen",
+          "placeholder": false,
+          "notes": "Displayed in the contact form topic selector."
+        },
+        {
+          "area": "contactTopics",
+          "key": "rueckruf.subject",
+          "value": "Rückruf wünschen",
+          "placeholder": false,
+          "notes": "Used as the email subject suffix."
+        },
+        {
+          "area": "contactTopics",
+          "key": "rueckruf.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "rueckruf.review.mailboxRoutingApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "contactTopics",
+          "key": "rueckruf.review.note",
+          "value": "Confirm this contact topic label and email subject match the final request handling workflow before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    }
+  ],
   "serviceContentReview": {
     "approvedForLaunch": false,
-    "note": "Service wording and proof points must be reviewed against the final operator offer before launch."
+    "note": "Service wording and proof points must be reviewed against the final operator offer before launch.",
+    "notePlaceholder": true
   },
   "projectReferenceReview": {
     "approvedForLaunch": false,
-    "note": "Demo/generated project references must be replaced with approved real customer references before launch."
+    "note": "Demo/generated project references must be replaced with approved real customer references before launch.",
+    "notePlaceholder": true
+  },
+  "planningContentReview": {
+    "approvedForLaunch": false,
+    "note": "3D planning examples and generated planning visuals must be reviewed against the final operator workflow before launch.",
+    "notePlaceholder": true
   },
   "services": [
     {
@@ -722,7 +1539,7 @@
           "area": "projects",
           "key": "p1.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -791,7 +1608,7 @@
           "area": "projects",
           "key": "p2.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -860,7 +1677,7 @@
           "area": "projects",
           "key": "p3.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -929,7 +1746,7 @@
           "area": "projects",
           "key": "p4.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -998,7 +1815,7 @@
           "area": "projects",
           "key": "p5.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -1067,7 +1884,7 @@
           "area": "projects",
           "key": "p6.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -1136,7 +1953,7 @@
           "area": "projects",
           "key": "p7.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -1205,7 +2022,7 @@
           "area": "projects",
           "key": "p8.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
-          "placeholder": false,
+          "placeholder": true,
           "notes": ""
         }
       ]
@@ -1274,7 +2091,229 @@
           "area": "projects",
           "key": "p9.review.note",
           "value": "Replace demo/generated media with a real customer reference and document photo/customer approval before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "planningExamples": [
+    {
+      "id": "kachelofen-eckscheibe",
+      "title": "Kachelofen mit Eckscheibe",
+      "fields": [
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.title",
+          "value": "Kachelofen mit Eckscheibe",
           "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.category",
+          "value": "Ofen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.description",
+          "value": "Räumlicher Entwurf eines handgesetzten Kachelofens mit Sitzbank, keramischer Oberfläche und Eck-Sichtfenster.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.image",
+          "value": "/images/planning-example-kachelofen-eckscheibe.webp",
+          "placeholder": false,
+          "notes": "Must point to approved planning media."
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.review.mediaRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "kachelofen-eckscheibe.review.note",
+          "value": "Confirm the planning example reflects a real operator workflow and that generated/visual media is approved before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "schornstein-kaminofen",
+      "title": "Kaminofen mit Außenschornstein",
+      "fields": [
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.title",
+          "value": "Kaminofen mit Außenschornstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.category",
+          "value": "Schornstein",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.description",
+          "value": "Planungsansicht für Kaminofen, Wanddurchführung und Edelstahl-Außenschornstein inklusive Anschlussdetails.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.image",
+          "value": "/images/planning-example-schornstein-kaminofen.webp",
+          "placeholder": false,
+          "notes": "Must point to approved planning media."
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.review.mediaRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "schornstein-kaminofen.review.note",
+          "value": "Confirm the planning example reflects a real operator workflow and that generated/visual media is approved before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "bad-fliesen",
+      "title": "Badplanung mit Großformaten",
+      "fields": [
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.title",
+          "value": "Badplanung mit Großformaten",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.category",
+          "value": "Fliesen",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.description",
+          "value": "Fotorealistischer Badentwurf mit Fliesenraster, Dusche, Wanne und Materialabstimmung vor Ausführung.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.image",
+          "value": "/images/planning-example-bad-fliesen.webp",
+          "placeholder": false,
+          "notes": "Must point to approved planning media."
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.review.mediaRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "bad-fliesen.review.note",
+          "value": "Confirm the planning example reflects a real operator workflow and that generated/visual media is approved before launch.",
+          "placeholder": true,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "materialien",
+      "title": "Material- und Detailauswahl",
+      "fields": [
+        {
+          "area": "planningExamples",
+          "key": "materialien.title",
+          "value": "Material- und Detailauswahl",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.category",
+          "value": "Material",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.description",
+          "value": "Detailansicht für Kachel, Naturstein, Putzstruktur und Feuerraumrahmen als Entscheidungshilfe.",
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.image",
+          "value": "/images/planning-example-materialien.webp",
+          "placeholder": false,
+          "notes": "Must point to approved planning media."
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.review.operatorApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.review.mediaRightsApproved",
+          "value": false,
+          "placeholder": false,
+          "notes": ""
+        },
+        {
+          "area": "planningExamples",
+          "key": "materialien.review.note",
+          "value": "Confirm the planning example reflects a real operator workflow and that generated/visual media is approved before launch.",
+          "placeholder": true,
           "notes": ""
         }
       ]

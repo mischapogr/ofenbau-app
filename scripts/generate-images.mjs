@@ -14,8 +14,10 @@
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
+import { company } from '../src/data/company.js'
 
 const OUT = resolve(dirname(fileURLToPath(import.meta.url)), '../public/images')
+const mapCaption = company.address.region || `${company.address.city} & Umgebung`
 
 // Warm "hearth" palette (mirrors src/styles/tokens.css).
 const C = {
@@ -209,7 +211,7 @@ const ITEMS = [
   { id: 'about-craft', t: 'craft', w: 1000, h: 1250, cap: 'Handwerk in Arbeit' },
   { id: 'planning-3d-before', t: 'wire', w: 1200, h: 900, cap: '3D-Skizze' },
   { id: 'planning-3d-after', t: 'render', w: 1200, h: 900, cap: 'Fertiges Projekt' },
-  { id: 'contact-map', t: 'map', w: 1600, h: 1000, cap: 'Musterstadt & Umgebung' },
+  { id: 'contact-map', t: 'map', w: 1600, h: 1000, cap: mapCaption },
 ]
 
 function svg({ t, w, h, cap }) {

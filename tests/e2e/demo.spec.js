@@ -92,7 +92,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
       .first()
       .click()
     await expect(page).toHaveURL(/leistungen\/kachelofen-kaminbau/)
-    await expect(page.getByRole('heading', { name: 'Kachelöfen & Kaminbau' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Kachelöfen & Kaminbau', exact: true })).toBeVisible()
     await revealAll(page)
     await page.waitForTimeout(500)
     await shot(page, 'service-detail', true)

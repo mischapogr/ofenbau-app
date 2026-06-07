@@ -4,12 +4,7 @@ import BaseBadge from './BaseBadge.vue'
 import BaseImage from './BaseImage.vue'
 import AppIcon from './AppIcon.vue'
 import { company } from '@/data/company'
-
-const stats = [
-  { value: '30+', label: 'Jahre Erfahrung' },
-  { value: '800+', label: 'Öfen & Projekte' },
-  { value: '100%', label: 'Meisterarbeit' },
-]
+import { homepageAssets, homepageHeroStats } from '@/data/home'
 </script>
 
 <template>
@@ -43,7 +38,7 @@ const stats = [
         </div>
 
         <dl class="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-white/10 pt-8">
-          <div v-for="s in stats" :key="s.label">
+          <div v-for="s in homepageHeroStats" :key="s.label">
             <dt class="font-display text-3xl font-semibold text-white">{{ s.value }}</dt>
             <dd class="mt-1 text-sm text-white/55">{{ s.label }}</dd>
           </div>
@@ -55,11 +50,11 @@ const stats = [
         <BaseImage
           fill
           rounded="rounded-none"
-          src="/images/hero.webp"
+          :src="homepageAssets.hero.image"
           motif="flame"
           tone="ember"
           eager
-          alt="Moderner Kaminofen mit Sichtfeuer in einem hellen Wohnraum"
+          :alt="homepageAssets.hero.alt"
         />
         <div
           class="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink-900/40 to-transparent lg:from-ink-900"

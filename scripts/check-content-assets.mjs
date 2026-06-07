@@ -1,8 +1,15 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
+import {
+  contactTopicReview,
+  contactTopicRoutingReview,
+  contactTopics,
+} from '../src/data/contactTopics.js'
+import { homepageContentReview, homepageReviewSections } from '../src/data/home.js'
+import { publicPageContentReview, publicPageReviewSections } from '../src/data/pages.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 import { projectReferenceReview, projects } from '../src/data/projects.js'
-import { planningExamples } from '../src/data/planning.js'
+import { planningContentReview, planningExamples } from '../src/data/planning.js'
 
 const root = process.cwd()
 const failures = []
@@ -49,6 +56,64 @@ for (const service of services) {
   }
 }
 
+for (const section of homepageReviewSections) {
+  if (section.image) checkImage('homepage', section.id, section.image)
+  if (!section.review) {
+    warnings.push(`homepage:${section.id} should include review metadata`)
+  }
+}
+
+if (homepageContentReview.approvedForLaunch !== true) {
+  warnings.push(`homepage content is not approved for launch: ${homepageContentReview.note}`)
+}
+
+const unapprovedHomepageSections = homepageReviewSections.filter(
+  (section) => section.review?.copyApproved !== true || section.review?.mediaApproved !== true
+)
+if (unapprovedHomepageSections.length) {
+  warnings.push(
+    `homepage approvals are incomplete for ${unapprovedHomepageSections.length} sections: ${unapprovedHomepageSections
+      .map((section) => section.id)
+      .join(', ')}`
+  )
+}
+
+if (publicPageContentReview.approvedForLaunch !== true) {
+  warnings.push(`public page content is not approved for launch: ${publicPageContentReview.note}`)
+}
+
+const unapprovedPublicPageSections = publicPageReviewSections.filter(
+  (section) => section.review?.copyApproved !== true
+)
+if (unapprovedPublicPageSections.length) {
+  warnings.push(
+    `public page approvals are incomplete for ${unapprovedPublicPageSections.length} sections: ${unapprovedPublicPageSections
+      .map((section) => section.id)
+      .join(', ')}`
+  )
+}
+
+if (contactTopicReview.approvedForLaunch !== true) {
+  warnings.push(`contact topics are not approved for launch: ${contactTopicReview.note}`)
+}
+
+if (contactTopicRoutingReview.approvedForLaunch !== true) {
+  warnings.push(`contact topic routing is not approved for launch: ${contactTopicRoutingReview.note}`)
+}
+
+const unapprovedContactTopics = contactTopics.filter(
+  (topic) =>
+    topic.review?.operatorApproved !== true ||
+    topic.review?.mailboxRoutingApproved !== true
+)
+if (unapprovedContactTopics.length) {
+  warnings.push(
+    `contact topic approvals are incomplete for ${unapprovedContactTopics.length} topics: ${unapprovedContactTopics
+      .map((topic) => topic.value)
+      .join(', ')}`
+  )
+}
+
 if (serviceContentReview.approvedForLaunch !== true) {
   warnings.push(`service content is not approved for launch: ${serviceContentReview.note}`)
 }
@@ -86,9 +151,28 @@ if (unapprovedProjects.length) {
 
 for (const example of planningExamples) {
   checkImage('planningExamples', example.id, example.image)
+  if (!example.review) {
+    warnings.push(`planningExamples:${example.id} should include review metadata`)
+  }
   for (const view of example.views || []) {
     checkImage('planningExamples', `${example.id}.${view.label}`, view.image)
   }
+}
+
+if (planningContentReview.approvedForLaunch !== true) {
+  warnings.push(`3D planning examples are not approved for launch: ${planningContentReview.note}`)
+}
+
+const unapprovedPlanningExamples = planningExamples.filter(
+  (example) =>
+    example.review?.operatorApproved !== true || example.review?.mediaRightsApproved !== true
+)
+if (unapprovedPlanningExamples.length) {
+  warnings.push(
+    `3D planning example approvals are incomplete for ${unapprovedPlanningExamples.length} examples: ${unapprovedPlanningExamples
+      .map((example) => example.id)
+      .join(', ')}`
+  )
 }
 
 console.log('Content asset report')

@@ -2,7 +2,7 @@
 import { RouterLink } from 'vue-router'
 import BaseContainer from './BaseContainer.vue'
 import AppIcon from './AppIcon.vue'
-import { company, socialLinks } from '@/data/company'
+import { company, publicSocialLinks } from '@/data/company'
 import { services } from '@/data/services'
 
 const year = new Date().getFullYear()
@@ -15,14 +15,14 @@ const year = new Date().getFullYear()
       <div class="sm:col-span-2 lg:col-span-1">
         <div class="flex items-center gap-2 font-display text-lg font-semibold text-white">
           <img src="/logo.svg" alt="" class="h-8 w-8" />
-          Ofenbau <span class="text-brand-400">Mustermann</span>
+          {{ company.name }}
         </div>
         <p class="mt-4 max-w-xs text-sm leading-relaxed">
           Meisterhafter Kachel- &amp; Kaminofenbau und Fliesenarbeiten. Gesunde Wärme und Handwerk
           für Ihr Zuhause.
         </p>
-        <ul class="mt-5 flex gap-3">
-          <li v-for="s in socialLinks" :key="s.name">
+        <ul v-if="publicSocialLinks.length" class="mt-5 flex gap-3">
+          <li v-for="s in publicSocialLinks" :key="s.name">
             <a
               :href="s.href"
               target="_blank"

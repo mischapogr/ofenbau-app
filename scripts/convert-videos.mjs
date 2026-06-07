@@ -37,7 +37,7 @@ if (!webms.length) {
 const mb = (p) => (statSync(p).size / 1024 / 1024).toFixed(1) + ' MB'
 
 for (const src of webms) {
-  const label = /mobile/i.test(src) ? 'mobile' : 'desktop'
+  const label = /tablet/i.test(src) ? 'tablet' : /mobile/i.test(src) ? 'mobile' : 'desktop'
   const out = join(ROOT, `walkthrough-${label}.mp4`)
   process.stdout.write(`Converting ${src} (${mb(src)}) -> ${out} … `)
   execFileSync(
@@ -58,7 +58,7 @@ for (const src of webms) {
 }
 
 console.log('\nMP4s ready in demo-artifacts/:')
-for (const label of ['desktop', 'mobile']) {
+for (const label of ['desktop', 'mobile', 'tablet']) {
   const p = join(ROOT, `walkthrough-${label}.mp4`)
   if (existsSync(p)) console.log(`  • ${p}  (${mb(p)})`)
 }

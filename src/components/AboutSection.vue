@@ -4,6 +4,7 @@ import BaseImage from './BaseImage.vue'
 import BaseButton from './BaseButton.vue'
 import AppIcon from './AppIcon.vue'
 import { company } from '@/data/company'
+import { homepageAssets } from '@/data/home'
 
 defineProps({
   // On the dedicated About page we hide the "more" button (already there).
@@ -23,11 +24,11 @@ const points = [
       <!-- Image left -->
       <div v-reveal class="relative">
         <BaseImage
-          src="/images/about-craft.webp"
+          :src="homepageAssets.about.image"
           motif="portrait"
           tone="ink"
           ratio="4/5"
-          alt="Ofen- und Fliesenmeister bei der Arbeit"
+          :alt="homepageAssets.about.alt"
           class="shadow-card"
         />
         <div

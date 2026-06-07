@@ -1,4 +1,10 @@
-import { company, companyProfileReview, socialLinks, trustBadges } from '../src/data/company.js'
+import {
+  company,
+  companyProfileReview,
+  isGenericTrustBadge,
+  socialLinks,
+  trustBadges,
+} from '../src/data/company.js'
 
 const checks = []
 const warnings = []
@@ -62,6 +68,7 @@ for (const link of socialLinks) {
 check(Array.isArray(trustBadges) && trustBadges.length >= 3, 'trust badges include at least three items')
 for (const badge of trustBadges) {
   check(hasText(badge), `trust badge "${badge}" is non-empty`)
+  warn(isGenericTrustBadge(badge), `trust badge "${badge}" still looks like a placeholder claim`)
 }
 
 for (const [key, value] of Object.entries(companyProfileReview)) {

@@ -7,10 +7,11 @@ import ProjectGallery from '@/components/ProjectGallery.vue'
 import Planning3DSection from '@/components/Planning3DSection.vue'
 import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
 import CTASection from '@/components/CTASection.vue'
+import { company } from '@/data/company'
 import { useSeo } from '@/composables/useSeo'
 
 useSeo(() => ({
-  title: 'Ofenbau Mustermann — Kachelöfen, Kamine & Fliesen vom Meister',
+  title: `${company.name} — Kachelöfen, Kamine & Fliesen vom Meister`,
   description:
     'Mit gesunder Wärme leben: individueller Kachel- & Kaminofenbau, meisterhafte Fliesenarbeiten und 3D-Planung aus einer Hand.',
   path: '/',

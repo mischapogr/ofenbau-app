@@ -12,6 +12,11 @@ const scrolled = ref(false)
 function onScroll() {
   scrolled.value = window.scrollY > 8
 }
+
+function closeMobileMenu() {
+  mobileOpen.value = false
+}
+
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
@@ -23,6 +28,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   <header
     class="sticky top-0 z-40 border-b bg-surface/90 backdrop-blur transition-shadow supports-[backdrop-filter]:bg-surface/75"
     :class="scrolled ? 'border-content-muted/10 shadow-sm' : 'border-transparent'"
+    @keydown.esc="closeMobileMenu"
   >
     <BaseContainer class="flex h-16 items-center justify-between gap-4 lg:h-20">
       <RouterLink
@@ -31,7 +37,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       >
         <img src="/logo.svg" alt="" class="h-9 w-9" />
         <span class="leading-none">
-          Ofenbau <span class="text-brand-600">Mustermann</span>
+          {{ company.name }}
           <span
             class="mt-0.5 block font-sans text-[0.65rem] font-normal uppercase tracking-label text-content-muted"
           >
@@ -91,7 +97,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             class="press-feedback rounded-lg px-3 py-3 text-base font-medium text-content-muted underline-offset-8 decoration-2 hover:bg-surface-muted hover:text-content"
             active-class="text-brand-600"
             exact-active-class="underline decoration-brand-500"
-            @click="mobileOpen = false"
+            @click="closeMobileMenu"
           >
             {{ item.name }}
           </RouterLink>
@@ -99,7 +105,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             :to="{ name: 'contact', query: { topic: 'beratung' } }"
             block
             class="mt-3"
-            @click="mobileOpen = false"
+            @click="closeMobileMenu"
           >
             Beratung vereinbaren
           </BaseButton>

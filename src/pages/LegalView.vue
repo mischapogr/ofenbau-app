@@ -14,8 +14,8 @@ const isPrivacy = computed(() => route.name === 'privacy')
 useSeo(() => ({
   title: isPrivacy.value ? 'Datenschutz' : 'Impressum',
   description: isPrivacy.value
-    ? 'Datenschutzerklärung von Ofenbau Mustermann.'
-    : 'Impressum und Anbieterkennzeichnung von Ofenbau Mustermann.',
+    ? `Datenschutzerklärung von ${company.name}.`
+    : `Impressum und Anbieterkennzeichnung von ${company.name}.`,
   path: isPrivacy.value ? '/datenschutz' : '/impressum',
 }))
 </script>
