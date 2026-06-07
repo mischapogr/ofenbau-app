@@ -14,7 +14,7 @@ const year = new Date().getFullYear()
       <!-- Company -->
       <div class="sm:col-span-2 lg:col-span-1">
         <div class="flex items-center gap-2 font-display text-lg font-semibold text-white">
-          <img src="/favicon.svg" alt="" class="h-8 w-8" />
+          <img src="/logo.svg" alt="" class="h-8 w-8" />
           Ofenbau <span class="text-brand-400">Mustermann</span>
         </div>
         <p class="mt-4 max-w-xs text-sm leading-relaxed">

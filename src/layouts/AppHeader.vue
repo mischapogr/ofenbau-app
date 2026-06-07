@@ -29,7 +29,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
         :to="{ name: 'home' }"
         class="flex items-center gap-2.5 font-display text-lg font-semibold"
       >
-        <img src="/favicon.svg" alt="" class="h-9 w-9" />
+        <img src="/logo.svg" alt="" class="h-9 w-9" />
         <span class="leading-none">
           Ofenbau <span class="text-brand-600">Mustermann</span>
           <span
@@ -46,8 +46,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           v-for="item in primaryNav"
           :key="item.name"
           :to="item.to"
-          class="rounded-lg px-3 py-2 text-sm font-medium text-content-muted transition-colors hover:text-content"
+          class="rounded-lg px-3 py-2 text-sm font-medium text-content-muted underline-offset-8 decoration-2 transition-colors hover:text-content"
           active-class="text-brand-600"
+          exact-active-class="underline decoration-brand-500"
         >
           {{ item.name }}
         </RouterLink>
@@ -65,7 +66,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
         <!-- Mobile menu button -->
         <button
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-content hover:bg-surface-muted lg:hidden"
+          class="press-feedback inline-flex h-10 w-10 items-center justify-center rounded-lg text-content hover:bg-surface-muted lg:hidden"
           :aria-expanded="mobileOpen"
           aria-label="Menü umschalten"
           @click="mobileOpen = !mobileOpen"
@@ -87,8 +88,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             v-for="item in primaryNav"
             :key="item.name"
             :to="item.to"
-            class="rounded-lg px-3 py-3 text-base font-medium text-content-muted hover:bg-surface-muted hover:text-content"
+            class="press-feedback rounded-lg px-3 py-3 text-base font-medium text-content-muted underline-offset-8 decoration-2 hover:bg-surface-muted hover:text-content"
             active-class="text-brand-600"
+            exact-active-class="underline decoration-brand-500"
             @click="mobileOpen = false"
           >
             {{ item.name }}

@@ -2,7 +2,7 @@
 <html lang="de" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO meta tags (further refined per-route via the useSeo composable) -->
@@ -12,7 +12,6 @@
       content="Individueller Kachel- & Kaminofenbau, meisterhafte Fliesenarbeiten und 3D-Planung. Gesunde Wärme und Handwerk aus einer Hand — Beratung, Entwurf und Montage."
     />
     <meta name="theme-color" content="#e35205" />
-    <link rel="canonical" href="http://localhost:5173/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -39,36 +38,7 @@
       rel="stylesheet"
     />
 
-    <!-- Structured data: LocalBusiness for rich results / local SEO. -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "HomeAndConstructionBusiness",
-        "name": "Ofenbau Mustermann",
-        "image": "http://localhost:5173/favicon.svg",
-        "description": "Individueller Kachel- & Kaminofenbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.",
-        "@id": "http://localhost:5173/#business",
-        "url": "http://localhost:5173/",
-        "telephone": "+49 000 000000",
-        "priceRange": "€€",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Musterstraße 1",
-          "postalCode": "12345",
-          "addressLocality": "Musterstadt",
-          "addressCountry": "DE"
-        },
-        "areaServed": "Musterstadt und Umgebung",
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": "08:00",
-            "closes": "17:00"
-          }
-        ]
-      }
-    </script>
+    <!-- Route meta + structured data are refined by the Vue app at runtime. -->
   </head>
   <body>
     <div id="app"></div>

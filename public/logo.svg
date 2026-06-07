@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Ofenbau Mustermann">
+  <path
+    d="M39 6c-4 0-7 3-7 7v6h-7v7h23v-7h-7v-5h9V6H39z"
+    fill="#4b3b2f"
+  />
+  <path
+    d="M18 24h28v30H18z"
+    fill="#f4eee2"
+    stroke="#4b3b2f"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M23 32h18v15H23z"
+    fill="#fff8ed"
+    stroke="#4b3b2f"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M32 35l6 10H26l6-10z"
+    fill="#c9402b"
+  />
+  <path
+    d="M32 38l3 6h-6l3-6z"
+    fill="#fff5df"
+  />
+  <path
+    d="M18 54l-6 5M46 54l6 5"
+    fill="none"
+    stroke="#4b3b2f"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M16 59h8M40 59h8"
+    fill="none"
+    stroke="#4b3b2f"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+</svg>
