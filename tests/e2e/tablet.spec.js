@@ -67,9 +67,9 @@ test('Tablet — Layout, Navigation & Kernfunktionen', async ({ page }) => {
 
   await test.step('Tablet Projektgalerie mit Lightbox', async () => {
     await page.goto('/projekte')
-    await page.getByRole('button', { name: 'Kaminbau', exact: true }).click()
-    await page.getByRole('button', { name: /Heizkamin mit Eckscheibe/ }).click()
-    const dialog = page.getByRole('dialog', { name: 'Heizkamin mit Eckscheibe' })
+    await page.getByRole('button', { name: 'Kaminöfen', exact: true }).click()
+    await page.getByRole('button', { name: /Heizkamin Panorama/ }).click()
+    const dialog = page.getByRole('dialog', { name: 'Heizkamin Panorama' })
     await expect(dialog).toBeVisible()
     await expectNoHorizontalOverflow(page, 'project lightbox')
     await shot(page, 'project-lightbox')
