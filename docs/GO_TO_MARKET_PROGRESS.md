@@ -8,10 +8,10 @@ Status overall: demo-/staging-ready, not fully live-ready. Build, lint and deskt
 
 | Check | Status | Evidence |
 | --- | --- | --- |
-| Aggregate preflight | Done | `npm run preflight` passed end to end after adding `deploy:config` and `contact:smoke`; it ran build, lint, content inventory, asset, deployment config, accessibility, performance budget, contact API smoke, launch report and desktop/mobile Playwright walkthrough. |
+| Aggregate preflight | Done | `npm run preflight` passed end to end after adding `deploy:config`, `contact:smoke` and the tablet walkthrough; it ran build, lint, content inventory, asset, deployment config, accessibility, performance budget, contact API smoke, launch report and desktop/mobile/tablet Playwright walkthrough. |
 | Production build | Done | `npm run build` passed. |
 | Lint | Done | `npm run lint:check` passed. |
-| Desktop/mobile walkthrough | Done | `npx playwright test` passed after the cookie-banner-aware locator update in `tests/e2e/demo.spec.js`. |
+| Desktop/mobile/tablet walkthrough | Done | `npx playwright test` passed after the cookie-banner-aware locator update in `tests/e2e/demo.spec.js` and the tablet breakpoint walkthrough in `tests/e2e/tablet.spec.js`. |
 | Content inventory | Done | `npm run content:inventory` regenerated `docs/CONTENT_INVENTORY.json`. |
 | Launch readiness report | Partial | `npm run launch:report` passes in report mode and lists 16 blockers plus 8 warnings that require real launch inputs; a targeted placeholder-env run also flags example domain, SMTP, GA4 and Search Console values. |
 | Company profile check | Done | `npm run company:check` passed with expected warnings for generic social URLs and pending NAP/Google Business Profile/Maps approvals. |
@@ -30,7 +30,7 @@ Status overall: demo-/staging-ready, not fully live-ready. Build, lint and deskt
 | Item | Status | Implemented | Remaining |
 | --- | --- | --- | --- |
 | Modernes Responsive Design | Done | Vue/Tailwind layout with hero, sections, cards, gallery, sticky header and footer. | Final visual QA on the production domain. |
-| Optimierung fuer Smartphones | Done | Mobile navigation and mobile Playwright walkthrough. | Optional cross-device QA beyond Pixel 7 profile. |
+| Optimierung fuer Smartphones | Done | Mobile navigation plus mobile and tablet Playwright walkthroughs; the tablet pass covers the in-between breakpoint, menu behavior, service/detail navigation, gallery lightbox, contact success state and horizontal overflow checks. | Optional real-device QA beyond Pixel 7 and iPad Mini profiles. |
 | Neue Startseite | Done | Home page composes hero, services, about, process, gallery, 3D planning and CTA. | Replace demo copy/photos with final client material if available. |
 | Leistungsseiten Basis erweitert | Partial | Four service areas: Kachelofen/Kaminbau, Schornsteinbau, Fliesenarbeiten, 3D-Planung. Detail pages are routed; service proof points are structured in `src/data/services.js`, rendered on detail pages, exported in `npm run content:inventory`, checked by `npm run content:assets`, included in generated sitemap routes and covered by `npm run deploy:seo`; `serviceContentReview.approvedForLaunch` and `npm run launch:report` still gate final approval. | Validate final service wording/proof points against the real operator offer, add certifications where available, then set approval flag. |
 | Galerie / Referenzen einfach hochwertiger | Partial | Filterable project gallery with WebP assets and lightbox; each project now carries review metadata for real-reference, photo-rights and customer approval; `npm run content:assets` verifies referenced gallery/planning/service media and summarizes incomplete project approvals; `npm run content:inventory` exports approval state; `projectReferenceReview.approvedForLaunch` and `npm run launch:report` still gate launch. | Replace generated/example references with real project photos, set per-project approval flags, then set global approval flag. |
@@ -47,6 +47,10 @@ Status overall: demo-/staging-ready, not fully live-ready. Build, lint and deskt
 | DSGVO-Basis | Partial | Privacy page/modal, consent banner, form consent checkbox, structured legal launch flags in `src/data/legal.js`, analytics and Google Maps consent disclosures, `npm run privacy:check` for disclosure coverage and `npm run a11y:static` for common accessibility regressions. | Final legal review, real imprint/privacy data, analytics/map/font disclosures, processor details, retention periods and AVV details. |
 
 ## Implemented During This Pass
+
+- Added `tests/e2e/tablet.spec.js` for tablet breakpoint QA across navigation, services, project lightbox, contact form and horizontal overflow.
+- Added the `tablet-demo` Playwright project so `npm run test:e2e` and `npm run preflight` include desktop, mobile and tablet coverage.
+- Updated the responsive progress and verification rows to record tablet evidence separately from final production-domain visual QA.
 
 - Made `scripts/generate-seo-assets.mjs` derive service detail sitemap URLs from `src/data/services.js`.
 - Extended `npm run deploy:seo` to browser-check every service detail route for response, title, meta description and canonical URL.
