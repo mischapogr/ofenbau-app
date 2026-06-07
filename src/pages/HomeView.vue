@@ -5,6 +5,7 @@ import AboutSection from '@/components/AboutSection.vue'
 import ProcessTimeline from '@/components/ProcessTimeline.vue'
 import ProjectGallery from '@/components/ProjectGallery.vue'
 import Planning3DSection from '@/components/Planning3DSection.vue'
+import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
 import CTASection from '@/components/CTASection.vue'
 import { useSeo } from '@/composables/useSeo'
 
@@ -24,6 +25,7 @@ useSeo(() => ({
     <ProcessTimeline />
     <ProjectGallery :limit="6" :show-filters="false" show-cta />
     <Planning3DSection />
+    <Planning3DExplorer />
     <CTASection />
   </div>
 </template>

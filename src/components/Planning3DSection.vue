@@ -62,6 +62,8 @@ import { planningBenefits } from '@/data/planning'
                 tone="slate"
                 ratio="4/3"
                 alt="3D-Skizze des Entwurfs"
+                enlargeable
+                caption="3D-Skizze des Entwurfs"
               />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">
                 3D-Skizze
@@ -74,6 +76,8 @@ import { planningBenefits } from '@/data/planning'
                 tone="ember"
                 ratio="4/3"
                 alt="Fertig umgesetztes Projekt"
+                enlargeable
+                caption="Fertig umgesetztes Projekt"
               />
               <figcaption class="mt-2 text-center text-xs uppercase tracking-label text-white/50">
                 Fertiges Projekt

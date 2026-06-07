@@ -1,0 +1,347 @@
+<script setup>
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import BaseContainer from './BaseContainer.vue'
+import BaseButton from './BaseButton.vue'
+import BaseImage from './BaseImage.vue'
+import AppIcon from './AppIcon.vue'
+import { planningExamples } from '@/data/planning'
+
+const categories = ['Alle', ...new Set(planningExamples.map((example) => example.category))]
+const activeCategory = ref('Alle')
+const activeIndex = ref(0)
+const activeViewIndex = ref(0)
+const zoom = ref(1)
+const expanded = ref(false)
+
+const visibleExamples = computed(() =>
+  activeCategory.value === 'Alle'
+    ? planningExamples
+    : planningExamples.filter((example) => example.category === activeCategory.value)
+)
+const current = computed(() => visibleExamples.value[activeIndex.value] || visibleExamples.value[0])
+const currentViews = computed(() =>
+  current.value?.views?.length
+    ? current.value.views
+    : [{ label: 'Ansicht', image: current.value?.image, text: current.value?.description }]
+)
+const currentView = computed(
+  () => currentViews.value[activeViewIndex.value] || currentViews.value[0] || null
+)
+
+function selectCategory(category) {
+  activeCategory.value = category
+  activeIndex.value = 0
+  activeViewIndex.value = 0
+  zoom.value = 1
+}
+
+function selectExample(index) {
+  activeIndex.value = index
+  activeViewIndex.value = 0
+  zoom.value = 1
+}
+
+function selectView(index) {
+  activeViewIndex.value = index
+  zoom.value = 1
+}
+
+function stepView(dir) {
+  const count = currentViews.value.length
+  if (!count) return
+  activeViewIndex.value = (activeViewIndex.value + dir + count) % count
+  zoom.value = 1
+}
+
+function setZoom(value) {
+  zoom.value = Math.min(1.45, Math.max(1, value))
+}
+
+function closeExpanded() {
+  expanded.value = false
+}
+
+function onKey(e) {
+  if (!expanded.value) return
+  if (e.key === 'Escape') closeExpanded()
+  if (e.key === 'ArrowRight') stepView(1)
+  if (e.key === 'ArrowLeft') stepView(-1)
+}
+
+watch(expanded, (isOpen) => {
+  document.body.style.overflow = isOpen ? 'hidden' : ''
+  if (isOpen) window.addEventListener('keydown', onKey)
+  else window.removeEventListener('keydown', onKey)
+})
+
+onBeforeUnmount(() => {
+  if (expanded.value) document.body.style.overflow = ''
+  window.removeEventListener('keydown', onKey)
+})
+</script>
+
+<template>
+  <section class="section bg-surface-muted">
+    <BaseContainer>
+      <div v-reveal class="max-w-2xl">
+        <p class="eyebrow">3D-Beispiele</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+          Entwürfe mit eigener 3D-Navigation
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-content-muted">
+          Wechseln Sie zwischen Ofen, Schornstein, Bad und Materialdetails. Die vergrößerte Ansicht
+          lässt sich wie ein Planungsmodell schrittweise betrachten.
+        </p>
+      </div>
+
+      <div
+        class="mt-10 overflow-hidden rounded-2xl bg-ink-950 text-white shadow-card ring-1 ring-ink-900"
+      >
+        <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <div class="relative min-h-[26rem] bg-ink-900">
+            <div class="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
+              <button
+                v-for="category in categories"
+                :key="category"
+                type="button"
+                class="press-feedback rounded-full px-3.5 py-2 text-xs font-semibold transition-colors"
+                :class="
+                  activeCategory === category
+                    ? 'bg-brand-500 text-white'
+                    : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                "
+                :aria-pressed="activeCategory === category"
+                @click="selectCategory(category)"
+              >
+                {{ category }}
+              </button>
+            </div>
+
+            <div class="absolute right-4 top-4 z-10 flex gap-2">
+              <button
+                type="button"
+                class="press-feedback inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white backdrop-blur hover:bg-white/20"
+                aria-label="Vorherige Ansicht"
+                @click="stepView(-1)"
+              >
+                <AppIcon name="chevron" class="h-5 w-5 rotate-180" />
+              </button>
+              <button
+                type="button"
+                class="press-feedback inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white backdrop-blur hover:bg-white/20"
+                aria-label="Nächste Ansicht"
+                @click="stepView(1)"
+              >
+                <AppIcon name="chevron" class="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                class="press-feedback inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white backdrop-blur hover:bg-white/20"
+                aria-label="3D-Entwurf vergrößern"
+                @click="expanded = true"
+              >
+                <AppIcon name="maximize" class="h-5 w-5" />
+              </button>
+            </div>
+
+            <div class="h-full overflow-hidden">
+              <BaseImage
+                v-if="current"
+                :key="`${current.id}-${currentView?.label}`"
+                :src="currentView?.image"
+                :motif="current.motif"
+                :tone="current.tone"
+                :alt="`${current.title} - ${currentView?.label}`"
+                ratio="16/10"
+                rounded="rounded-none"
+                eager
+                class="h-full min-h-[26rem] transition-transform duration-500"
+                :style="{ transform: `scale(${zoom})` }"
+              />
+            </div>
+
+            <div
+              class="absolute bottom-4 left-4 right-4 z-10 grid gap-3 rounded-xl bg-ink-950/70 p-3 backdrop-blur md:grid-cols-[1fr_auto] md:items-center"
+            >
+              <div v-if="current">
+                <p class="font-display text-xl font-semibold">
+                  {{ current.title }} · {{ currentView?.label }}
+                </p>
+                <p class="mt-1 text-sm text-white/65">{{ currentView?.text }}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  class="press-feedback inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20"
+                  aria-label="Ansicht verkleinern"
+                  @click="setZoom(zoom - 0.15)"
+                >
+                  <AppIcon name="zoomOut" class="h-4 w-4" />
+                </button>
+                <input
+                  v-model.number="zoom"
+                  type="range"
+                  min="1"
+                  max="1.45"
+                  step="0.05"
+                  aria-label="3D-Ansicht zoomen"
+                  class="w-24 accent-brand-500"
+                />
+                <button
+                  type="button"
+                  class="press-feedback inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20"
+                  aria-label="Ansicht vergrößern"
+                  @click="setZoom(zoom + 0.15)"
+                >
+                  <AppIcon name="zoomIn" class="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="bg-ink-950 p-5">
+            <div class="flex items-center gap-2 text-sm font-semibold text-white/80">
+              <AppIcon name="rotate" class="h-4 w-4 text-brand-400" />
+              Perspektiven
+            </div>
+            <div class="mt-4 grid gap-3">
+              <button
+                v-for="(example, index) in visibleExamples"
+                :key="example.id"
+                type="button"
+                class="press-feedback grid grid-cols-[5.5rem_1fr] gap-3 rounded-xl p-2 text-left transition-colors"
+                :class="
+                  activeIndex === index
+                    ? 'bg-white/10 ring-1 ring-brand-400/50'
+                    : 'bg-white/5 hover:bg-white/10'
+                "
+                @click="selectExample(index)"
+              >
+                <BaseImage
+                  :src="example.image"
+                  :motif="example.motif"
+                  :tone="example.tone"
+                  :alt="example.title"
+                  ratio="4/3"
+                  rounded="rounded-lg"
+                />
+                <span class="min-w-0 self-center">
+                  <span class="block text-xs uppercase tracking-label text-brand-300">
+                    {{ example.label }}
+                  </span>
+                  <span class="mt-1 block text-sm font-semibold text-white">{{
+                    example.title
+                  }}</span>
+                </span>
+              </button>
+            </div>
+
+            <div v-if="currentViews.length > 1" class="mt-5">
+              <p class="text-xs font-semibold uppercase tracking-label text-white/45">Ansichten</p>
+              <div class="mt-3 grid grid-cols-3 gap-2">
+                <button
+                  v-for="(view, index) in currentViews"
+                  :key="view.label"
+                  type="button"
+                  class="press-feedback rounded-lg px-2 py-2 text-xs font-semibold transition-colors"
+                  :class="
+                    activeViewIndex === index
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-white/8 text-white/65 hover:bg-white/14 hover:text-white'
+                  "
+                  :aria-pressed="activeViewIndex === index"
+                  @click="selectView(index)"
+                >
+                  {{ view.label }}
+                </button>
+              </div>
+            </div>
+
+            <div v-if="current" class="mt-5 flex flex-wrap gap-2">
+              <span
+                v-for="spec in current.specs"
+                :key="spec"
+                class="rounded-full bg-white/8 px-3 py-1 text-xs text-white/65"
+              >
+                {{ spec }}
+              </span>
+            </div>
+
+            <BaseButton
+              :to="{ name: 'contact', query: { topic: '3d-planung' } }"
+              size="lg"
+              class="mt-6 w-full"
+            >
+              3D-Plan anfragen
+              <AppIcon name="arrow" class="h-4 w-4" />
+            </BaseButton>
+          </aside>
+        </div>
+      </div>
+    </BaseContainer>
+  </section>
+
+  <Teleport to="body">
+    <Transition name="plan-view">
+      <div
+        v-if="expanded && current"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/92 p-4 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="`${current.title} - ${currentView?.label}`"
+        @click.self="closeExpanded"
+      >
+        <button
+          type="button"
+          class="press-feedback absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          aria-label="Schließen"
+          @click="closeExpanded"
+        >
+          <AppIcon name="close" class="h-6 w-6" />
+        </button>
+        <button
+          type="button"
+          class="press-feedback absolute left-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-6"
+          aria-label="Vorherige Ansicht"
+          @click="stepView(-1)"
+        >
+          <AppIcon name="chevron" class="h-6 w-6 rotate-180" />
+        </button>
+        <button
+          type="button"
+          class="press-feedback absolute right-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-6"
+          aria-label="Nächste Ansicht"
+          @click="stepView(1)"
+        >
+          <AppIcon name="chevron" class="h-6 w-6" />
+        </button>
+
+        <figure class="w-full max-w-7xl">
+          <img
+            :src="currentView?.image"
+            :alt="`${current.title} - ${currentView?.label}`"
+            class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
+            decoding="async"
+          />
+          <figcaption class="mt-4 text-center text-white">
+            <p class="font-display text-xl font-semibold">
+              {{ current.title }} · {{ currentView?.label }}
+            </p>
+            <p class="mt-1 text-sm text-white/60">{{ currentView?.text }}</p>
+          </figcaption>
+        </figure>
+      </div>
+    </Transition>
+  </Teleport>
+</template>
+
+<style scoped>
+.plan-view-enter-active,
+.plan-view-leave-active {
+  transition: opacity 0.22s ease;
+}
+.plan-view-enter-from,
+.plan-view-leave-to {
+  opacity: 0;
+}
+</style>

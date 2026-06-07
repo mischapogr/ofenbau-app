@@ -9,6 +9,7 @@ import ServiceCard from '@/components/ServiceCard.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import CTASection from '@/components/CTASection.vue'
 import AppIcon from '@/components/AppIcon.vue'
+import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
 import { getService, services } from '@/data/services'
 import { planningBenefits, planningServices } from '@/data/planning'
 import { topicForService } from '@/data/contactTopics'
@@ -77,6 +78,8 @@ useSeo(() => ({
                   ratio="4/5"
                   alt="Technische 3D-Skizze eines Ofenentwurfs"
                   rounded="rounded-lg"
+                  enlargeable
+                  caption="3D-Skizze eines Ofenentwurfs"
                   eager
                 />
                 <figcaption class="mt-3 flex items-center justify-between text-xs">
@@ -94,6 +97,8 @@ useSeo(() => ({
                   ratio="4/5"
                   alt="Fotorealistischer 3D-Entwurf eines Kaminofens"
                   rounded="rounded-lg"
+                  enlargeable
+                  caption="Fotorealistischer 3D-Entwurf"
                   eager
                 />
                 <figcaption class="mt-3 flex items-center justify-between text-xs">
@@ -137,6 +142,27 @@ useSeo(() => ({
       </section>
 
       <section class="section bg-surface">
+        <BaseContainer class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div v-reveal>
+            <p class="eyebrow">Nachweise &amp; Sicherheit</p>
+            <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
+              Prüfpunkte vor der Umsetzung
+            </h2>
+          </div>
+          <ul v-reveal="{ delay: 100 }" class="grid gap-4 sm:grid-cols-3">
+            <li
+              v-for="point in service.proofPoints"
+              :key="point"
+              class="rounded-xl bg-surface-muted p-5 text-sm leading-relaxed text-content-muted ring-1 ring-content-muted/10"
+            >
+              <AppIcon name="check" class="mb-4 h-5 w-5 text-brand-600" />
+              {{ point }}
+            </li>
+          </ul>
+        </BaseContainer>
+      </section>
+
+      <section class="section bg-surface-muted">
         <BaseContainer>
           <div v-reveal class="max-w-2xl">
             <p class="eyebrow">Unser 3D-Service</p>
@@ -163,6 +189,8 @@ useSeo(() => ({
         </BaseContainer>
       </section>
 
+      <Planning3DExplorer />
+
       <section class="section bg-surface-muted">
         <BaseContainer class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div v-reveal>
@@ -182,6 +210,8 @@ useSeo(() => ({
                 ratio="4/3"
                 alt="3D-Skizze"
                 rounded="rounded-xl"
+                enlargeable
+                caption="3D-Skizze"
               />
               <BaseImage
                 src="/images/planning-3d-after.webp"
@@ -190,6 +220,8 @@ useSeo(() => ({
                 ratio="4/3"
                 alt="3D-Entwurf"
                 rounded="rounded-xl"
+                enlargeable
+                caption="3D-Entwurf"
               />
             </div>
           </div>
@@ -249,6 +281,22 @@ useSeo(() => ({
               Beratung anfragen
               <AppIcon name="arrow" class="h-4 w-4" />
             </BaseButton>
+          </div>
+
+          <div class="mt-8 rounded-xl bg-surface-muted p-5 ring-1 ring-content-muted/10">
+            <p class="text-sm font-semibold uppercase tracking-label text-content-muted">
+              Nachweise &amp; Sicherheit
+            </p>
+            <ul class="mt-4 grid gap-3">
+              <li
+                v-for="point in service.proofPoints"
+                :key="point"
+                class="flex items-start gap-3 text-sm leading-relaxed text-content-muted"
+              >
+                <AppIcon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+                <span>{{ point }}</span>
+              </li>
+            </ul>
           </div>
         </BaseContainer>
       </section>

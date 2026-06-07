@@ -41,6 +41,20 @@
 }
 
 @layer utilities {
+  .press-feedback {
+    transform-origin: center;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.16s ease,
+      background-color 0.16s ease,
+      border-color 0.16s ease,
+      color 0.16s ease;
+  }
+
+  .press-feedback:active {
+    transform: scale(0.975);
+  }
+
   /* Scroll-reveal — driven by the global `v-reveal` directive (see main.js). */
   .reveal {
     opacity: 0;
@@ -57,6 +71,12 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .press-feedback,
+    .press-feedback:active {
+      transform: none;
+      transition: none;
+    }
+
     .reveal {
       opacity: 1;
       transform: none;

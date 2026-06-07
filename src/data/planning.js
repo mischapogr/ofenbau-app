@@ -34,3 +34,122 @@ export const planningServices = [
     text: 'Kuratierte Oberflächen aus Kachel, Stein und Fliese.',
   },
 ]
+
+export const planningExamples = [
+  {
+    id: 'kachelofen-eckscheibe',
+    category: 'Ofen',
+    title: 'Kachelofen mit Eckscheibe',
+    label: 'Eckscheibe',
+    image: '/images/planning-example-kachelofen-eckscheibe.webp',
+    views: [
+      {
+        label: 'Überblick',
+        image: '/images/planning-example-kachelofen-eckscheibe.webp',
+        text: 'Frontale Gesamtansicht mit Sitzbank, Ofenkörper und Eckscheibe.',
+      },
+      {
+        label: 'Perspektive',
+        image: '/images/planning-example-kachelofen-perspective.webp',
+        text: 'Seitliche Perspektive für Tiefe, Sitzbank und Raumwirkung.',
+      },
+      {
+        label: 'Detail',
+        image: '/images/planning-example-kachelofen-detail.webp',
+        text: 'Detailansicht von Keramik, Fugenbild, Kanten und Feuerraum.',
+      },
+    ],
+    motif: 'flame',
+    tone: 'ember',
+    description:
+      'Räumlicher Entwurf eines handgesetzten Kachelofens mit Sitzbank, keramischer Oberfläche und Eck-Sichtfenster.',
+    specs: ['Kachelkeramik', 'Sitzbank', 'Eckscheibe', 'Speicherwärme'],
+  },
+  {
+    id: 'schornstein-kaminofen',
+    category: 'Schornstein',
+    title: 'Kaminofen mit Außenschornstein',
+    label: 'Schornstein',
+    image: '/images/planning-example-schornstein-kaminofen.webp',
+    views: [
+      {
+        label: 'Schnitt',
+        image: '/images/planning-example-schornstein-kaminofen.webp',
+        text: 'Innen- und Außenbezug mit Ofenanschluss und Wanddurchführung.',
+      },
+      {
+        label: 'Außen',
+        image: '/images/planning-example-schornstein-exterior.webp',
+        text: 'Fassadenansicht mit Schornsteinführung, Haltern und Dachabschluss.',
+      },
+      {
+        label: 'Anschluss',
+        image: '/images/planning-example-schornstein-detail.webp',
+        text: 'Detailansicht von Wanddurchführung, Schelle und Edelstahlrohr.',
+      },
+    ],
+    motif: 'chimney',
+    tone: 'slate',
+    description:
+      'Planungsansicht für Kaminofen, Wanddurchführung und Edelstahl-Außenschornstein inklusive Anschlussdetails.',
+    specs: ['Edelstahl', 'Wanddurchführung', 'Brandschutz', 'Ofenanschluss'],
+  },
+  {
+    id: 'bad-fliesen',
+    category: 'Fliesen',
+    title: 'Badplanung mit Großformaten',
+    label: 'Bad',
+    image: '/images/planning-example-bad-fliesen.webp',
+    views: [
+      {
+        label: 'Überblick',
+        image: '/images/planning-example-bad-fliesen.webp',
+        text: 'Gesamtplanung mit Dusche, Wanne, Waschtisch und Fliesenraster.',
+      },
+      {
+        label: 'Raum',
+        image: '/images/planning-example-bad-perspective.webp',
+        text: 'Eingangsperspektive für Wegeführung, Licht und Materialwirkung.',
+      },
+      {
+        label: 'Detail',
+        image: '/images/planning-example-bad-detail.webp',
+        text: 'Duschdetail mit Nische, Bodenanschluss, Ablauf und Fugenbild.',
+      },
+    ],
+    motif: 'tile',
+    tone: 'sand',
+    description:
+      'Fotorealistischer Badentwurf mit Fliesenraster, Dusche, Wanne und Materialabstimmung vor Ausführung.',
+    specs: ['Großformat', 'Natursteinoptik', 'Duschbereich', 'Fugenbild'],
+  },
+  {
+    id: 'materialien',
+    category: 'Material',
+    title: 'Material- und Detailauswahl',
+    label: 'Material',
+    image: '/images/planning-example-materialien.webp',
+    views: [
+      {
+        label: 'Detail',
+        image: '/images/planning-example-materialien.webp',
+        text: 'Materialauswahl mit Keramik, Naturstein, Putz und Metallrahmen.',
+      },
+      {
+        label: 'Board',
+        image: '/images/planning-example-materialien-perspective.webp',
+        text: 'Breitere Materialtafel neben dem geplanten Kamin.',
+      },
+      {
+        label: 'Makro',
+        image: '/images/planning-example-materialien-detail.webp',
+        text: 'Nahansicht der Oberflächen für Glanz, Relief und Steinstruktur.',
+      },
+    ],
+    motif: 'swatch',
+    tone: 'ink',
+    description:
+      'Detailansicht für Kachel, Naturstein, Putzstruktur und Feuerraumrahmen als Entscheidungshilfe.',
+    specs: ['Keramik', 'Naturstein', 'Putz', 'Metallrahmen'],
+  },
+]

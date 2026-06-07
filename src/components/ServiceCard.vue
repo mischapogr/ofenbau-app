@@ -14,7 +14,7 @@ defineProps({
 <template>
   <RouterLink
     :to="{ name: 'service-detail', params: { slug: service.slug } }"
-    class="group flex flex-col overflow-hidden rounded-2xl bg-surface shadow-card ring-1 ring-content-muted/10 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+    class="press-feedback group flex flex-col overflow-hidden rounded-2xl bg-surface shadow-card ring-1 ring-content-muted/10 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
   >
     <div class="relative overflow-hidden">
       <BaseImage

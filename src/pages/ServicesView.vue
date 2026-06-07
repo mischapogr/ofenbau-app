@@ -8,7 +8,7 @@ import { useSeo } from '@/composables/useSeo'
 useSeo(() => ({
   title: 'Leistungen',
   description:
-    'Kachelöfen, Kaminbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb — Planung, Bau und Service aus einer Hand.',
+    'Kachelöfen, Kaminbau, Schornsteinbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb — Planung, Bau und Service aus einer Hand.',
   path: '/leistungen',
 }))
 </script>
@@ -18,7 +18,7 @@ useSeo(() => ({
     <PageHeader
       eyebrow="Leistungen"
       title="Alles für Wärme und Raum — aus einer Hand"
-      subtitle="Vom handgesetzten Kachelofen über meisterhafte Fliesenarbeiten bis zur fotorealistischen 3D-Planung. Wählen Sie einen Bereich für Details."
+      subtitle="Vom handgesetzten Kachelofen über sichere Schornsteinsysteme und meisterhafte Fliesenarbeiten bis zur fotorealistischen 3D-Planung. Wählen Sie einen Bereich für Details."
       :crumbs="[{ name: 'Leistungen', to: { name: 'services' } }]"
     />
     <ServiceCards />

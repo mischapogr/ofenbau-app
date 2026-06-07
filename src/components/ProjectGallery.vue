@@ -74,7 +74,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
         v-for="cat in projectCategories"
         :key="cat.key"
         type="button"
-        class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+        class="press-feedback rounded-full px-4 py-2 text-sm font-medium transition-colors"
         :class="
           activeFilter === cat.key
             ? 'bg-brand-500 text-white'
@@ -93,7 +93,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
         v-for="(p, i) in filtered"
         :key="p.id"
         type="button"
-        class="group block w-full break-inside-avoid overflow-hidden rounded-2xl text-left shadow-card ring-1 ring-content-muted/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+        class="press-feedback group block w-full break-inside-avoid overflow-hidden rounded-2xl text-left shadow-card ring-1 ring-content-muted/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         @click="open(i)"
       >
         <div class="relative overflow-hidden">
@@ -114,6 +114,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
               <p class="mt-0.5 text-xs uppercase tracking-label text-white/70">
                 {{ projectCategories.find((c) => c.key === p.category[0])?.label }}
               </p>
+              <p v-if="p.material" class="mt-1 text-xs text-white/70">{{ p.material }}</p>
             </div>
           </div>
         </div>
@@ -139,7 +140,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
       >
         <button
           type="button"
-          class="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          class="press-feedback absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           aria-label="Schließen"
           @click="close"
         >
@@ -147,7 +148,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
         </button>
         <button
           type="button"
-          class="absolute left-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-6"
+          class="press-feedback absolute left-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-6"
           aria-label="Vorheriges Projekt"
           @click="step(-1)"
         >
@@ -155,7 +156,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
         </button>
         <button
           type="button"
-          class="absolute right-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-6"
+          class="press-feedback absolute right-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-6"
           aria-label="Nächstes Projekt"
           @click="step(1)"
         >
@@ -173,6 +174,12 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
           />
           <figcaption class="mt-4 text-center text-white">
             <p class="font-display text-xl font-semibold">{{ current.title }}</p>
+            <p v-if="current.description" class="mx-auto mt-2 max-w-2xl text-sm text-white/70">
+              {{ current.description }}
+            </p>
+            <p v-if="current.material" class="mt-2 text-xs uppercase tracking-label text-brand-300">
+              {{ current.material }}
+            </p>
           </figcaption>
         </figure>
       </div>

@@ -9,9 +9,9 @@ import { services } from '@/data/services'
     surface="muted"
     eyebrow="Unsere Leistungen"
     title="Handwerk für Wärme und Raum"
-    subtitle="Kachelöfen, Kamine und Fliesen — Planung, Bau und Service aus einer Hand."
+    subtitle="Kachelöfen, Schornsteine, Kamine und Fliesen — Planung, Bau und Service aus einer Hand."
   >
-    <div class="grid gap-6 md:grid-cols-3">
+    <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
       <div v-for="(service, i) in services" :key="service.slug" v-reveal="{ delay: i * 90 }">
         <ServiceCard :service="service" />
       </div>
