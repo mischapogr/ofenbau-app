@@ -3,6 +3,13 @@
  * Single source of truth for NAP (name, address, phone) used across the
  * header, footer, contact page and structured data.
  */
+export const companyProfileReview = {
+  napApprovedForLaunch: false,
+  googleBusinessProfileAligned: false,
+  mapRouteVerified: false,
+  note: 'Company NAP, opening hours, service area and social links must match the final operator data and Google Business Profile before launch.',
+}
+
 export const company = {
   name: 'Ofenbau Mustermann',
   legalName: 'Ofenbau Mustermann — Ofen- & Fliesenmeister',

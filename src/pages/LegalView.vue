@@ -3,7 +3,9 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
 import BaseContainer from '@/components/BaseContainer.vue'
+import PrivacyContent from '@/components/PrivacyContent.vue'
 import { company } from '@/data/company'
+import { legalProfile } from '@/data/legal'
 import { useSeo } from '@/composables/useSeo'
 
 const route = useRoute()
@@ -29,7 +31,7 @@ useSeo(() => ({
     <section class="section bg-surface">
       <BaseContainer>
         <div class="max-w-2xl space-y-6 leading-relaxed text-content-muted">
-          <p class="rounded-xl bg-surface-muted p-4 text-sm">
+          <p v-if="legalProfile.noticeIsTemplate" class="rounded-xl bg-surface-muted p-4 text-sm">
             <strong class="text-content">Hinweis:</strong> Dies ist eine Vorlage. Ersetzen Sie die
             folgenden Angaben durch Ihre rechtsgültigen Informationen.
           </p>
@@ -49,29 +51,13 @@ useSeo(() => ({
             <h2 class="font-display text-xl font-semibold text-content">
               Verantwortlich für den Inhalt
             </h2>
-            <p>Max Mustermann, Anschrift wie oben.</p>
+            <p>
+              {{ legalProfile.contentResponsible.name }},
+              {{ legalProfile.contentResponsible.address }}.
+            </p>
           </template>
 
-          <template v-else>
-            <h2 class="font-display text-xl font-semibold text-content">
-              1. Verantwortliche Stelle
-            </h2>
-            <p>
-              {{ company.legalName }}, {{ company.address.street }}, {{ company.address.zip }}
-              {{ company.address.city }}.
-            </p>
-            <h2 class="font-display text-xl font-semibold text-content">2. Erhebung von Daten</h2>
-            <p>
-              Wenn Sie uns über das Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben
-              inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage
-              und für den Fall von Anschlussfragen bei uns gespeichert.
-            </p>
-            <h2 class="font-display text-xl font-semibold text-content">3. Ihre Rechte</h2>
-            <p>
-              Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung
-              der Verarbeitung Ihrer gespeicherten personenbezogenen Daten.
-            </p>
-          </template>
+          <PrivacyContent v-else />
         </div>
       </BaseContainer>
     </section>
