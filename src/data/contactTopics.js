@@ -15,6 +15,11 @@ export const contactTopics = [
     subject: 'Fliesenarbeiten',
   },
   {
+    value: 'schornsteinbau',
+    label: 'Schornsteinbau & Sanierung',
+    subject: 'Schornsteinbau & Sanierung',
+  },
+  {
     value: '3d-planung',
     label: '3D-Planung & Entwürfe',
     subject: '3D-Planung & Entwürfe',
@@ -37,6 +42,7 @@ export function getContactTopic(value) {
 
 export function topicForService(slug) {
   if (slug === 'kachelofen-kaminbau') return getContactTopic('kachelofen-kaminbau')
+  if (slug === 'schornsteinbau') return getContactTopic('schornsteinbau')
   if (slug === 'fliesenarbeiten') return getContactTopic('fliesenarbeiten')
   if (slug === '3d-planung') return getContactTopic('3d-planung')
   return contactTopics[0]

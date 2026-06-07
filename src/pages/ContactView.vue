@@ -3,19 +3,22 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
 import BaseContainer from '@/components/BaseContainer.vue'
-import BaseImage from '@/components/BaseImage.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import AppIcon from '@/components/AppIcon.vue'
+import GoogleMapEmbed from '@/components/GoogleMapEmbed.vue'
 import { company } from '@/data/company'
 import { getContactTopic } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
 
 const route = useRoute()
 const selectedTopic = computed(() => getContactTopic(route.query.topic))
+const addressLabel = computed(
+  () => `${company.address.street}, ${company.address.zip} ${company.address.city}`
+)
 const mapHref = computed(
   () =>
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-      `${company.address.street}, ${company.address.zip} ${company.address.city}`
+      addressLabel.value
     )}`
 )
 
@@ -75,34 +78,7 @@ const details = [
             </div>
           </dl>
 
-          <div class="mt-8 overflow-hidden rounded-2xl bg-ink-900 shadow-card">
-            <BaseImage
-              src="/images/contact-map.svg"
-              motif="pin"
-              tone="slate"
-              ratio="16/9"
-              alt="Karte mit Standort des Betriebs"
-              rounded="rounded-none"
-            />
-            <div class="grid gap-4 p-5 text-white sm:grid-cols-[1fr_auto] sm:items-center">
-              <div>
-                <p class="font-display text-xl font-semibold">Werkstatt & Beratung</p>
-                <p class="mt-1 text-sm text-white/70">
-                  {{ company.address.street }}, {{ company.address.zip }}
-                  {{ company.address.city }}
-                </p>
-              </div>
-              <a
-                :href="mapHref"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-ink-900 transition-colors hover:bg-surface-muted"
-              >
-                Route planen
-                <AppIcon name="arrow" class="h-4 w-4" />
-              </a>
-            </div>
-          </div>
+          <GoogleMapEmbed class="mt-8" :address="addressLabel" :map-href="mapHref" />
         </div>
 
         <!-- Form -->

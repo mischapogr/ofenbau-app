@@ -1,8 +1,9 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import BaseButton from './BaseButton.vue'
 import AppError from './AppError.vue'
 import AppIcon from './AppIcon.vue'
+import PrivacyContent from './PrivacyContent.vue'
 import { useContactStore } from '@/stores/contact'
 import { contactTopics, getContactTopic } from '@/data/contactTopics'
 
@@ -22,12 +23,15 @@ const form = reactive({
   name: '',
   email: '',
   phone: '',
+  website: '',
   message: '',
   gdpr: false,
 })
 
 const errors = reactive({})
 const touched = ref(false)
+const privacyOpen = ref(false)
+const privacyPanel = ref(null)
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const selectedTopic = computed(() => getContactTopic(form.topic))
@@ -50,9 +54,21 @@ function validate() {
     : emailRe.test(form.email)
       ? ''
       : 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
-  errors.message = form.message.trim() ? '' : 'Bitte beschreiben Sie kurz Ihr Anliegen.'
+  errors.message = !form.message.trim()
+    ? 'Bitte beschreiben Sie kurz Ihr Anliegen.'
+    : form.message.trim().length >= 10
+      ? ''
+      : 'Bitte beschreiben Sie Ihr Anliegen etwas genauer.'
   errors.gdpr = form.gdpr ? '' : 'Bitte stimmen Sie der Datenschutzerklärung zu.'
-  return !errors.topic && !errors.name && !errors.email && !errors.message && !errors.gdpr
+  errors.website = form.website.trim() ? 'Diese Anfrage wurde als Spam erkannt.' : ''
+  return (
+    !errors.topic &&
+    !errors.name &&
+    !errors.email &&
+    !errors.message &&
+    !errors.gdpr &&
+    !errors.website
+  )
 }
 
 async function onSubmit() {
@@ -62,6 +78,7 @@ async function onSubmit() {
     name: form.name,
     email: form.email,
     phone: form.phone,
+    website: form.website,
     message: form.message,
     subject: selectedSubject.value,
   })
@@ -70,6 +87,7 @@ async function onSubmit() {
     form.name = ''
     form.email = ''
     form.phone = ''
+    form.website = ''
     form.message = ''
     form.gdpr = false
     touched.value = false
@@ -78,6 +96,15 @@ async function onSubmit() {
 
 function resetSuccess() {
   store.reset()
+}
+
+function openPrivacy() {
+  privacyOpen.value = true
+  nextTick(() => privacyPanel.value?.focus())
+}
+
+function closePrivacy() {
+  privacyOpen.value = false
 }
 
 const fieldClass =
@@ -162,6 +189,18 @@ function borderFor(key) {
       </div>
     </div>
 
+    <div class="hidden" aria-hidden="true">
+      <label for="cf-website">Website</label>
+      <input
+        id="cf-website"
+        v-model.trim="form.website"
+        type="text"
+        name="website"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+
     <div>
       <label for="cf-email" class="mb-1.5 block text-sm font-medium">E-Mail</label>
       <input
@@ -196,9 +235,13 @@ function borderFor(key) {
         />
         <span>
           Ich habe die
-          <RouterLink :to="{ name: 'privacy' }" class="text-brand-600 underline hover:no-underline">
+          <button
+            type="button"
+            class="text-brand-600 underline hover:no-underline"
+            @click.stop="openPrivacy"
+          >
             Datenschutzerklärung
-          </RouterLink>
+          </button>
           gelesen und stimme der Verarbeitung meiner Daten zu.
         </span>
       </label>
@@ -210,4 +253,54 @@ function borderFor(key) {
       <AppIcon v-if="!store.isSubmitting" name="arrow" class="h-4 w-4" />
     </BaseButton>
   </form>
+
+  <Teleport to="body">
+    <Transition name="privacy-modal">
+      <div
+        v-if="privacyOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/85 p-4 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="privacy-modal-title"
+        @click.self="closePrivacy"
+        @keydown.esc="closePrivacy"
+      >
+        <div
+          ref="privacyPanel"
+          class="max-h-[min(42rem,calc(100vh-2rem))] w-full max-w-2xl overflow-y-auto rounded-2xl bg-surface p-6 shadow-lift ring-1 ring-content-muted/10 sm:p-8"
+          tabindex="-1"
+          @keydown.esc="closePrivacy"
+        >
+          <div class="mb-5 flex items-start justify-between gap-4">
+            <div>
+              <p class="eyebrow">Datenschutz</p>
+              <h2 id="privacy-modal-title" class="mt-2 font-display text-2xl font-semibold">
+                Datenschutzerklärung
+              </h2>
+            </div>
+            <button
+              type="button"
+              class="press-feedback inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-content hover:bg-surface-muted"
+              aria-label="Datenschutzerklärung schließen"
+              @click="closePrivacy"
+            >
+              <AppIcon name="close" class="h-5 w-5" />
+            </button>
+          </div>
+          <PrivacyContent />
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
+
+<style scoped>
+.privacy-modal-enter-active,
+.privacy-modal-leave-active {
+  transition: opacity 0.25s ease;
+}
+.privacy-modal-enter-from,
+.privacy-modal-leave-to {
+  opacity: 0;
+}
+</style>

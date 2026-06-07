@@ -121,6 +121,11 @@ function contactDevApiPlugin(env) {
   return {
     name: 'contact-dev-api',
     configureServer(server) {
+      server.middlewares.use('/api/healthz', (_req, res) => {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.end(JSON.stringify({ ok: true }))
+      })
+
       server.middlewares.use('/api/contact', async (req, res) => {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
 
@@ -138,6 +143,11 @@ function contactDevApiPlugin(env) {
 
         try {
           const payload = await readJsonBody(req)
+          if (payload.website) {
+            res.statusCode = 422
+            res.end(JSON.stringify({ message: 'Diese Anfrage wurde als Spam erkannt.' }))
+            return
+          }
           if (!payload.name || !payload.email || !payload.message) {
             res.statusCode = 422
             res.end(JSON.stringify({ message: 'Bitte füllen Sie alle Pflichtfelder aus.' }))
