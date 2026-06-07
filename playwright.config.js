@@ -59,7 +59,10 @@ export default defineConfig({
       name: 'tablet-demo',
       testMatch: /tablet\.spec\.js/,
       use: {
-        ...devices['iPad Mini'],
+        ...devices['Desktop Chrome'],
+        viewport: { width: 768, height: 1024 },
+        isMobile: true,
+        hasTouch: true,
         launchOptions: { slowMo: 250 },
       },
     },
