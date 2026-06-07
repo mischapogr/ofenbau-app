@@ -1,5 +1,16 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const port = Number(process.env.E2E_PORT || 5173)
+const baseURL = `http://localhost:${port}`
+const webServer = process.env.E2E_NO_WEBSERVER
+  ? undefined
+  : {
+      command: `npx vite --host 0.0.0.0 --port ${port} --strictPort`,
+      url: baseURL,
+      reuseExistingServer: true,
+      timeout: 120_000,
+    }
+
 /**
  * Playwright config for the customer demo / walkthrough.
  *
@@ -20,7 +31,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL,
     video: 'on',
     screenshot: 'on',
     trace: 'on',
@@ -45,10 +56,5 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: true,
-    timeout: 120_000,
-  },
+  webServer,
 })

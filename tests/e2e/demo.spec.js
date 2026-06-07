@@ -27,6 +27,11 @@ async function shot(page, name, fullPage = false) {
   await page.screenshot({ path: file, fullPage })
 }
 
+async function acceptNecessaryCookies(page) {
+  const button = page.getByRole('button', { name: 'Nur notwendige' })
+  if (await button.isVisible()) await button.click()
+}
+
 test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
   // Mock the contact endpoint so the success state can be demonstrated without
   // a backend (the form posts to VITE_API_BASE_URL/contact).
@@ -36,6 +41,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
 
   await test.step('Startseite & Hero', async () => {
     await page.goto('/')
+    await acceptNecessaryCookies(page)
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Mit gesunder Wärme leben')
     await expect(page.getByRole('link', { name: 'Beratung vereinbaren' }).first()).toBeVisible()
     await expect(page.getByRole('link', { name: 'Projekte ansehen', exact: true })).toBeVisible()
@@ -108,7 +114,7 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
     await shot(page, 'projects-filtered')
 
     await page.getByRole('button', { name: /Wohnraum-Fliesen XXL/ }).click()
-    const dialog = page.getByRole('dialog')
+    const dialog = page.getByRole('dialog', { name: 'Wohnraum-Fliesen XXL' })
     await expect(dialog).toBeVisible()
     await page.waitForTimeout(400)
     await shot(page, 'projects-lightbox')
