@@ -37,15 +37,20 @@ function applyNoindexMeta() {
 export function useDemoProtection() {
   const env = import.meta.env
   const isDemo =
-    env.VITE_APP_ENV === 'demo' || (env.MODE === 'demo' && env.VITE_DEMO_PROTECTION_ENABLED !== 'false')
+    env.VITE_APP_ENV === 'demo' ||
+    (env.MODE === 'demo' && env.VITE_DEMO_PROTECTION_ENABLED !== 'false')
   const protectionEnabled = isDemo && env.VITE_DEMO_PROTECTION_ENABLED !== 'false'
-  const accessCodeHash = String(env.VITE_DEMO_ACCESS_CODE_HASH || '').trim().toLowerCase()
+  const accessCodeHash = String(env.VITE_DEMO_ACCESS_CODE_HASH || '')
+    .trim()
+    .toLowerCase()
   const allowedHosts = parseList(env.VITE_DEMO_ALLOWED_HOSTS)
   const hostname = window.location.hostname.toLowerCase()
   const isFileProtocol = window.location.protocol === 'file:'
   const isAllowedHost =
     !protectionEnabled ||
-    (hostname && allowedHosts.length > 0 && allowedHosts.some((host) => hostMatches(hostname, host)))
+    (hostname &&
+      allowedHosts.length > 0 &&
+      allowedHosts.some((host) => hostMatches(hostname, host)))
   const storedAccess = window.sessionStorage.getItem(SESSION_KEY)
 
   if (protectionEnabled) {
@@ -58,7 +63,10 @@ export function useDemoProtection() {
     authorName: env.VITE_DEMO_AUTHOR_NAME || 'Mischa Pogrebnyak',
     authorEmail: env.VITE_DEMO_AUTHOR_EMAIL || '66591935+mischapogr@users.noreply.github.com',
     watermarkEnabled: protectionEnabled && env.VITE_DEMO_WATERMARK_ENABLED !== 'false',
-    watermarkFactor: Math.max(0, Math.min(5, parseFloat(env.VITE_DEMO_WATERMARK_FACTOR ?? '1') || 1)),
+    watermarkFactor: Math.max(
+      0,
+      Math.min(5, parseFloat(env.VITE_DEMO_WATERMARK_FACTOR ?? '1') || 1)
+    ),
     watermarkText: `${env.VITE_DEMO_CUSTOMER_NAME || 'Demo'} · ${hostname || 'local'} · © ${
       env.VITE_DEMO_AUTHOR_NAME || 'Mischa Pogrebnyak'
     } · nicht zur Weitergabe`,
@@ -101,8 +109,12 @@ export function useDemoProtection() {
     },
   })
 
-  state.requiresAccessCode = computed(() => protectionEnabled && Boolean(accessCodeHash) && !state.unlocked)
-  state.blocksApp = computed(() => protectionEnabled && (Boolean(state.blockedReason) || !state.unlocked))
+  state.requiresAccessCode = computed(
+    () => protectionEnabled && Boolean(accessCodeHash) && !state.unlocked
+  )
+  state.blocksApp = computed(
+    () => protectionEnabled && (Boolean(state.blockedReason) || !state.unlocked)
+  )
 
   return state
 }
