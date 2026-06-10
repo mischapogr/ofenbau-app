@@ -20,6 +20,7 @@ async function submitAccessCode() {
   <div
     v-if="protection.isDemo && protection.watermarkEnabled && !protection.blocksApp"
     class="demo-watermark demo-watermark--dark"
+    :style="{ '--wm-factor': protection.watermarkFactor }"
     aria-hidden="true"
   >
     <span v-for="index in 12" :key="index">{{ protection.watermarkText }}</span>
@@ -27,6 +28,7 @@ async function submitAccessCode() {
   <div
     v-if="protection.isDemo && protection.watermarkEnabled && !protection.blocksApp"
     class="demo-watermark demo-watermark--light"
+    :style="{ '--wm-factor': protection.watermarkFactor }"
     aria-hidden="true"
   >
     <span v-for="index in 12" :key="index">{{ protection.watermarkText }}</span>
@@ -102,13 +104,13 @@ async function submitAccessCode() {
 }
 
 .demo-watermark--dark {
-  color: rgba(44, 36, 28, 0.1);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  color: rgba(44, 36, 28, calc(0.1 * var(--wm-factor, 1)));
+  text-shadow: 0 1px 0 rgba(255, 255, 255, calc(0.35 * var(--wm-factor, 1)));
 }
 
 .demo-watermark--light {
-  color: rgba(255, 252, 246, 0.14);
-  text-shadow: 0 1px 2px rgba(24, 20, 18, 0.2);
+  color: rgba(255, 252, 246, calc(0.14 * var(--wm-factor, 1)));
+  text-shadow: 0 1px 2px rgba(24, 20, 18, calc(0.2 * var(--wm-factor, 1)));
   transform: translate(2.4rem, 1.6rem);
 }
 
