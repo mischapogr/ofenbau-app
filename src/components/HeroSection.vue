@@ -1,10 +1,46 @@
 <script setup>
+import { onMounted, ref, watch } from 'vue'
 import BaseButton from './BaseButton.vue'
 import BaseBadge from './BaseBadge.vue'
 import BaseImage from './BaseImage.vue'
 import AppIcon from './AppIcon.vue'
 import { company } from '@/data/company'
 import { homepageAssets, homepageHeroStats } from '@/data/home'
+import { useReducedMotion } from '@/composables/useReducedMotion'
+
+const heroVideo = homepageAssets.hero.video || null
+const reducedMotion = useReducedMotion()
+const videoReady = ref(false)
+const videoPlaying = ref(false)
+const videoEl = ref(null)
+
+onMounted(() => {
+  if (!heroVideo || reducedMotion.value) return
+  // Defer the video request until the browser is idle so the hero image stays LCP.
+  const enable = () => {
+    videoReady.value = true
+  }
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(enable, { timeout: 4000 })
+  } else {
+    setTimeout(enable, 2500)
+  }
+})
+
+watch(reducedMotion, (reduced) => {
+  if (reduced) {
+    videoEl.value?.pause()
+    videoReady.value = false
+    videoPlaying.value = false
+  }
+})
+
+function onVideoCanPlay() {
+  videoEl.value?.play().catch(() => {
+    // Autoplay blocked (e.g. iOS Low Power Mode) — keep the static image.
+    videoReady.value = false
+  })
+}
 </script>
 
 <template>
@@ -46,7 +82,7 @@ import { homepageAssets, homepageHeroStats } from '@/data/home'
       </div>
 
       <!-- Image -->
-      <div class="relative min-h-[340px] lg:min-h-full">
+      <div class="relative min-h-[340px] overflow-hidden lg:min-h-full">
         <BaseImage
           fill
           rounded="rounded-none"
@@ -56,6 +92,23 @@ import { homepageAssets, homepageHeroStats } from '@/data/home'
           eager
           :alt="homepageAssets.hero.alt"
         />
+        <video
+          v-if="heroVideo && videoReady"
+          ref="videoEl"
+          class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+          :class="videoPlaying ? 'opacity-100' : 'opacity-0'"
+          muted
+          loop
+          playsinline
+          :poster="heroVideo.poster"
+          aria-hidden="true"
+          tabindex="-1"
+          @canplay="onVideoCanPlay"
+          @playing="videoPlaying = true"
+        >
+          <source :src="heroVideo.webm" type="video/webm" />
+          <source :src="heroVideo.mp4" type="video/mp4" />
+        </video>
         <div
           class="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink-900/40 to-transparent lg:from-ink-900"
           aria-hidden="true"

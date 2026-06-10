@@ -5,6 +5,8 @@ import BaseButton from './BaseButton.vue'
 import BaseImage from './BaseImage.vue'
 import AppIcon from './AppIcon.vue'
 import { planningDecisionOptions, planningExamples } from '@/data/planning'
+import { useReducedMotion } from '@/composables/useReducedMotion'
+import { useFrameRotation } from '@/composables/useFrameRotation'
 
 const categories = ['Alle', ...new Set(planningExamples.map((example) => example.category))]
 const activeCategory = ref('Alle')
@@ -13,6 +15,9 @@ const activeViewIndex = ref(0)
 const activeDecisionKey = ref(planningDecisionOptions[0]?.key || '')
 const zoom = ref(1)
 const expanded = ref(false)
+const stageMode = ref('view')
+
+const reducedMotion = useReducedMotion()
 
 const visibleExamples = computed(() =>
   activeCategory.value === 'Alle'
@@ -37,25 +42,57 @@ const activeDecision = computed(
     planningDecisionOptions[0]
 )
 
+const currentFrames = computed(() => current.value?.frames || [])
+const rotation = useFrameRotation(currentFrames, { reducedMotion })
+const isRotateMode = computed(() => stageMode.value === 'rotate' && rotation.hasFrames.value)
+const stageLabel = computed(() =>
+  isRotateMode.value
+    ? `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
+    : currentView.value?.label
+)
+const stageText = computed(() =>
+  isRotateMode.value
+    ? 'Ziehen Sie das Bild, um den Entwurf aus verschiedenen Winkeln zu betrachten.'
+    : currentView.value?.text
+)
+
+function syncStageMode() {
+  stageMode.value = rotation.hasFrames.value ? 'rotate' : 'view'
+}
+
 function selectCategory(category) {
   activeCategory.value = category
   activeIndex.value = 0
   activeViewIndex.value = 0
   zoom.value = 1
+  syncStageMode()
 }
 
 function selectExample(index) {
   activeIndex.value = index
   activeViewIndex.value = 0
   zoom.value = 1
+  syncStageMode()
 }
 
 function selectView(index) {
   activeViewIndex.value = index
   zoom.value = 1
+  stageMode.value = 'view'
+}
+
+function enterRotateMode() {
+  if (!rotation.hasFrames.value) return
+  stageMode.value = 'rotate'
+  rotation.resetToCenter()
+  zoom.value = 1
 }
 
 function stepView(dir) {
+  if (isRotateMode.value) {
+    rotation.stepFrame(dir)
+    return
+  }
   const count = currentViews.value.length
   if (!count) return
   activeViewIndex.value = (activeViewIndex.value + dir + count) % count
@@ -77,10 +114,34 @@ function onKey(e) {
   if (e.key === 'ArrowLeft') stepView(-1)
 }
 
+function onStageKey(e) {
+  if (e.key === 'ArrowRight') {
+    stepView(1)
+    e.preventDefault()
+  }
+  if (e.key === 'ArrowLeft') {
+    stepView(-1)
+    e.preventDefault()
+  }
+}
+
+watch(
+  current,
+  (example) => {
+    if (example?.frames?.length) rotation.preloadFrames()
+    syncStageMode()
+  },
+  { immediate: true }
+)
+
 watch(expanded, (isOpen) => {
   document.body.style.overflow = isOpen ? 'hidden' : ''
-  if (isOpen) window.addEventListener('keydown', onKey)
-  else window.removeEventListener('keydown', onKey)
+  if (isOpen) {
+    window.addEventListener('keydown', onKey)
+    rotation.stopAutorotate()
+  } else {
+    window.removeEventListener('keydown', onKey)
+  }
 })
 
 onBeforeUnmount(() => {
@@ -153,7 +214,46 @@ onBeforeUnmount(() => {
               </button>
             </div>
 
-            <div class="h-full overflow-hidden">
+            <div
+              v-if="isRotateMode"
+              class="plan-rotate-stage h-full min-h-[26rem] overflow-hidden"
+              :class="rotation.isDragging.value ? 'plan-rotate-stage--dragging' : ''"
+              role="slider"
+              tabindex="0"
+              aria-label="3D-Rundblick: Winkel mit Pfeiltasten oder Ziehen wechseln"
+              :aria-valuemin="currentFrames[0]?.angle"
+              :aria-valuemax="currentFrames[currentFrames.length - 1]?.angle"
+              :aria-valuenow="rotation.currentFrame.value?.angle"
+              @pointerdown="rotation.onPointerDown"
+              @pointermove="rotation.onPointerMove"
+              @pointerup="rotation.onPointerUp"
+              @pointercancel="rotation.onPointerUp"
+              @lostpointercapture="rotation.onPointerUp"
+              @keydown="onStageKey"
+            >
+              <div
+                class="h-full transition-transform duration-500"
+                :style="{ transform: `scale(${zoom})` }"
+              >
+                <img
+                  v-for="(frame, index) in currentFrames"
+                  v-show="index === rotation.frameIndex.value"
+                  :key="frame.image"
+                  :src="frame.image"
+                  :alt="
+                    index === rotation.frameIndex.value
+                      ? `${current.title} - Rundblick ${frame.angle}°`
+                      : undefined
+                  "
+                  :aria-hidden="index !== rotation.frameIndex.value"
+                  class="h-full w-full object-cover"
+                  draggable="false"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            </div>
+            <div v-else class="h-full overflow-hidden">
               <BaseImage
                 v-if="current"
                 :key="`${current.id}-${currentView?.label}`"
@@ -170,7 +270,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div
-              v-if="currentAnnotations.length"
+              v-if="!isRotateMode && currentAnnotations.length"
               class="pointer-events-none absolute inset-0 z-10"
               aria-hidden="true"
             >
@@ -190,9 +290,44 @@ onBeforeUnmount(() => {
             >
               <div v-if="current">
                 <p class="font-display text-xl font-semibold">
-                  {{ current.title }} · {{ currentView?.label }}
+                  {{ current.title }} · {{ stageLabel }}
                 </p>
-                <p class="mt-1 text-sm text-white/65">{{ currentView?.text }}</p>
+                <p class="mt-1 text-sm text-white/65">{{ stageText }}</p>
+                <div v-if="isRotateMode" class="mt-2 flex items-center gap-3">
+                  <div class="flex items-center gap-1.5">
+                    <button
+                      v-for="(frame, index) in currentFrames"
+                      :key="frame.angle"
+                      type="button"
+                      class="press-feedback h-2.5 w-2.5 rounded-full transition-colors"
+                      :class="
+                        index === rotation.frameIndex.value
+                          ? 'bg-brand-500'
+                          : 'bg-white/25 hover:bg-white/45'
+                      "
+                      :aria-label="`Ansicht ${frame.angle}°`"
+                      :aria-pressed="index === rotation.frameIndex.value"
+                      @click="rotation.goToFrame(index)"
+                    ></button>
+                  </div>
+                  <span class="font-mono text-xs uppercase tracking-label text-white/50">
+                    {{ rotation.currentFrame.value?.angle }}°
+                  </span>
+                  <button
+                    v-if="!reducedMotion"
+                    type="button"
+                    class="press-feedback rounded-full px-3 py-1 text-xs font-semibold transition-colors"
+                    :class="
+                      rotation.autorotate.value
+                        ? 'bg-brand-500 text-white'
+                        : 'bg-white/10 text-white/65 hover:bg-white/20 hover:text-white'
+                    "
+                    :aria-pressed="rotation.autorotate.value"
+                    @click="rotation.toggleAutorotate()"
+                  >
+                    {{ rotation.autorotate.value ? 'Stopp' : 'Rundgang' }}
+                  </button>
+                </div>
               </div>
               <div class="flex items-center gap-2">
                 <button
@@ -261,23 +396,51 @@ onBeforeUnmount(() => {
               </button>
             </div>
 
-            <div v-if="currentViews.length > 1" class="mt-5">
+            <div v-if="currentViews.length > 1 || rotation.hasFrames.value" class="mt-5">
               <p class="text-xs font-semibold uppercase tracking-label text-white/45">Ansichten</p>
-              <div class="mt-3 grid grid-cols-3 gap-2">
+              <button
+                v-if="rotation.hasFrames.value"
+                type="button"
+                class="press-feedback mt-3 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors"
+                :class="
+                  isRotateMode
+                    ? 'bg-brand-500 text-white'
+                    : 'bg-white/8 text-white/65 hover:bg-white/14 hover:text-white'
+                "
+                :aria-pressed="isRotateMode"
+                @click="enterRotateMode"
+              >
+                <AppIcon name="rotate" class="h-4 w-4" />
+                360°-Rundblick
+              </button>
+              <div class="mt-2 grid grid-cols-3 gap-2">
                 <button
                   v-for="(view, index) in currentViews"
                   :key="view.label"
                   type="button"
-                  class="press-feedback rounded-lg px-2 py-2 text-xs font-semibold transition-colors"
+                  class="press-feedback overflow-hidden rounded-lg text-left transition-colors"
                   :class="
-                    activeViewIndex === index
-                      ? 'bg-brand-500 text-white'
-                      : 'bg-white/8 text-white/65 hover:bg-white/14 hover:text-white'
+                    !isRotateMode && activeViewIndex === index
+                      ? 'ring-2 ring-brand-400/70'
+                      : 'opacity-75 ring-1 ring-white/10 hover:opacity-100'
                   "
-                  :aria-pressed="activeViewIndex === index"
+                  :aria-pressed="!isRotateMode && activeViewIndex === index"
                   @click="selectView(index)"
                 >
-                  {{ view.label }}
+                  <BaseImage
+                    :src="view.image"
+                    :motif="current?.motif"
+                    :tone="current?.tone"
+                    :alt="view.label"
+                    ratio="16/10"
+                    rounded="rounded-none"
+                  />
+                  <span
+                    class="block px-2 py-1.5 text-xs font-semibold"
+                    :class="!isRotateMode && activeViewIndex === index ? 'text-white' : 'text-white/65'"
+                  >
+                    {{ view.label }}
+                  </span>
                 </button>
               </div>
             </div>
@@ -375,6 +538,21 @@ onBeforeUnmount(() => {
 
         <figure class="w-full max-w-7xl">
           <img
+            v-if="isRotateMode"
+            :src="rotation.currentFrame.value?.image"
+            :alt="`${current.title} - Rundblick ${rotation.currentFrame.value?.angle}°`"
+            class="plan-rotate-stage max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
+            :class="rotation.isDragging.value ? 'plan-rotate-stage--dragging' : ''"
+            decoding="async"
+            draggable="false"
+            @pointerdown="rotation.onPointerDown"
+            @pointermove="rotation.onPointerMove"
+            @pointerup="rotation.onPointerUp"
+            @pointercancel="rotation.onPointerUp"
+            @lostpointercapture="rotation.onPointerUp"
+          />
+          <img
+            v-else
             :src="currentView?.image"
             :alt="`${current.title} - ${currentView?.label}`"
             class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
@@ -382,9 +560,9 @@ onBeforeUnmount(() => {
           />
           <figcaption class="mt-4 text-center text-white">
             <p class="font-display text-xl font-semibold">
-              {{ current.title }} · {{ currentView?.label }}
+              {{ current.title }} · {{ stageLabel }}
             </p>
-            <p class="mt-1 text-sm text-white/60">{{ currentView?.text }}</p>
+            <p class="mt-1 text-sm text-white/60">{{ stageText }}</p>
           </figcaption>
         </figure>
       </div>
@@ -393,6 +571,17 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.plan-rotate-stage {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.plan-rotate-stage--dragging {
+  cursor: grabbing;
+}
+
 .plan-hotspot {
   position: absolute;
   display: inline-flex;

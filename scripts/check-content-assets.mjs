@@ -157,6 +157,12 @@ for (const example of planningExamples) {
   for (const view of example.views || []) {
     checkImage('planningExamples', `${example.id}.${view.label}`, view.image)
   }
+  for (const [index, frame] of (example.frames || []).entries()) {
+    checkImage('planningExamples', `${example.id}.frame-${index + 1}`, frame.image)
+    if (typeof frame.angle !== 'number') {
+      warnings.push(`planningExamples:${example.id} frame ${index + 1} is missing a numeric angle`)
+    }
+  }
 }
 
 if (planningContentReview.approvedForLaunch !== true) {

@@ -89,3 +89,20 @@ and point the matching `image` field (see `slot`) at `/images/<id>.webp`.
 - **file:** `public/images/contact-map.svg` · **ratio:** 16/10
 - **slot:** Contact page location map / area visual (company.address region 'Musterstadt und Umgebung')
 - **prompt:** Soft, warm-toned stylized map illustration of a small German town and its surrounding region, rendered in cream and sand tones with light streets, gentle parks and a single burnt-orange location pin marking the workshop. Calm, premium, minimal cartographic style matching a warm light brand. No real place names, no readable street labels, no people, no logos. Flat illustrative map aesthetic, generous whitespace.
+
+## planning-frames/<example-id> (pseudo-360 rotation arcs)
+- **files:** `public/images/planning-frames/<example-id>/frame-{01..07}.webp` · **ratio:** 16/10 (1024×640)
+- **slot:** planning.js `planningExamples[].frames` — drag-to-rotate arc in Planning3DExplorer
+- **arc:** 7 frames spanning −60°…+60° in 20° steps. `frame-04` is the 0° reference and is derived
+  from the example's existing Überblick webp (do not regenerate it). Frames were generated locally
+  with the Antigravity CLI (`agy`) `generate_image` tool, passing the Überblick image as reference.
+- **base prompt (per frame):** Use the example's existing Überblick prompt/scene verbatim, then:
+  "The IDENTICAL scene, objects, materials and lighting, but the camera orbited {20|40|60} degrees
+  to the {left|right} around the main subject at constant height and distance, subject centered,
+  photorealistic visualization, wide 16:10 landscape framing."
+- **post-processing:** crop to 16:10 biased slightly above center, scale to 1024×640, encode WebP
+  q82 (target < 200 KB/frame). Example ffmpeg:
+  `ffmpeg -i frame-NN-raw.png -vf "crop=iw:iw*0.625:0:(ih-iw*0.625)*0.4,scale=1024:640" -c:v libwebp -quality 82 frame-NN.webp`
+- **review:** mismatched geometry between neighboring frames looks worse than no rotation —
+  visually review each arc before shipping; examples without a `frames` array gracefully fall back
+  to the view carousel.

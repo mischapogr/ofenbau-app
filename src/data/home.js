@@ -19,6 +19,12 @@ export const homepageAssets = {
   hero: {
     image: '/images/hero.webp',
     alt: 'Moderner Kaminofen mit Sichtfeuer in einem hellen Wohnraum',
+    // Optional Ken-Burns intro loop (npm run gen:video) — remove to disable.
+    video: {
+      webm: '/videos/intro.webm',
+      mp4: '/videos/intro.mp4',
+      poster: '/videos/intro-poster.webp',
+    },
   },
   about: {
     image: '/images/about-craft.webp',

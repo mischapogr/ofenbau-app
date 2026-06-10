@@ -4,11 +4,13 @@ import { join } from 'node:path'
 const root = process.cwd()
 const distDir = join(root, 'dist')
 const publicImagesDir = join(root, 'public', 'images')
+const publicVideosDir = join(root, 'public', 'videos')
 
 const budgets = {
   jsAssetKb: 180,
   cssAssetKb: 60,
   imageKb: 350,
+  videoKb: 5500,
 }
 
 const failures = []
@@ -51,9 +53,26 @@ function checkImages() {
   }
 }
 
+function checkVideos() {
+  let videos = []
+  try {
+    videos = walk(publicVideosDir).filter((file) => /\.(webm|mp4)$/i.test(file))
+  } catch {
+    return // no public/videos yet
+  }
+
+  for (const video of videos) {
+    const size = kb(video)
+    if (size > budgets.videoKb) {
+      warnings.push(`${video} is ${size} KB, over video review threshold ${budgets.videoKb} KB`)
+    }
+  }
+}
+
 try {
   checkAssets()
   checkImages()
+  checkVideos()
 } catch (error) {
   failures.push(error.message)
 }
@@ -62,6 +81,7 @@ console.log('Performance budget report')
 console.log(`JS asset budget: ${budgets.jsAssetKb} KB`)
 console.log(`CSS asset budget: ${budgets.cssAssetKb} KB`)
 console.log(`Image review threshold: ${budgets.imageKb} KB`)
+console.log(`Video review threshold: ${budgets.videoKb} KB`)
 console.log('')
 
 if (warnings.length) {
