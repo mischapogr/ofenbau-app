@@ -118,6 +118,66 @@ export const planningExamples = [
       { angle: 40, image: '/images/planning-frames/kachelofen-eckscheibe/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/kachelofen-eckscheibe/frame-07.webp' },
     ],
+    // Decision simulation: per choice an alternative visualization of this example.
+    // Choices matching the base configuration point at the base Überblick image.
+    variants: {
+      form: {
+        'gerade Linie': {
+          image: '/images/planning-variants/kachelofen-eckscheibe/form-gerade-linie.webp',
+          text: 'Gerader, wandbündiger Ofenkörper ohne Eckversatz.',
+        },
+        Ecke: {
+          image: '/images/planning-example-kachelofen-eckscheibe.webp',
+          text: 'Eckform mit gestuftem Speicherkörper — die Basisvariante.',
+        },
+        Sitzbank: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/form-sitzbank.webp',
+          text: 'Umlaufende beheizte Sitzbank entlang der Wand.',
+        },
+      },
+      material: {
+        Keramik: {
+          image: '/images/planning-example-kachelofen-eckscheibe.webp',
+          text: 'Handgesetzte Keramikkacheln in Creme — die Basisvariante.',
+        },
+        Naturstein: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/material-naturstein.webp',
+          text: 'Warme Natursteinplatten mit sichtbarer Textur.',
+        },
+        Putz: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/material-putz.webp',
+          text: 'Monolithisch glatt verputzte Oberfläche ohne Fugen.',
+        },
+      },
+      view: {
+        frontal: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/view-frontal.webp',
+          text: 'Flache frontale Sichtscheibe.',
+        },
+        Eckscheibe: {
+          image: '/images/planning-example-kachelofen-eckscheibe.webp',
+          text: 'Über Eck verglaster Feuerraum — die Basisvariante.',
+        },
+        Panorama: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/view-panorama.webp',
+          text: 'Dreiseitig umlaufende Panorama-Sichtscheibe.',
+        },
+      },
+      detail: {
+        Fuge: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/detail-fuge.webp',
+          text: 'Fugenbild und Glanzgrad der Keramik im Detail.',
+        },
+        Kante: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/detail-kante.webp',
+          text: 'Handgearbeitete Kachelkante und Eckprofil.',
+        },
+        Anschluss: {
+          image: '/images/planning-variants/kachelofen-eckscheibe/detail-anschluss.webp',
+          text: 'Sauberer Anschluss von Ofenkörper, Wand und Boden.',
+        },
+      },
+    },
     motif: 'flame',
     tone: 'ember',
     description:

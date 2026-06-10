@@ -45,19 +45,63 @@ const activeDecision = computed(
 const currentFrames = computed(() => current.value?.frames || [])
 const rotation = useFrameRotation(currentFrames, { reducedMotion })
 const isRotateMode = computed(() => stageMode.value === 'rotate' && rotation.hasFrames.value)
-const stageLabel = computed(() =>
-  isRotateMode.value
-    ? `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
-    : currentView.value?.label
+
+const activeVariant = ref(null) // { key, choice }
+const currentVariants = computed(() => current.value?.variants || null)
+const activeVariantData = computed(() =>
+  activeVariant.value
+    ? currentVariants.value?.[activeVariant.value.key]?.[activeVariant.value.choice] || null
+    : null
 )
-const stageText = computed(() =>
-  isRotateMode.value
-    ? 'Ziehen Sie das Bild, um den Entwurf aus verschiedenen Winkeln zu betrachten.'
-    : currentView.value?.text
-)
+const isVariantMode = computed(() => stageMode.value === 'variant' && Boolean(activeVariantData.value))
+
+function variantFor(key, choice) {
+  return currentVariants.value?.[key]?.[choice] || null
+}
+
+const stageLabel = computed(() => {
+  if (isVariantMode.value) {
+    const option = planningDecisionOptions.find((item) => item.key === activeVariant.value.key)
+    return `Simulation: ${option?.label} · ${activeVariant.value.choice}`
+  }
+  if (isRotateMode.value) return `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
+  return currentView.value?.label
+})
+const stageText = computed(() => {
+  if (isVariantMode.value) return activeVariantData.value?.text
+  if (isRotateMode.value)
+    return 'Ziehen Sie das Bild, um den Entwurf aus verschiedenen Winkeln zu betrachten.'
+  return currentView.value?.text
+})
 
 function syncStageMode() {
+  activeVariant.value = null
   stageMode.value = rotation.hasFrames.value ? 'rotate' : 'view'
+}
+
+function selectChoice(option, choice) {
+  if (!variantFor(option.key, choice)) return
+  activeDecisionKey.value = option.key
+  const isSame =
+    activeVariant.value?.key === option.key && activeVariant.value?.choice === choice
+  if (isSame) {
+    syncStageMode()
+    return
+  }
+  activeVariant.value = { key: option.key, choice }
+  stageMode.value = 'variant'
+  rotation.stopAutorotate()
+  zoom.value = 1
+}
+
+function stepVariant(dir) {
+  const option = planningDecisionOptions.find((item) => item.key === activeVariant.value?.key)
+  if (!option) return
+  const choices = option.choices.filter((choice) => variantFor(option.key, choice))
+  const index = choices.indexOf(activeVariant.value.choice)
+  if (index === -1 || choices.length < 2) return
+  const next = choices[(index + dir + choices.length) % choices.length]
+  activeVariant.value = { key: option.key, choice: next }
 }
 
 function selectCategory(category) {
@@ -78,17 +122,23 @@ function selectExample(index) {
 function selectView(index) {
   activeViewIndex.value = index
   zoom.value = 1
+  activeVariant.value = null
   stageMode.value = 'view'
 }
 
 function enterRotateMode() {
   if (!rotation.hasFrames.value) return
+  activeVariant.value = null
   stageMode.value = 'rotate'
   rotation.resetToCenter()
   zoom.value = 1
 }
 
 function stepView(dir) {
+  if (isVariantMode.value) {
+    stepVariant(dir)
+    return
+  }
   if (isRotateMode.value) {
     rotation.stepFrame(dir)
     return
@@ -253,6 +303,20 @@ onBeforeUnmount(() => {
                 />
               </div>
             </div>
+            <div v-else-if="isVariantMode" class="h-full overflow-hidden">
+              <BaseImage
+                :key="`${current.id}-${activeVariant.key}-${activeVariant.choice}`"
+                :src="activeVariantData.image"
+                :motif="current?.motif"
+                :tone="current?.tone"
+                :alt="`${current?.title} - ${stageLabel}`"
+                ratio="16/10"
+                rounded="rounded-none"
+                eager
+                class="h-full min-h-[26rem] transition-transform duration-500"
+                :style="{ transform: `scale(${zoom})` }"
+              />
+            </div>
             <div v-else class="h-full overflow-hidden">
               <BaseImage
                 v-if="current"
@@ -270,7 +334,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div
-              v-if="!isRotateMode && currentAnnotations.length"
+              v-if="!isRotateMode && !isVariantMode && currentAnnotations.length"
               class="pointer-events-none absolute inset-0 z-10"
               aria-hidden="true"
             >
@@ -467,14 +531,38 @@ onBeforeUnmount(() => {
                 </button>
               </div>
               <div v-if="activeDecision" class="mt-3 flex flex-wrap gap-2">
-                <span
-                  v-for="choice in activeDecision.choices"
-                  :key="choice"
-                  class="rounded-full bg-white/8 px-3 py-1 text-xs text-white/70"
-                >
-                  {{ choice }}
-                </span>
+                <template v-for="choice in activeDecision.choices" :key="choice">
+                  <button
+                    v-if="variantFor(activeDecision.key, choice)"
+                    type="button"
+                    class="press-feedback rounded-full px-3 py-1 text-xs font-semibold transition-colors"
+                    :class="
+                      isVariantMode &&
+                      activeVariant?.key === activeDecision.key &&
+                      activeVariant?.choice === choice
+                        ? 'bg-brand-500 text-white'
+                        : 'bg-white/8 text-white/70 hover:bg-white/16 hover:text-white'
+                    "
+                    :aria-pressed="
+                      isVariantMode &&
+                      activeVariant?.key === activeDecision.key &&
+                      activeVariant?.choice === choice
+                    "
+                    @click="selectChoice(activeDecision, choice)"
+                  >
+                    {{ choice }}
+                  </button>
+                  <span v-else class="rounded-full bg-white/8 px-3 py-1 text-xs text-white/70">
+                    {{ choice }}
+                  </span>
+                </template>
               </div>
+              <p
+                v-if="currentVariants"
+                class="mt-2 text-xs text-white/45"
+              >
+                Variante antippen, um sie in der Bühne zu sehen.
+              </p>
             </div>
 
             <div v-if="current" class="mt-5 flex flex-wrap gap-2">
@@ -550,6 +638,13 @@ onBeforeUnmount(() => {
             @pointerup="rotation.onPointerUp"
             @pointercancel="rotation.onPointerUp"
             @lostpointercapture="rotation.onPointerUp"
+          />
+          <img
+            v-else-if="isVariantMode"
+            :src="activeVariantData.image"
+            :alt="`${current.title} - ${stageLabel}`"
+            class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
+            decoding="async"
           />
           <img
             v-else

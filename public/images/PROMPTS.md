@@ -106,3 +106,15 @@ and point the matching `image` field (see `slot`) at `/images/<id>.webp`.
 - **review:** mismatched geometry between neighboring frames looks worse than no rotation —
   visually review each arc before shipping; examples without a `frames` array gracefully fall back
   to the view carousel.
+
+## planning-variants/<example-id> (decision simulation)
+- **files:** `public/images/planning-variants/<example-id>/<decisionKey>-<choice-slug>.webp` · **ratio:** 16/10 (1024×640)
+- **slot:** planning.js `planningExamples[].variants[key][choice]` — clickable choice chips in the
+  "Entscheidung simulieren" panel swap the explorer stage to the variant visualization.
+- **base prompt (per variant):** Use the example's Überblick image as reference, then describe ONLY
+  the changed aspect, e.g. "the stove re-clad in warm beige natural stone slabs instead of ceramic
+  tiles, same form with bench and corner window; room, lighting and furniture unchanged."
+  Detail choices (Fuge/Kante/Anschluss) are extreme close-up macro shots of the same stove.
+- **base-matching choices** (e.g. Ecke / Keramik / Eckscheibe for kachelofen-eckscheibe) point at
+  the existing base webp — do not generate duplicates.
+- **post-processing:** same as planning-frames (crop 16:10 biased up, 1024×640, WebP q82).

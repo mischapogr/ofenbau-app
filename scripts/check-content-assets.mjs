@@ -163,6 +163,11 @@ for (const example of planningExamples) {
       warnings.push(`planningExamples:${example.id} frame ${index + 1} is missing a numeric angle`)
     }
   }
+  for (const [key, choices] of Object.entries(example.variants || {})) {
+    for (const [choice, variant] of Object.entries(choices)) {
+      checkImage('planningExamples', `${example.id}.variant-${key}-${choice}`, variant.image)
+    }
+  }
 }
 
 if (planningContentReview.approvedForLaunch !== true) {
