@@ -42,7 +42,11 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     if (!hasFrames.value) return
     stopAutorotate()
     event.currentTarget.setPointerCapture?.(event.pointerId)
-    drag = { startX: event.clientX, startFrame: frameIndex.value, width: event.currentTarget.clientWidth }
+    drag = {
+      startX: event.clientX,
+      startFrame: frameIndex.value,
+      width: event.currentTarget.clientWidth,
+    }
     isDragging.value = true
   }
 
