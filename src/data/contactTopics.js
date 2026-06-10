@@ -36,8 +36,8 @@ export const contactTopics = [
   },
   {
     value: '3d-planung',
-    label: '3D-Planung & Entwürfe',
-    subject: '3D-Planung & Entwürfe',
+    label: '3D-Planung erleben',
+    subject: '3D-Planung erleben',
     review: { ...pendingTopicApproval },
   },
   {

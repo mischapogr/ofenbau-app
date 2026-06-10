@@ -35,7 +35,7 @@ export const primaryNav = [
   { name: 'Start', to: { name: 'home' } },
   { name: 'Leistungen', to: { name: 'services' } },
   { name: 'Projekte', to: { name: 'projects' } },
-  { name: '3D-Planung', to: { name: 'service-detail', params: { slug: '3d-planung' } } },
+  { name: '3D erleben', to: { name: 'service-detail', params: { slug: '3d-planung' } } },
   { name: 'Über uns', to: { name: 'about' } },
   { name: 'Kontakt', to: { name: 'contact' } },
 ]

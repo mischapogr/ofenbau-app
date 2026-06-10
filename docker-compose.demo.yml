@@ -1,0 +1,81 @@
+# Persistent customer-demo stack.
+#   npm run demo:up       → build the obfuscated demo, serve it, open a quick tunnel
+#   npm run demo:url      → print the current https://<random>.trycloudflare.com link
+#   npm run demo:refresh  → rotate to a brand-new tunnel URL and print it
+#   npm run demo:down     → stop everything
+#
+# The quick-tunnel hostname is random and changes whenever the tunnel process
+# restarts (reboot, crash, or `demo:refresh`). That is fine: the demo build's
+# host allowlist already permits *.trycloudflare.com, so a new URL needs no
+# rebuild — just re-share the link plus the access code. A *permanent* URL would
+# require a named tunnel + a domain on Cloudflare (see docs/DEMO_TUNNEL.md).
+#
+# Own compose project so it never collides with the dev (docker-compose.yml) or
+# prod (docker-compose.prod.yml) stacks that share this directory.
+name: ofenbau-demo
+services:
+  demo-web:
+    container_name: ofenbau-demo-web
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Mount the repo so .env.demo and source are read at build time …
+      - .:/app
+      # … but keep the image's installed node_modules (anonymous volume).
+      - /app/node_modules
+    # Rebuild the obfuscated demo on every (re)start, then serve it with the
+    # same `vite preview` the manual flow used. Build is ~8s.
+    command: sh -c "npm run build:demo && npm run preview:demo"
+    environment:
+      # vite preview proxies /api → this target (the contact API container),
+      # so the demo contact form works. See preview.proxy in vite.config.js.
+      - PREVIEW_API_PROXY=http://api:3000
+    expose:
+      - '5174'
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  api:
+    container_name: ofenbau-demo-api
+    build:
+      context: .
+      dockerfile: Dockerfile.contact
+    environment:
+      PORT: 3000
+      # Captured by the local Mailpit sink — nothing is delivered externally.
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM: no-reply@ofenbau-mustermann.demo
+      MAIL_TO: info@ofenbau-mustermann.demo
+    depends_on:
+      - mailpit
+    restart: unless-stopped
+
+  mailpit:
+    container_name: ofenbau-demo-mailpit
+    image: axllent/mailpit:latest
+    environment:
+      - MP_SMTP_AUTH_ACCEPT_ANY=1
+      - MP_SMTP_AUTH_ALLOW_INSECURE=1
+    ports:
+      # Web UI to inspect captured demo submissions (localhost only). Same port
+      # as the dev stack (8023) — don't run dev + demo mailpit at the same time.
+      - '127.0.0.1:8023:8025'
+    restart: unless-stopped
+
+  demo-tunnel:
+    container_name: ofenbau-demo-tunnel
+    image: cloudflare/cloudflared:latest
+    # --http-host-header localhost:5174 → vite preview's allowedHosts check sees
+    #   `localhost` regardless of the random tunnel subdomain (the browser-side
+    #   access gate is covered by the *.trycloudflare.com entry in .env.demo).
+    # --metrics exposes /quicktunnel, which scripts/demo-tunnel-url.mjs reads.
+    command: tunnel --no-autoupdate --metrics 0.0.0.0:20241 --url http://demo-web:5174 --http-host-header localhost:5174
+    ports:
+      # Metrics endpoint, localhost-only, used to read the current public URL.
+      - '127.0.0.1:20241:20241'
+    depends_on:
+      - demo-web
+    restart: unless-stopped

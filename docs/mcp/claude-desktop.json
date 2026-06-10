@@ -9,7 +9,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/absolute/path/to/ofenbau-mustermann-app"
+        "/absolute/path/to/ofenbau-app"
       ]
     },
     "sequential-thinking": {

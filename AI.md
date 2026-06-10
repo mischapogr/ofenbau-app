@@ -5,7 +5,7 @@ Universal guidance file for AI coding agents working in this repository
 
 ## Project
 
-**ofenbau-mustermann-app** — marketing website for Ofenbau Mustermann, a stove &
+**ofenbau-app** — marketing website for Ofenbau Mustermann, a stove &
 fireplace (Kachelofen / Kamin) craft business. Content is German.
 
 ## Stack & package manager

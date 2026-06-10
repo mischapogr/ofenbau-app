@@ -22,14 +22,14 @@ async function submitAccessCode() {
     class="demo-watermark demo-watermark--dark"
     aria-hidden="true"
   >
-    <span v-for="index in 32" :key="index">{{ protection.watermarkText }}</span>
+    <span v-for="index in 12" :key="index">{{ protection.watermarkText }}</span>
   </div>
   <div
     v-if="protection.isDemo && protection.watermarkEnabled && !protection.blocksApp"
     class="demo-watermark demo-watermark--light"
     aria-hidden="true"
   >
-    <span v-for="index in 32" :key="index">{{ protection.watermarkText }}</span>
+    <span v-for="index in 12" :key="index">{{ protection.watermarkText }}</span>
   </div>
 
   <aside
@@ -83,9 +83,9 @@ async function submitAccessCode() {
   inset: 0;
   z-index: 70;
   display: grid;
-  grid-template-columns: repeat(4, minmax(12rem, 1fr));
-  gap: 2.35rem 1.25rem;
-  padding: 1.5rem;
+  grid-template-columns: repeat(3, minmax(14rem, 1fr));
+  gap: 5rem 3rem;
+  padding: 2.5rem;
   pointer-events: none;
   overflow: hidden;
   font-family: 'Space Mono', monospace;
@@ -102,13 +102,13 @@ async function submitAccessCode() {
 }
 
 .demo-watermark--dark {
-  color: rgba(44, 36, 28, 0.24);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: rgba(44, 36, 28, 0.1);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .demo-watermark--light {
-  color: rgba(255, 252, 246, 0.32);
-  text-shadow: 0 1px 2px rgba(24, 20, 18, 0.3);
+  color: rgba(255, 252, 246, 0.14);
+  text-shadow: 0 1px 2px rgba(24, 20, 18, 0.2);
   transform: translate(2.4rem, 1.6rem);
 }
 
@@ -122,6 +122,7 @@ async function submitAccessCode() {
   bottom: 1rem;
   z-index: 80;
   display: grid;
+  pointer-events: none;
   max-width: min(34rem, calc(100vw - 2rem));
   gap: 0.22rem;
   border: 1px solid rgba(44, 36, 28, 0.2);
@@ -235,7 +236,7 @@ async function submitAccessCode() {
 @media (max-width: 640px) {
   .demo-watermark {
     grid-template-columns: repeat(2, minmax(10rem, 1fr));
-    gap: 2rem 1rem;
+    gap: 3.5rem 2rem;
     font-size: 0.72rem;
   }
 

@@ -1,0 +1,6 @@
+# Cloudflare Pages project config for the persistent customer demo.
+# Deployed via `npm run demo:pages` (Wrangler direct upload — no GitHub).
+# Permanent URL: https://ofenbau-demo.pages.dev
+name = "ofenbau-demo"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-06-10"

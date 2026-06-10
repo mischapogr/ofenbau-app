@@ -1,5 +1,5 @@
 {
-  "name": "ofenbau-mustermann-app",
+  "name": "ofenbau-app",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,6 +15,11 @@
     "build:demo": "node scripts/generate-seo-assets.mjs --mode demo && vite build --mode demo",
     "preview": "vite preview --host 0.0.0.0 --port 5173",
     "preview:demo": "vite preview --host 0.0.0.0 --port 5174",
+    "demo:up": "docker compose -f docker-compose.demo.yml up -d --build",
+    "demo:url": "node scripts/demo-tunnel-url.mjs",
+    "demo:refresh": "docker compose -f docker-compose.demo.yml restart demo-tunnel && sleep 6 && node scripts/demo-tunnel-url.mjs",
+    "demo:down": "docker compose -f docker-compose.demo.yml down",
+    "demo:pages": "npm run build:demo && wrangler pages deploy dist --project-name=ofenbau-demo --branch=main",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write \"src/**/*.{js,vue,css,json}\"",
@@ -75,6 +80,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "wrangler": "^4.20.0"
   }
 }

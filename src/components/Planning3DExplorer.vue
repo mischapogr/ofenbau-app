@@ -4,12 +4,13 @@ import BaseContainer from './BaseContainer.vue'
 import BaseButton from './BaseButton.vue'
 import BaseImage from './BaseImage.vue'
 import AppIcon from './AppIcon.vue'
-import { planningExamples } from '@/data/planning'
+import { planningDecisionOptions, planningExamples } from '@/data/planning'
 
 const categories = ['Alle', ...new Set(planningExamples.map((example) => example.category))]
 const activeCategory = ref('Alle')
 const activeIndex = ref(0)
 const activeViewIndex = ref(0)
+const activeDecisionKey = ref(planningDecisionOptions[0]?.key || '')
 const zoom = ref(1)
 const expanded = ref(false)
 
@@ -26,6 +27,14 @@ const currentViews = computed(() =>
 )
 const currentView = computed(
   () => currentViews.value[activeViewIndex.value] || currentViews.value[0] || null
+)
+const currentAnnotations = computed(
+  () => currentView.value?.annotations || current.value?.annotations || []
+)
+const activeDecision = computed(
+  () =>
+    planningDecisionOptions.find((option) => option.key === activeDecisionKey.value) ||
+    planningDecisionOptions[0]
 )
 
 function selectCategory(category) {
@@ -84,13 +93,13 @@ onBeforeUnmount(() => {
   <section class="section bg-surface-muted">
     <BaseContainer>
       <div v-reveal class="max-w-2xl">
-        <p class="eyebrow">3D-Beispiele</p>
+        <p class="eyebrow">3D-Planung erleben</p>
         <h2 class="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-          Entwürfe mit eigener 3D-Navigation
+          Von Idee, Material und Raum zur sicheren Entscheidung
         </h2>
         <p class="mt-4 text-lg leading-relaxed text-content-muted">
-          Wechseln Sie zwischen Ofen, Schornstein, Bad und Materialdetails. Die vergrößerte Ansicht
-          lässt sich wie ein Planungsmodell schrittweise betrachten.
+          Wechseln Sie zwischen Use Cases, Perspektiven, Planungsdetails und Entscheidungen. So
+          sehen Sie vor der Umsetzung, wie Ofen, Material und Raum zusammenwirken.
         </p>
       </div>
 
@@ -158,6 +167,22 @@ onBeforeUnmount(() => {
                 class="h-full min-h-[26rem] transition-transform duration-500"
                 :style="{ transform: `scale(${zoom})` }"
               />
+            </div>
+
+            <div
+              v-if="currentAnnotations.length"
+              class="pointer-events-none absolute inset-0 z-10"
+              aria-hidden="true"
+            >
+              <span
+                v-for="annotation in currentAnnotations"
+                :key="annotation.label"
+                class="plan-hotspot"
+                :style="{ top: annotation.top, left: annotation.left }"
+              >
+                <span class="plan-hotspot__dot"></span>
+                <span class="plan-hotspot__label">{{ annotation.label }}</span>
+              </span>
             </div>
 
             <div
@@ -257,6 +282,38 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
+            <div class="mt-5 border-t border-white/10 pt-5">
+              <p class="text-xs font-semibold uppercase tracking-label text-white/45">
+                Entscheidung simulieren
+              </p>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <button
+                  v-for="option in planningDecisionOptions"
+                  :key="option.key"
+                  type="button"
+                  class="press-feedback rounded-lg px-3 py-2 text-left text-xs font-semibold transition-colors"
+                  :class="
+                    activeDecisionKey === option.key
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-white/8 text-white/65 hover:bg-white/14 hover:text-white'
+                  "
+                  :aria-pressed="activeDecisionKey === option.key"
+                  @click="activeDecisionKey = option.key"
+                >
+                  {{ option.label }}
+                </button>
+              </div>
+              <div v-if="activeDecision" class="mt-3 flex flex-wrap gap-2">
+                <span
+                  v-for="choice in activeDecision.choices"
+                  :key="choice"
+                  class="rounded-full bg-white/8 px-3 py-1 text-xs text-white/70"
+                >
+                  {{ choice }}
+                </span>
+              </div>
+            </div>
+
             <div v-if="current" class="mt-5 flex flex-wrap gap-2">
               <span
                 v-for="spec in current.specs"
@@ -336,6 +393,37 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.plan-hotspot {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transform: translate(-0.75rem, -50%);
+}
+
+.plan-hotspot__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  background: rgb(var(--color-brand-500));
+  box-shadow: 0 0 0 0.35rem rgba(227, 82, 5, 0.28);
+}
+
+.plan-hotspot__label {
+  max-width: 8rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.24rem 0.55rem;
+  background: rgba(24, 20, 18, 0.72);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
 .plan-view-enter-active,
 .plan-view-leave-active {
   transition: opacity 0.22s ease;
@@ -343,5 +431,11 @@ onBeforeUnmount(() => {
 .plan-view-enter-from,
 .plan-view-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .plan-hotspot__label {
+    display: none;
+  }
 }
 </style>

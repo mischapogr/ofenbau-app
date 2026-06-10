@@ -19,14 +19,14 @@ import { planningBenefits } from '@/data/planning'
           <div>
             <BaseBadge tone="onDark" class="w-fit">
               <AppIcon name="render" class="h-3.5 w-3.5 text-brand-400" />
-              3D-Planung &amp; Entwürfe
+              3D-Planung erleben
             </BaseBadge>
             <h2 class="mt-5 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-              Ihre Vision in 3D — sehen, bevor wir bauen
+              Ihre Vision in 3D — erleben, bevor wir bauen
             </h2>
             <p class="mt-4 text-lg leading-relaxed text-white/70">
               Wir visualisieren Ofen und Flächen fotorealistisch im echten Raum. So entscheiden Sie
-              sicher — bei Form, Material und Kosten.
+              sicher — bei Form, Material, Details und Kosten.
             </p>
 
             <ul class="mt-8 space-y-5">

@@ -46,6 +46,29 @@ export const planningServices = [
   },
 ]
 
+export const planningDecisionOptions = [
+  {
+    key: 'form',
+    label: 'Form',
+    choices: ['gerade Linie', 'Ecke', 'Sitzbank'],
+  },
+  {
+    key: 'material',
+    label: 'Material',
+    choices: ['Keramik', 'Naturstein', 'Putz'],
+  },
+  {
+    key: 'view',
+    label: 'Sichtscheibe',
+    choices: ['frontal', 'Eckscheibe', 'Panorama'],
+  },
+  {
+    key: 'detail',
+    label: 'Detail',
+    choices: ['Fuge', 'Kante', 'Anschluss'],
+  },
+]
+
 export const planningExamples = [
   {
     id: 'kachelofen-eckscheibe',
@@ -58,16 +81,32 @@ export const planningExamples = [
         label: 'Überblick',
         image: '/images/planning-example-kachelofen-eckscheibe.webp',
         text: 'Frontale Gesamtansicht mit Sitzbank, Ofenkörper und Eckscheibe.',
+        annotations: [
+          { label: 'Sitzbank', top: '66%', left: '27%' },
+          { label: 'Sichtscheibe', top: '58%', left: '50%' },
+          { label: 'Keramikfläche', top: '38%', left: '45%' },
+          { label: 'Speicherkörper', top: '29%', left: '54%' },
+        ],
       },
       {
         label: 'Perspektive',
         image: '/images/planning-example-kachelofen-perspective.webp',
         text: 'Seitliche Perspektive für Tiefe, Sitzbank und Raumwirkung.',
+        annotations: [
+          { label: 'Raumtiefe', top: '48%', left: '56%' },
+          { label: 'Sitzkante', top: '66%', left: '35%' },
+          { label: 'Feuerraum', top: '55%', left: '48%' },
+        ],
       },
       {
         label: 'Detail',
         image: '/images/planning-example-kachelofen-detail.webp',
         text: 'Detailansicht von Keramik, Fugenbild, Kanten und Feuerraum.',
+        annotations: [
+          { label: 'Fugenbild', top: '40%', left: '36%' },
+          { label: 'Kachelkante', top: '55%', left: '53%' },
+          { label: 'Feuerraum', top: '54%', left: '66%' },
+        ],
       },
     ],
     motif: 'flame',
@@ -75,6 +114,12 @@ export const planningExamples = [
     description:
       'Räumlicher Entwurf eines handgesetzten Kachelofens mit Sitzbank, keramischer Oberfläche und Eck-Sichtfenster.',
     specs: ['Kachelkeramik', 'Sitzbank', 'Eckscheibe', 'Speicherwärme'],
+    annotations: [
+      { label: 'Sitzbank', top: '66%', left: '27%' },
+      { label: 'Sichtscheibe', top: '58%', left: '50%' },
+      { label: 'Keramikfläche', top: '38%', left: '45%' },
+      { label: 'Speicherkörper', top: '29%', left: '54%' },
+    ],
     review: { ...pendingPlanningApproval },
   },
   {
@@ -88,16 +133,32 @@ export const planningExamples = [
         label: 'Schnitt',
         image: '/images/planning-example-schornstein-kaminofen.webp',
         text: 'Innen- und Außenbezug mit Ofenanschluss und Wanddurchführung.',
+        annotations: [
+          { label: 'Wanddurchführung', top: '52%', left: '50%' },
+          { label: 'Ofenanschluss', top: '52%', left: '43%' },
+          { label: 'Außenführung', top: '34%', left: '66%' },
+          { label: 'Brandschutz', top: '46%', left: '54%' },
+        ],
       },
       {
         label: 'Außen',
         image: '/images/planning-example-schornstein-exterior.webp',
         text: 'Fassadenansicht mit Schornsteinführung, Haltern und Dachabschluss.',
+        annotations: [
+          { label: 'Dachabschluss', top: '18%', left: '59%' },
+          { label: 'Rohrführung', top: '43%', left: '61%' },
+          { label: 'Wandhalter', top: '55%', left: '55%' },
+        ],
       },
       {
         label: 'Anschluss',
         image: '/images/planning-example-schornstein-detail.webp',
         text: 'Detailansicht von Wanddurchführung, Schelle und Edelstahlrohr.',
+        annotations: [
+          { label: 'Schelle', top: '38%', left: '51%' },
+          { label: 'Dichtkragen', top: '52%', left: '43%' },
+          { label: 'Edelstahlrohr', top: '45%', left: '62%' },
+        ],
       },
     ],
     motif: 'chimney',
@@ -105,6 +166,12 @@ export const planningExamples = [
     description:
       'Planungsansicht für Kaminofen, Wanddurchführung und Edelstahl-Außenschornstein inklusive Anschlussdetails.',
     specs: ['Edelstahl', 'Wanddurchführung', 'Brandschutz', 'Ofenanschluss'],
+    annotations: [
+      { label: 'Wanddurchführung', top: '52%', left: '50%' },
+      { label: 'Ofenanschluss', top: '52%', left: '43%' },
+      { label: 'Außenführung', top: '34%', left: '66%' },
+      { label: 'Brandschutz', top: '46%', left: '54%' },
+    ],
     review: { ...pendingPlanningApproval },
   },
   {
@@ -118,16 +185,32 @@ export const planningExamples = [
         label: 'Überblick',
         image: '/images/planning-example-bad-fliesen.webp',
         text: 'Gesamtplanung mit Dusche, Wanne, Waschtisch und Fliesenraster.',
+        annotations: [
+          { label: 'Fliesenraster', top: '33%', left: '75%' },
+          { label: 'Duschbereich', top: '52%', left: '36%' },
+          { label: 'Nische', top: '41%', left: '36%' },
+          { label: 'Bodenanschluss', top: '66%', left: '36%' },
+        ],
       },
       {
         label: 'Raum',
         image: '/images/planning-example-bad-perspective.webp',
         text: 'Eingangsperspektive für Wegeführung, Licht und Materialwirkung.',
+        annotations: [
+          { label: 'Wegeführung', top: '62%', left: '47%' },
+          { label: 'Lichtkante', top: '29%', left: '38%' },
+          { label: 'Materialwirkung', top: '44%', left: '68%' },
+        ],
       },
       {
         label: 'Detail',
         image: '/images/planning-example-bad-detail.webp',
         text: 'Duschdetail mit Nische, Bodenanschluss, Ablauf und Fugenbild.',
+        annotations: [
+          { label: 'Nische', top: '33%', left: '45%' },
+          { label: 'Ablauf', top: '66%', left: '44%' },
+          { label: 'Fugenbild', top: '48%', left: '62%' },
+        ],
       },
     ],
     motif: 'tile',
@@ -135,6 +218,12 @@ export const planningExamples = [
     description:
       'Fotorealistischer Badentwurf mit Fliesenraster, Dusche, Wanne und Materialabstimmung vor Ausführung.',
     specs: ['Großformat', 'Natursteinoptik', 'Duschbereich', 'Fugenbild'],
+    annotations: [
+      { label: 'Fliesenraster', top: '33%', left: '75%' },
+      { label: 'Duschbereich', top: '52%', left: '36%' },
+      { label: 'Nische', top: '41%', left: '36%' },
+      { label: 'Bodenanschluss', top: '66%', left: '36%' },
+    ],
     review: { ...pendingPlanningApproval },
   },
   {
@@ -148,16 +237,32 @@ export const planningExamples = [
         label: 'Detail',
         image: '/images/planning-example-materialien.webp',
         text: 'Materialauswahl mit Keramik, Naturstein, Putz und Metallrahmen.',
+        annotations: [
+          { label: 'Keramik', top: '24%', left: '22%' },
+          { label: 'Naturstein', top: '58%', left: '17%' },
+          { label: 'Putzstruktur', top: '55%', left: '45%' },
+          { label: 'Metallrahmen', top: '72%', left: '49%' },
+        ],
       },
       {
         label: 'Board',
         image: '/images/planning-example-materialien-perspective.webp',
         text: 'Breitere Materialtafel neben dem geplanten Kamin.',
+        annotations: [
+          { label: 'Materialtafel', top: '40%', left: '31%' },
+          { label: 'Kaminbezug', top: '45%', left: '70%' },
+          { label: 'Oberfläche', top: '61%', left: '43%' },
+        ],
       },
       {
         label: 'Makro',
         image: '/images/planning-example-materialien-detail.webp',
         text: 'Nahansicht der Oberflächen für Glanz, Relief und Steinstruktur.',
+        annotations: [
+          { label: 'Glanzgrad', top: '34%', left: '32%' },
+          { label: 'Relief', top: '51%', left: '48%' },
+          { label: 'Steinstruktur', top: '59%', left: '65%' },
+        ],
       },
     ],
     motif: 'swatch',
@@ -165,6 +270,12 @@ export const planningExamples = [
     description:
       'Detailansicht für Kachel, Naturstein, Putzstruktur und Feuerraumrahmen als Entscheidungshilfe.',
     specs: ['Keramik', 'Naturstein', 'Putz', 'Metallrahmen'],
+    annotations: [
+      { label: 'Keramik', top: '24%', left: '22%' },
+      { label: 'Naturstein', top: '58%', left: '17%' },
+      { label: 'Putzstruktur', top: '55%', left: '45%' },
+      { label: 'Metallrahmen', top: '72%', left: '49%' },
+    ],
     review: { ...pendingPlanningApproval },
   },
 ]

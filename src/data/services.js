@@ -118,16 +118,16 @@ export const services = [
   },
   {
     slug: '3d-planung',
-    title: '3D-Planung & Entwürfe',
+    title: '3D-Planung erleben',
     short: 'Sehen vor dem Bauen',
     description:
-      'Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Materialauswahl und präziser Kalkulation, bevor gebaut wird.',
+      'Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Perspektiven, Materialentscheidungen und präziser Kalkulation, bevor gebaut wird.',
     motif: 'render',
     tone: 'slate',
     image: '/images/service-3d-planung.webp',
     bullets: [
       'Räumliche Visualisierung in 3D',
-      'Materialauswahl am Modell',
+      'Materialauswahl und Details am Modell',
       'Präzise Kalkulation vorab',
       'Sicher entscheiden — ohne böse Überraschungen',
     ],
@@ -140,7 +140,7 @@ export const services = [
       {
         question: 'Was bringt eine 3D-Planung vor der Umsetzung?',
         answer:
-          'Die 3D-Planung macht Proportionen, Materialien und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.',
+      'Die 3D-Planung macht Proportionen, Materialien, Sichtachsen und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.',
       },
       {
         question: 'Welche Unterlagen werden für einen 3D-Entwurf benötigt?',
@@ -149,7 +149,7 @@ export const services = [
       },
     ],
     intro:
-      'Bevor der erste Handgriff getan ist, sehen Sie Ihr Projekt fertig: Wir visualisieren Ofen und Flächen in fotorealistischem 3D, wählen Materialien am Modell und kalkulieren präzise.',
+      'Bevor der erste Handgriff getan ist, erleben Sie Ihr Projekt als geführten 3D-Entwurf: Wir visualisieren Ofen und Flächen, vergleichen Materialien am Modell und kalkulieren präzise.',
   },
 ]
 

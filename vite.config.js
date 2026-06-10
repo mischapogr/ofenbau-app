@@ -24,11 +24,15 @@ function readJsonBody(req) {
 }
 
 function smtpEscape(value) {
-  return String(value || '').replace(/\r?\n/g, ' ').trim()
+  return String(value || '')
+    .replace(/\r?\n/g, ' ')
+    .trim()
 }
 
 function dotStuff(value) {
-  return String(value || '').replace(/\r?\n/g, '\r\n').replace(/^\./gm, '..')
+  return String(value || '')
+    .replace(/\r?\n/g, '\r\n')
+    .replace(/^\./gm, '..')
 }
 
 function smtpSend({ host, port, from, to, subject, replyTo, body }) {
@@ -217,6 +221,10 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDemo = mode === 'demo' || env.VITE_APP_ENV === 'demo'
   const shouldObfuscateDemo = isDemo && env.VITE_DEMO_OBFUSCATE !== 'false'
+  const demoAllowedHosts = String(env.VITE_DEMO_ALLOWED_HOSTS || '')
+    .split(',')
+    .map((host) => host.trim())
+    .filter(Boolean)
 
   return {
     plugins: [
@@ -236,6 +244,9 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       port: 5173,
       strictPort: true,
+      // Permit the demo's external hostnames (e.g. MyFRITZ) through Vite's
+      // DNS-rebinding host check; IPs and localhost are allowed by default.
+      ...(demoAllowedHosts.length ? { allowedHosts: demoAllowedHosts } : {}),
       // Required for hot reload to work reliably inside Docker bind mounts.
       watch: {
         usePolling: true,
@@ -245,6 +256,18 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       port: 5173,
       strictPort: true,
+      // Same host allowlist as the dev server, so the served demo build can be
+      // reached via its external hostnames (MyFRITZ, tunnel upstream, etc.).
+      ...(demoAllowedHosts.length ? { allowedHosts: demoAllowedHosts } : {}),
+      // Forward /api to the contact API container so the demo contact form
+      // works behind `vite preview` (which otherwise serves static files only).
+      // Target is the compose-network service; override via PREVIEW_API_PROXY.
+      proxy: {
+        '/api': {
+          target: process.env.PREVIEW_API_PROXY || 'http://api:3000',
+          changeOrigin: true,
+        },
+      },
     },
   }
 })

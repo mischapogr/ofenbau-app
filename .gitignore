@@ -58,5 +58,8 @@ coverage/
 .idea/
 _tmp/
 
+# Playwright MCP local session data
+.playwright-mcp/
+
 # direnv (commit .envrc; ignore its local cache)
 .direnv/
