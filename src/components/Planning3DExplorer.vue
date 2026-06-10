@@ -303,17 +303,17 @@ onBeforeUnmount(() => {
                 />
               </div>
             </div>
-            <div v-else-if="isVariantMode" class="h-full overflow-hidden">
-              <BaseImage
+            <div
+              v-else-if="isVariantMode"
+              class="flex h-full min-h-[26rem] items-center justify-center overflow-hidden"
+            >
+              <img
                 :key="`${current.id}-${activeVariant.key}-${activeVariant.choice}`"
                 :src="activeVariantData.image"
-                :motif="current?.motif"
-                :tone="current?.tone"
                 :alt="`${current?.title} - ${stageLabel}`"
-                ratio="16/10"
-                rounded="rounded-none"
-                eager
-                class="h-full min-h-[26rem] transition-transform duration-500"
+                class="max-h-full w-full object-contain transition-transform duration-500"
+                loading="eager"
+                decoding="async"
                 :style="{ transform: `scale(${zoom})` }"
               />
             </div>
