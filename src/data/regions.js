@@ -44,3 +44,11 @@ export const serviceRegions = [
 export function getRegion(slug) {
   return serviceRegions.find((r) => r.slug === slug) || null
 }
+
+/**
+ * Regional landing pages are a premium ("multi-region local SEO") feature.
+ * Basis ships none. Pure + tier-param so the Vue app and Node build scripts agree.
+ */
+export function getActiveRegions(tier = 'premium') {
+  return tier === 'basis' ? [] : serviceRegions
+}

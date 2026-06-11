@@ -140,7 +140,7 @@ export const services = [
       {
         question: 'Was bringt eine 3D-Planung vor der Umsetzung?',
         answer:
-      'Die 3D-Planung macht Proportionen, Materialien, Sichtachsen und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.',
+          'Die 3D-Planung macht Proportionen, Materialien, Sichtachsen und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.',
       },
       {
         question: 'Welche Unterlagen werden für einen 3D-Entwurf benötigt?',
@@ -155,4 +155,15 @@ export const services = [
 
 export function getService(slug) {
   return services.find((s) => s.slug === slug) || null
+}
+
+/**
+ * Services available in the "basis" tier. Premium ships all services
+ * (incl. the interactive 3D-Planung); basis omits 3D-Planung.
+ * Pure + tier-param so both the Vue app and the Node build scripts can call it.
+ */
+const BASIS_SERVICE_SLUGS = ['kachelofen-kaminbau', 'schornsteinbau', 'fliesenarbeiten']
+
+export function getActiveServices(tier = 'premium') {
+  return tier === 'basis' ? services.filter((s) => BASIS_SERVICE_SLUGS.includes(s.slug)) : services
 }

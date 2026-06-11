@@ -22,13 +22,21 @@ import {
   parseModeArg,
   PLACEHOLDER_URL_PATTERN,
   resolveSiteUrl,
+  resolveTier,
+  tierFeatures,
 } from './lib/site-data.mjs'
 
 const mode = parseModeArg()
 const env = loadModeEnv(mode)
+const tier = resolveTier(env)
 
 if (isDemoMode(mode, env) || env.VITE_DEMO_PROTECTION_ENABLED === 'true') {
   console.log(`Prerender: skipped (mode "${mode}" is demo/protected — nothing to index).`)
+  process.exit(0)
+}
+
+if (!tierFeatures(tier).geoAiSuite) {
+  console.log(`Prerender: skipped (tier "${tier}" ships a standard SPA — AI prerender is premium-only).`)
   process.exit(0)
 }
 
@@ -112,7 +120,7 @@ try {
 // Capture '/' last: it overwrites dist/index.html, which is also the SPA
 // fallback every other route is served from — keep that shell pristine until
 // all other routes are captured.
-const routes = [...buildRoutes()].sort((a, b) => (a === '/') - (b === '/'))
+const routes = [...buildRoutes(tier)].sort((a, b) => (a === '/') - (b === '/'))
 const failures = []
 
 function outputPathFor(route) {

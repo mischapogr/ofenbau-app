@@ -12,16 +12,20 @@ import AppIcon from '@/components/AppIcon.vue'
 import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
 import HeizlastCalculator from '@/components/HeizlastCalculator.vue'
 import BimschvChecker from '@/components/BimschvChecker.vue'
-import { getService, services } from '@/data/services'
-import { serviceRegions } from '@/data/regions'
+import { getActiveServices } from '@/data/services'
+import { getActiveRegions } from '@/data/regions'
 import { planningBenefits, planningServices } from '@/data/planning'
 import { topicForService } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
 import { useJsonLd } from '@/composables/useJsonLd'
+import { tier, hasFeature } from '@/config/tier'
 
 const route = useRoute()
-const service = computed(() => getService(route.params.slug))
-const others = computed(() => services.filter((s) => s.slug !== route.params.slug))
+// Restrict lookup to the active tier's services, so a basis build 404s on
+// premium-only detail pages (e.g. /leistungen/3d-planung) instead of rendering them.
+const activeServices = getActiveServices(tier)
+const service = computed(() => activeServices.find((s) => s.slug === route.params.slug) || null)
+const others = computed(() => activeServices.filter((s) => s.slug !== route.params.slug))
 const is3d = computed(() => route.params.slug === '3d-planung')
 const contactTopic = computed(() =>
   service.value ? topicForService(service.value.slug).value : 'beratung'
@@ -63,7 +67,7 @@ useJsonLd(() => {
     description: service.value.description,
     url: `${siteUrl}/leistungen/${service.value.slug}`,
     provider: { '@id': `${siteUrl}/#business` },
-    areaServed: serviceRegions.map((region) => ({ '@type': 'City', name: region.city })),
+    areaServed: getActiveRegions(tier).map((region) => ({ '@type': 'City', name: region.city })),
     availableLanguage: 'de',
   }
 }, 'service-jsonld')
@@ -342,7 +346,7 @@ useJsonLd(() => {
 
       <!-- Interactive Tools Section -->
       <section
-        v-if="service.slug === 'kachelofen-kaminbau' || service.slug === 'schornsteinbau'"
+        v-if="hasFeature('calculators') && (service.slug === 'kachelofen-kaminbau' || service.slug === 'schornsteinbau')"
         :id="service.slug === 'kachelofen-kaminbau' ? 'heizlast-rechner' : 'bimschv-ofen-check'"
         class="section bg-surface border-t border-content-muted/10 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
         tabindex="-1"

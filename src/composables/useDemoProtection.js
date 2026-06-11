@@ -63,6 +63,7 @@ export function useDemoProtection() {
     authorName: env.VITE_DEMO_AUTHOR_NAME || 'Mischa Pogrebnyak',
     authorEmail: env.VITE_DEMO_AUTHOR_EMAIL || '66591935+mischapogr@users.noreply.github.com',
     watermarkEnabled: protectionEnabled && env.VITE_DEMO_WATERMARK_ENABLED !== 'false',
+    featureCatalogEnabled: protectionEnabled && env.VITE_DEMO_FEATURE_CATALOG_ENABLED !== 'false',
     watermarkFactor: Math.max(
       0,
       Math.min(5, parseFloat(env.VITE_DEMO_WATERMARK_FACTOR ?? '1') || 1)

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { company } from '@/data/company'
+import { hasFeature } from '@/config/tier'
 
 const siteName = import.meta.env.VITE_APP_TITLE || company.name
 
@@ -19,11 +20,16 @@ const routes = [
         'Mit gesunder Wärme leben: individueller Kachel- & Kaminofenbau, Fliesenarbeiten und 3D-Planung vom Meisterbetrieb.',
     },
   },
-  {
-    path: '/region/:slug',
-    name: 'region',
-    component: () => import('@/pages/HomeView.vue'),
-  },
+  // Regional landing pages are a premium ("multi-region local SEO") feature.
+  ...(hasFeature('regions')
+    ? [
+        {
+          path: '/region/:slug',
+          name: 'region',
+          component: () => import('@/pages/HomeView.vue'),
+        },
+      ]
+    : []),
   {
     path: '/leistungen',
     name: 'services',
@@ -84,7 +90,8 @@ const routes = [
     component: () => import('@/pages/KnowledgeBaseView.vue'),
     meta: {
       title: `Ratgeber & Fachwissen — ${siteName}`,
-      description: 'Fachartikel rund um Kaminbau, 1. BImSchV Übergangsfristen, Ofen-Wartung, Strahlungswärme und meisterhafte Fliesenverlegung.',
+      description:
+        'Fachartikel rund um Kaminbau, 1. BImSchV Übergangsfristen, Ofen-Wartung, Strahlungswärme und meisterhafte Fliesenverlegung.',
     },
   },
   {

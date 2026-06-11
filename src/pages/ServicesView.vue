@@ -6,6 +6,7 @@ import BaseContainer from '@/components/BaseContainer.vue'
 import BudgetEstimator from '@/components/BudgetEstimator.vue'
 import CTASection from '@/components/CTASection.vue'
 import { useSeo } from '@/composables/useSeo'
+import { hasFeature } from '@/config/tier'
 
 useSeo(() => ({
   title: 'Leistungen',
@@ -27,6 +28,7 @@ useSeo(() => ({
     <ProcessTimeline />
     
     <section
+      v-if="hasFeature('calculators')"
       id="budget-kalkulator"
       class="section bg-surface border-t border-content-muted/10 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
       tabindex="-1"

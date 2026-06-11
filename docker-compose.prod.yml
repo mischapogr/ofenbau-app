@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile.prod
       args:
         BUILD_MODE: ${BUILD_MODE:-production}
+        VITE_TIER: ${VITE_TIER:-premium}
         VITE_APP_ENV: ${VITE_APP_ENV:-production}
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
         VITE_APP_TITLE: ${VITE_APP_TITLE:-Ofenbau Mustermann}

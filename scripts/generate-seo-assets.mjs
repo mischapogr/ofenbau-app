@@ -10,15 +10,22 @@ import {
   projects,
   publicDir,
   resolveSiteUrl,
+  resolveTier,
   serviceRegions,
   services,
+  tierFeatures,
 } from './lib/site-data.mjs'
 
 const mode = parseModeArg()
 const env = loadModeEnv(mode)
 const siteUrl = resolveSiteUrl(env)
 const isDemo = isDemoMode(mode, env)
-const routes = buildRoutes()
+const tier = resolveTier(env)
+const features = tierFeatures(tier)
+// The GEO/AI discoverability suite (llms.txt, AI-crawler allowlist, markdown
+// mirrors, IndexNow) is a premium feature. Basis ships plain SEO only.
+const geoAi = !isDemo && features.geoAiSuite
+const routes = buildRoutes(tier)
 const now = new Date().toISOString().slice(0, 10)
 
 const AI_CRAWLERS = [
@@ -55,13 +62,19 @@ const robots = isDemo
   ? `User-agent: *
 Disallow: /
 `
-  : `User-agent: *
+  : geoAi
+    ? `User-agent: *
 Allow: /
 
 # AI / LLM crawlers are explicitly welcome (GEO)
 ${AI_CRAWLERS.map((bot) => `User-agent: ${bot}\nAllow: /`).join('\n\n')}
 
 # Machine-readable site summary for LLM agents: ${siteUrl}/llms.txt
+Sitemap: ${siteUrl}/sitemap.xml
+`
+    : `User-agent: *
+Allow: /
+
 Sitemap: ${siteUrl}/sitemap.xml
 `
 
@@ -201,8 +214,9 @@ const llmsFullPath = join(publicDir, 'llms-full.txt')
 const ratgeberMdDir = join(publicDir, 'ratgeber')
 const indexNowKeyPath = join(publicDir, 'indexnow-key.txt')
 
-if (isDemo) {
-  // public/ is shared across build modes — never ship GEO artifacts from a demo build.
+if (!geoAi) {
+  // public/ is shared across build modes/tiers — never ship GEO artifacts from a
+  // demo build or a basis build (basis = plain SEO only).
   for (const path of [llmsTxtPath, llmsFullPath, indexNowKeyPath]) {
     if (existsSync(path)) rmSync(path)
   }
@@ -219,6 +233,9 @@ if (isDemo) {
   }
 }
 
-console.log(
-  `Generated ${isDemo ? 'demo noindex' : 'SEO + GEO (llms.txt, markdown mirrors)'} assets for ${siteUrl}`
-)
+const assetKind = isDemo
+  ? 'demo noindex'
+  : geoAi
+    ? 'SEO + GEO (llms.txt, markdown mirrors)'
+    : 'basis SEO (sitemap + robots only)'
+console.log(`Generated ${assetKind} assets for ${siteUrl} [tier: ${tier}]`)

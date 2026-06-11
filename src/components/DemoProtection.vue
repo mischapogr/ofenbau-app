@@ -1,6 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
+import AppIcon from '@/components/AppIcon.vue'
+import { productTiers } from '@/data/productTiers'
+import { tier as activeTier } from '@/config/tier'
 
 const props = defineProps({
   protection: {
@@ -10,6 +13,12 @@ const props = defineProps({
 })
 
 const accessCode = ref('')
+
+// The catalog only makes sense on the open gate (not when a hard block, e.g. an
+// unauthorised host, replaces the form with an explanatory message).
+const showCatalog = computed(
+  () => props.protection.featureCatalogEnabled && !props.protection.blockedReason
+)
 
 async function submitAccessCode() {
   await props.protection.verifyAccessCode(accessCode.value)
@@ -45,9 +54,50 @@ async function submitAccessCode() {
   </aside>
 
   <section v-if="protection.blocksApp" class="demo-gate" aria-labelledby="demo-gate-title">
-    <div class="demo-gate__panel">
+    <div class="demo-gate__panel" :class="{ 'demo-gate__panel--wide': showCatalog }">
       <p class="demo-gate__eyebrow">Geschuetzte Demo</p>
       <h1 id="demo-gate-title">Ofenbau Mustermann</h1>
+
+      <div v-if="showCatalog" class="demo-catalog">
+        <p class="demo-catalog__lead">
+          Diese Website ist in zwei Paketen verfügbar. Wählen Sie nach dem Login
+          frei — die Demo zeigt das markierte Paket.
+        </p>
+        <div class="demo-catalog__grid">
+          <article
+            v-for="t in productTiers"
+            :key="t.id"
+            class="demo-tier"
+            :class="{
+              'demo-tier--premium': t.highlight,
+              'demo-tier--active': t.id === activeTier,
+            }"
+          >
+            <header class="demo-tier__head">
+              <div>
+                <h2 class="demo-tier__name">{{ t.name }}</h2>
+                <p class="demo-tier__tagline">{{ t.tagline }}</p>
+              </div>
+              <span
+                v-if="t.id === activeTier"
+                class="demo-tier__badge demo-tier__badge--active"
+              >
+                Diese Demo
+              </span>
+              <span v-else-if="t.highlight" class="demo-tier__badge">Empfohlen</span>
+            </header>
+            <p class="demo-tier__summary">{{ t.summary }}</p>
+            <p v-if="t.includesBasis" class="demo-tier__includes">Alles aus Basis +</p>
+            <ul class="demo-tier__features">
+              <li v-for="feature in t.features" :key="feature.label">
+                <AppIcon :name="feature.icon" class="demo-tier__icon" />
+                <span>{{ feature.label }}</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
       <p v-if="protection.blockedReason" class="demo-gate__copy">
         {{ protection.blockedReason }}
       </p>
@@ -235,6 +285,125 @@ async function submitAccessCode() {
   font-weight: 700;
 }
 
+.demo-gate__panel--wide {
+  width: min(100%, 64rem);
+}
+
+.demo-catalog {
+  margin-top: 1.5rem;
+}
+
+.demo-catalog__lead {
+  margin: 0 0 1rem;
+  color: var(--color-content-muted);
+  line-height: 1.55;
+}
+
+.demo-catalog__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.demo-tier {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(44, 36, 28, 0.16);
+  border-radius: 10px;
+  padding: 1.15rem 1.25rem;
+  background: #fffaf2;
+}
+
+.demo-tier--premium {
+  border-color: rgba(227, 82, 5, 0.4);
+  background: rgba(255, 247, 237, 0.9);
+  box-shadow: 0 0.6rem 1.6rem rgba(227, 82, 5, 0.12);
+}
+
+.demo-tier--active {
+  outline: 2px solid rgb(var(--color-brand-600));
+  outline-offset: 2px;
+}
+
+.demo-tier__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.demo-tier__name {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: rgb(var(--color-content));
+}
+
+.demo-tier__tagline {
+  margin: 0.15rem 0 0;
+  color: rgb(var(--color-brand-600));
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.demo-tier__badge {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  background: rgba(44, 36, 28, 0.08);
+  color: rgb(var(--color-content));
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.demo-tier__badge--active {
+  background: rgb(var(--color-brand-600));
+  color: #fffaf2;
+}
+
+.demo-tier__summary {
+  margin: 0.85rem 0 0;
+  color: var(--color-content-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.demo-tier__includes {
+  margin: 0.85rem 0 0;
+  color: rgb(var(--color-brand-700));
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.demo-tier__features {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.demo-tier__features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: rgb(var(--color-content));
+}
+
+.demo-tier__icon {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.1rem;
+  color: rgb(var(--color-brand-600));
+}
+
 @media (max-width: 640px) {
   .demo-watermark {
     grid-template-columns: repeat(2, minmax(10rem, 1fr));
@@ -246,6 +415,10 @@ async function submitAccessCode() {
     right: 0.75rem;
     bottom: 0.75rem;
     max-width: calc(100vw - 1.5rem);
+  }
+
+  .demo-catalog__grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

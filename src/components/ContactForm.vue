@@ -6,6 +6,7 @@ import AppIcon from './AppIcon.vue'
 import PrivacyContent from './PrivacyContent.vue'
 import { useContactStore } from '@/stores/contact'
 import { contactTopics, getContactTopic } from '@/data/contactTopics'
+import { hasFeature } from '@/config/tier'
 
 const props = defineProps({
   // Label shown on the submit button + first field placeholder context.
@@ -360,6 +361,7 @@ function borderFor(key) {
             :class="[fieldClass, 'pr-12 border-content-muted/20 focus:border-brand-500']"
           />
           <button
+            v-if="hasFeature('smartContact')"
             type="button"
             class="absolute right-2 p-2 text-content-muted hover:text-brand-600 transition-colors focus:outline-none"
             :title="detectingLocation ? 'Ortung läuft...' : 'Standort automatisch ermitteln'"
@@ -378,7 +380,7 @@ function borderFor(key) {
 
     <!-- Einsatzgebiet Hinweis -->
     <div
-      v-if="isOutsideServiceArea"
+      v-if="hasFeature('smartContact') && isOutsideServiceArea"
       class="rounded-xl border border-brand-500/15 bg-brand-50/25 p-4 text-xs leading-relaxed text-content animate-fade-in"
     >
       <div class="flex gap-2.5">

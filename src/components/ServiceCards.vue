@@ -1,7 +1,10 @@
 <script setup>
 import BaseSection from './BaseSection.vue'
 import ServiceCard from './ServiceCard.vue'
-import { services } from '@/data/services'
+import { getActiveServices } from '@/data/services'
+import { tier } from '@/config/tier'
+
+const services = getActiveServices(tier)
 </script>
 
 <template>

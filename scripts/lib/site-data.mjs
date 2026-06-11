@@ -6,8 +6,8 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadEnv } from 'vite'
-import { services } from '../../src/data/services.js'
-import { serviceRegions } from '../../src/data/regions.js'
+import { services, getActiveServices } from '../../src/data/services.js'
+import { serviceRegions, getActiveRegions } from '../../src/data/regions.js'
 import { knowledgeArticles } from '../../src/data/knowledgeBase.js'
 import { company } from '../../src/data/company.js'
 import { projects } from '../../src/data/projects.js'
@@ -20,12 +20,12 @@ export { services, serviceRegions, knowledgeArticles, company, projects }
 
 export const PLACEHOLDER_URL_PATTERN = /example\.de|localhost|127\.0\.0\.1/i
 
-export function buildRoutes() {
+export function buildRoutes(tier = 'premium') {
   return [
     '/',
-    ...serviceRegions.map((region) => `/region/${region.slug}`),
+    ...getActiveRegions(tier).map((region) => `/region/${region.slug}`),
     '/leistungen',
-    ...services.map((service) => `/leistungen/${service.slug}`),
+    ...getActiveServices(tier).map((service) => `/leistungen/${service.slug}`),
     '/projekte',
     '/ratgeber',
     ...knowledgeArticles.map((article) => `/ratgeber/${article.slug}`),
@@ -34,6 +34,26 @@ export function buildRoutes() {
     '/impressum',
     '/datenschutz',
   ]
+}
+
+/**
+ * Resolve the product tier on the Node/build side. Mirrors src/config/tier.js
+ * (the Vue side) — keep the two in sync.
+ */
+export function resolveTier(env = {}) {
+  return String(env.VITE_TIER || 'premium').toLowerCase() === 'basis' ? 'basis' : 'premium'
+}
+
+/** Feature map per tier. Mirrors `features` in src/config/tier.js. */
+export function tierFeatures(tier = 'premium') {
+  const premium = tier !== 'basis'
+  return {
+    calculators: premium,
+    planning3d: premium,
+    smartContact: premium,
+    regions: premium,
+    geoAiSuite: premium,
+  }
 }
 
 export function parseModeArg(argv = process.argv, fallback = 'production') {

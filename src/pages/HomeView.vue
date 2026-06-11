@@ -12,6 +12,7 @@ import CTASection from '@/components/CTASection.vue'
 import { company } from '@/data/company'
 import { getRegion } from '@/data/regions'
 import { useSeo } from '@/composables/useSeo'
+import { hasFeature } from '@/config/tier'
 
 const route = useRoute()
 const region = computed(() => getRegion(route.params.slug))
@@ -48,8 +49,10 @@ useSeo(() => {
     <AboutSection />
     <ProcessTimeline />
     <ProjectGallery :limit="6" :show-filters="false" show-cta />
-    <Planning3DSection />
-    <Planning3DExplorer />
+    <template v-if="hasFeature('planning3d')">
+      <Planning3DSection />
+      <Planning3DExplorer />
+    </template>
     <CTASection />
   </div>
 </template>

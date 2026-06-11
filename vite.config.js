@@ -221,6 +221,13 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDemo = mode === 'demo' || env.VITE_APP_ENV === 'demo'
   const shouldObfuscateDemo = isDemo && env.VITE_DEMO_OBFUSCATE !== 'false'
+  // Tier ("basis" | "premium") is orthogonal to mode. Resolve it explicitly and
+  // inject via `define` so import.meta.env.VITE_TIER is reliable regardless of
+  // whether it arrives through a .env file or an inline `VITE_TIER=basis` prefix.
+  const tier =
+    String(process.env.VITE_TIER || env.VITE_TIER || 'premium').toLowerCase() === 'basis'
+      ? 'basis'
+      : 'premium'
   const demoAllowedHosts = String(env.VITE_DEMO_ALLOWED_HOSTS || '')
     .split(',')
     .map((host) => host.trim())
@@ -232,6 +239,9 @@ export default defineConfig(({ mode }) => {
       vue(),
       ...(shouldObfuscateDemo ? [demoObfuscationPlugin(env)] : []),
     ],
+    define: {
+      'import.meta.env.VITE_TIER': JSON.stringify(tier),
+    },
     build: {
       sourcemap: false,
     },
