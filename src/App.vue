@@ -6,6 +6,8 @@ import { useDemoProtection } from '@/composables/useDemoProtection'
 import { useJsonLd } from '@/composables/useJsonLd'
 import { useAnalytics } from '@/composables/useAnalytics'
 import { company } from '@/data/company'
+import { services } from '@/data/services'
+import { serviceRegions } from '@/data/regions'
 
 const SITE_URL = (import.meta.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const googleSiteVerification = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
@@ -44,7 +46,8 @@ useJsonLd(
       addressLocality: company.address.city,
       addressCountry: 'DE',
     },
-    areaServed: company.address.region,
+    areaServed: serviceRegions.map((region) => ({ '@type': 'City', name: region.city })),
+    knowsAbout: services.map((service) => service.title),
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -53,6 +56,11 @@ useJsonLd(
         closes: '17:00',
       },
     ],
+    potentialAction: {
+      '@type': 'CommunicateAction',
+      name: 'Beratung anfragen',
+      target: `${SITE_URL}/kontakt`,
+    },
   },
   'local-business-jsonld'
 )

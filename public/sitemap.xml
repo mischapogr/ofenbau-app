@@ -2,46 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost:5173/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/region/stuttgart</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/region/ludwigsburg</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/region/esslingen</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/region/nordsachsen</loc>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/leistungen</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/leistungen/kachelofen-kaminbau</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/leistungen/schornsteinbau</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/leistungen/fliesenarbeiten</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/leistungen/3d-planung</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/projekte</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/bimschv-kaminofen-austauschpflicht</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/strahlungswaerme-grundofen-gesundheit</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/xxl-fliesen-verlegen-herausforderungen</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/was-kostet-ein-kachelofen</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/grundofen-vs-kaminofen-vergleich</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/schornsteinsanierung-verfahren-kosten</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/heizlast-berechnen-ofen-kw</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/feinstaub-staubabscheider-nachruesten</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/wasserfuehrender-kaminofen-heizung</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/ofen-richtig-heizen-anfeuern</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/kachelofen-wartung-pflege</loc>
+    <lastmod>2026-06-11</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:5173/ratgeber/fliesen-auf-fussbodenheizung</loc>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/ueber-uns</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/kontakt</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/impressum</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
   <url>
     <loc>http://localhost:5173/datenschutz</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-11</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,44 @@
+# Ofenbau Mustermann
+
+> Mit gesunder Wärme leben. Ofenbau Mustermann — Ofen- & Fliesenmeister — Meisterbetrieb für Kachelöfen, Kamine, Schornsteinbau und Fliesenarbeiten in Musterstadt und Umgebung.
+
+Kontakt: +49 (0) 000 000000, info@ofenbau-mustermann.test, Mo–Fr 08:00–17:00 Uhr. Standort: Musterstraße 1, 12345 Musterstadt.
+
+## Leistungen
+
+- [Kachelöfen & Kaminbau](http://localhost:5173/leistungen/kachelofen-kaminbau): Handgesetzte Kachel- und Grundöfen für gleichmäßige, gesunde Strahlungswärme — als Maßanfertigung für Ihren Raum.
+- [Schornsteinbau & Sanierung](http://localhost:5173/leistungen/schornsteinbau): Neue Schornsteinsysteme, Edelstahlschornsteine und Sanierungen für Kaminofen, Kachelofen und Heizkamin — fachgerecht geplant und montiert.
+- [Fliesenarbeiten](http://localhost:5173/leistungen/fliesenarbeiten): Präzise verlegte Fliesen für Bäder, Wohnräume und Sanierungen — vom großformatigen Feinsteinzeug bis zum klassischen Mosaik.
+- [3D-Planung erleben](http://localhost:5173/leistungen/3d-planung): Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Perspektiven, Materialentscheidungen und präziser Kalkulation, bevor gebaut wird.
+
+## Regionen
+
+- [Kachelöfen & Kaminbau in Stuttgart](http://localhost:5173/region/stuttgart): Ofenbau-Meisterbetrieb für Stuttgart. Wir entwerfen und bauen Kachelöfen, Heizkamine und Schornsteine nach Maß.
+- [Kaminbau & Kachelöfen in Ludwigsburg](http://localhost:5173/region/ludwigsburg): Ihr Ofenbauer für den Landkreis Ludwigsburg. Individuelle Heizkamine, Kachelöfen und Schornsteinsanierung vom Fachbetrieb.
+- [Ofenbauer & Fliesenleger in Esslingen](http://localhost:5173/region/esslingen): Ofenbau und Fliesenarbeiten aus einer Hand in Esslingen. Meisterqualität für Kachelöfen, Kamine und großformatige Fliesen.
+- [Kachelöfen & Kaminbau in Nordsachsen](http://localhost:5173/region/nordsachsen): Ihr Ofenbauer für den Landkreis Nordsachsen. Individueller Kachel- & Kaminofenbau sowie Schornsteinsanierung vom Meisterbetrieb.
+
+## Ratgeber
+
+- [Austauschpflicht für Kaminöfen: Fristen & BImSchV-Regeln](http://localhost:5173/ratgeber/bimschv-kaminofen-austauschpflicht): Müssen Sie Ihren alten Kaminofen stilllegen oder nachrüsten? Erfahren Sie alle Fristen der 1. BImSchV und Ihre rechtlichen Optionen. (Markdown: http://localhost:5173/ratgeber/bimschv-kaminofen-austauschpflicht.md)
+- [Strahlungswärme vs. Konvektion: Warum der Grundofen gesünder heizt](http://localhost:5173/ratgeber/strahlungswaerme-grundofen-gesundheit): Strahlungswärme wirkt wie die Sonne direkt auf den Körper. Entdecken Sie die gesundheitlichen Vorteile von Speicheröfen im Vergleich zu Heizkörpern. (Markdown: http://localhost:5173/ratgeber/strahlungswaerme-grundofen-gesundheit.md)
+- [Fliesen im XXL-Format verlegen: Das müssen Sie beachten](http://localhost:5173/ratgeber/xxl-fliesen-verlegen-herausforderungen): Großformatige Fliesen schaffen moderne, fugenarme Oberflächen. Erfahren Sie alles über Untergrundvorbereitung, Buttering-Floating-Verfahren und Fugenraster. (Markdown: http://localhost:5173/ratgeber/xxl-fliesen-verlegen-herausforderungen.md)
+- [Was kostet ein Kachelofen? Preise & Kostenfaktoren 2026](http://localhost:5173/ratgeber/was-kostet-ein-kachelofen): Ein handgesetzter Kachelofen kostet je nach Bauart zwischen 9.000 und 35.000 EUR. Wir schlüsseln die Preisspannen für Grundofen, Warmluftofen und Heizkamin auf. (Markdown: http://localhost:5173/ratgeber/was-kostet-ein-kachelofen.md)
+- [Grundofen oder Kaminofen? Der große Vergleich](http://localhost:5173/ratgeber/grundofen-vs-kaminofen-vergleich): Grundofen speichert Wärme bis zu 24 Stunden, Kaminofen liefert schnelle Wärme in 15 Minuten. Welcher Ofentyp passt zu Ihrem Heizverhalten? Alle Unterschiede im Überblick. (Markdown: http://localhost:5173/ratgeber/grundofen-vs-kaminofen-vergleich.md)
+- [Schornsteinsanierung: Verfahren, Kosten & Ablauf](http://localhost:5173/ratgeber/schornsteinsanierung-verfahren-kosten): Versottung, falscher Querschnitt oder neuer Ofen: Wann eine Schornsteinsanierung nötig ist, welche Verfahren es gibt und was Edelstahl-Einzug & Co. kosten. (Markdown: http://localhost:5173/ratgeber/schornsteinsanierung-verfahren-kosten.md)
+- [Heizlast berechnen: Wie viel kW braucht Ihr Ofen?](http://localhost:5173/ratgeber/heizlast-berechnen-ofen-kw): Faustformel und Rechenbeispiel: So ermitteln Sie die passende Nennwärmeleistung für Kaminofen oder Grundofen — und vermeiden teure Überdimensionierung. (Markdown: http://localhost:5173/ratgeber/heizlast-berechnen-ofen-kw.md)
+- [Feinstaubfilter für den Kaminofen nachrüsten: Pflicht, Technik & Kosten](http://localhost:5173/ratgeber/feinstaub-staubabscheider-nachruesten): Wann ein Staubabscheider Pflicht ist, wie passive und elektrostatische Filter funktionieren und mit welchen Kosten (600 - 1.500 EUR) Sie rechnen müssen. (Markdown: http://localhost:5173/ratgeber/feinstaub-staubabscheider-nachruesten.md)
+- [Wasserführender Kaminofen: Heizungsunterstützung mit Holz](http://localhost:5173/ratgeber/wasserfuehrender-kaminofen-heizung): Ein wasserführender Kamin speist 50 - 70 % seiner Leistung in die Zentralheizung ein. Funktionsweise, Pufferspeicher, Kosten und für wen sich das System lohnt. (Markdown: http://localhost:5173/ratgeber/wasserfuehrender-kaminofen-heizung.md)
+- [Ofen richtig heizen: Anfeuern von oben, Holzfeuchte & typische Fehler](http://localhost:5173/ratgeber/ofen-richtig-heizen-anfeuern): Mit dem Anzünden von oben, Holz unter 20 % Restfeuchte und voller Luftzufuhr heizt Ihr Ofen sauberer und effizienter. Die häufigsten Fehler im Überblick. (Markdown: http://localhost:5173/ratgeber/ofen-richtig-heizen-anfeuern.md)
+- [Kachelofen & Kaminofen warten: Intervalle, Kosten, Checkliste](http://localhost:5173/ratgeber/kachelofen-wartung-pflege): Schamotte prüfen, Dichtungen tauschen, Kehrtermine einhalten: So bleibt Ihr Ofen Jahrzehnte sicher und effizient. Mit Wartungs-Checkliste und Kostenübersicht. (Markdown: http://localhost:5173/ratgeber/kachelofen-wartung-pflege.md)
+- [Fliesen auf Fußbodenheizung: Aufbau, Material & Aufheizprotokoll](http://localhost:5173/ratgeber/fliesen-auf-fussbodenheizung): Fliesen sind der ideale Belag für Fußbodenheizungen: geringer Wärmedurchlasswiderstand, schnelle Reaktion. Worauf es bei Kleber, Fugen und Estrich ankommt. (Markdown: http://localhost:5173/ratgeber/fliesen-auf-fussbodenheizung.md)
+
+## Weitere Seiten
+
+- [Projekte](http://localhost:5173/projekte): Referenzen mit technischen Daten zu Kachelöfen, Heizkaminen, Schornsteinen und Fliesenflächen.
+- [Über uns](http://localhost:5173/ueber-uns)
+- [Kontakt](http://localhost:5173/kontakt)
+
+## Vollständige Inhalte
+
+- [llms-full.txt](http://localhost:5173/llms-full.txt): Alle Leistungen, FAQs, Ratgeber-Artikel und Projektdaten in einer Datei.

@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import BaseContainer from './BaseContainer.vue'
 import AppIcon from './AppIcon.vue'
 import { useJsonLd } from '@/composables/useJsonLd'
@@ -13,29 +13,30 @@ const props = defineProps({
   items: { type: Array, required: true },
 })
 
-const SITE_URL = import.meta.env.VITE_APP_URL || 'http://localhost:5173'
+const router = useRouter()
+const SITE_URL = (import.meta.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const full = computed(() => [{ name: 'Start', to: { name: 'home' } }, ...props.items])
 
-// Resolve a path string for JSON-LD (best-effort from named routes).
-const pathFor = {
-  home: '/',
-  services: '/leistungen',
-  projects: '/projekte',
-  about: '/ueber-uns',
-  contact: '/kontakt',
+function pathFor(to) {
+  try {
+    const path = router.resolve(to).path
+    return path === '/' ? '/' : path.replace(/\/+$/, '')
+  } catch {
+    return ''
+  }
 }
 
 useJsonLd(
-  {
+  () => ({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: full.value.map((c, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: c.name,
-      item: `${SITE_URL}${pathFor[c.to?.name] || ''}`,
+      item: `${SITE_URL}${pathFor(c.to)}`,
     })),
-  },
+  }),
   'breadcrumb-jsonld'
 )
 </script>

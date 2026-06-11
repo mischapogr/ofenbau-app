@@ -1,6 +1,5 @@
 import { chromium } from '@playwright/test'
-import { company } from '../src/data/company.js'
-import { services } from '../src/data/services.js'
+import { buildRoutes, company, services } from './lib/site-data.mjs'
 
 const rawUrl = process.argv[2] || process.env.VITE_APP_URL
 
@@ -13,16 +12,7 @@ const siteUrl = rawUrl.replace(/\/+$/, '')
 const siteName = process.env.VITE_APP_TITLE || company.name
 const isLocalTarget = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(siteUrl)
 const checks = []
-const routes = [
-  '/',
-  '/leistungen',
-  ...services.map((service) => `/leistungen/${service.slug}`),
-  '/projekte',
-  '/ueber-uns',
-  '/kontakt',
-  '/impressum',
-  '/datenschutz',
-]
+const routes = buildRoutes()
 
 function check(condition, message) {
   checks.push({ ok: !!condition, message })

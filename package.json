@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "dev:demo": "vite --host 0.0.0.0 --port 5174 --mode demo",
-    "build": "node scripts/generate-seo-assets.mjs --mode production && vite build --mode production",
+    "build": "node scripts/generate-seo-assets.mjs --mode production && vite build --mode production && node scripts/prerender.mjs --mode production",
     "build:dev": "node scripts/generate-seo-assets.mjs --mode development && vite build --mode development",
     "build:demo": "node scripts/generate-seo-assets.mjs --mode demo && vite build --mode demo",
     "preview": "vite preview --host 0.0.0.0 --port 5173",
@@ -51,6 +51,8 @@
     "deploy:all": "node scripts/run-deploy-smoke.mjs",
     "deploy:smoke": "node scripts/smoke-deployment.mjs",
     "deploy:seo": "node scripts/smoke-seo-browser.mjs",
+    "deploy:indexnow": "node scripts/ping-indexnow.mjs",
+    "audit:geo": "node scripts/audit-geo-visibility.mjs",
     "deploy:analytics": "node scripts/smoke-analytics-consent.mjs",
     "deploy:maps": "node scripts/smoke-map-consent.mjs",
     "deploy:links": "node scripts/smoke-contact-links-browser.mjs",
