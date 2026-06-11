@@ -13,9 +13,9 @@ Kontakt: +49 (0) 000 000000, info@ofenbau-mustermann.test, Mo–Fr 08:00–17:00
 
 ## Regionen
 
-- [Kachelöfen & Kaminbau in Stuttgart](http://localhost:5173/region/stuttgart): Ofenbau-Meisterbetrieb für Stuttgart. Wir entwerfen und bauen Kachelöfen, Heizkamine und Schornsteine nach Maß.
-- [Kaminbau & Kachelöfen in Ludwigsburg](http://localhost:5173/region/ludwigsburg): Ihr Ofenbauer für den Landkreis Ludwigsburg. Individuelle Heizkamine, Kachelöfen und Schornsteinsanierung vom Fachbetrieb.
-- [Ofenbauer & Fliesenleger in Esslingen](http://localhost:5173/region/esslingen): Ofenbau und Fliesenarbeiten aus einer Hand in Esslingen. Meisterqualität für Kachelöfen, Kamine und großformatige Fliesen.
+- [Kachelöfen & Kaminbau in Leipzig](http://localhost:5173/region/leipzig): Ofenbau-Meisterbetrieb für Leipzig. Wir entwerfen und bauen Kachelöfen, Heizkamine und Schornsteine nach Maß.
+- [Kaminbau & Kachelöfen in Chemnitz](http://localhost:5173/region/chemnitz): Ihr Ofenbauer für den Raum Chemnitz. Individuelle Heizkamine, Kachelöfen und Schornsteinsanierung vom Fachbetrieb.
+- [Ofenbauer & Fliesenleger in Meißen](http://localhost:5173/region/meissen): Ofenbau und Fliesenarbeiten aus einer Hand in Meißen. Meisterqualität für Kachelöfen, Kamine und großformatige Fliesen.
 - [Kachelöfen & Kaminbau in Nordsachsen](http://localhost:5173/region/nordsachsen): Ihr Ofenbauer für den Landkreis Nordsachsen. Individueller Kachel- & Kaminofenbau sowie Schornsteinsanierung vom Meisterbetrieb.
 
 ## Ratgeber

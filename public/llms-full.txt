@@ -106,23 +106,23 @@ Für den Start reichen meist Raummaße, Fotos, vorhandene Pläne und erste Mater
 
 ## Regionen
 
-### Kachelöfen & Kaminbau in Stuttgart
+### Kachelöfen & Kaminbau in Leipzig
 
-http://localhost:5173/region/stuttgart
+http://localhost:5173/region/leipzig
 
-Wir sind Ihr regionaler Partner für behagliche Wärme im Raum Stuttgart. Als Meisterbetrieb planen und realisieren wir Kachelöfen und Kamine individuell für Ihr Zuhause.
+Wir sind Ihr regionaler Partner für behagliche Wärme im Raum Leipzig. Als Meisterbetrieb planen und realisieren wir Kachelöfen und Kamine individuell für Ihr Zuhause.
 
-### Kaminbau & Kachelöfen in Ludwigsburg
+### Kaminbau & Kachelöfen in Chemnitz
 
-http://localhost:5173/region/ludwigsburg
+http://localhost:5173/region/chemnitz
 
-Wärme erleben im Landkreis Ludwigsburg. Wir entwerfen Ihren Traumofen fotorealistisch in 3D und setzen ihn handwerklich präzise in Ihrer Immobilie um.
+Wärme erleben in Chemnitz und Umgebung. Wir entwerfen Ihren Traumofen fotorealistisch in 3D und setzen ihn handwerklich präzise in Ihrer Immobilie um.
 
-### Ofenbauer & Fliesenleger in Esslingen
+### Ofenbauer & Fliesenleger in Meißen
 
-http://localhost:5173/region/esslingen
+http://localhost:5173/region/meissen
 
-Ihr Experte für Ofenbau und Fliesenarbeiten im Raum Esslingen. Wir verbinden traditionelles Handwerk mit moderner 3D-Planung für Ihr perfektes Wohnerlebnis.
+Ihr Experte für Ofenbau und Fliesenarbeiten im Raum Meißen. Wir verbinden traditionelles Handwerk mit moderner 3D-Planung für Ihr perfektes Wohnerlebnis.
 
 ### Kachelöfen & Kaminbau in Nordsachsen
 
