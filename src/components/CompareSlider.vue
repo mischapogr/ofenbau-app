@@ -27,7 +27,11 @@ function setFromClientX(clientX) {
 
 function onPointerDown(event) {
   dragging = true
-  event.currentTarget.setPointerCapture?.(event.pointerId)
+  try {
+    event.currentTarget.setPointerCapture?.(event.pointerId)
+  } catch {
+    // pointer may already be gone
+  }
   setFromClientX(event.clientX)
 }
 

@@ -9,6 +9,7 @@ import { planningExamples } from '@/data/planning'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 import { useFrameRotation } from '@/composables/useFrameRotation'
 import { useDeferredImage } from '@/composables/useDeferredImage'
+import { usePinchZoom } from '@/composables/usePinchZoom'
 
 const categories = ['Alle', ...new Set(planningExamples.map((example) => example.category))]
 const activeCategory = ref('Alle')
@@ -38,6 +39,12 @@ const currentView = computed(
 const currentAnnotations = computed(
   () => currentView.value?.annotations || current.value?.annotations || []
 )
+// Tapped hotspot; its label is echoed in the bottom info bar so it works on
+// mobile where the inline labels are hidden.
+const activeAnnotation = ref(null)
+function toggleAnnotation(annotation) {
+  activeAnnotation.value = activeAnnotation.value === annotation.label ? null : annotation.label
+}
 const activeDecisionOptions = computed(() => current.value?.decisions || [])
 const activeDecision = computed(
   () =>
@@ -48,6 +55,32 @@ const activeDecision = computed(
 const currentFrames = computed(() => current.value?.frames || [])
 const rotation = useFrameRotation(currentFrames, { reducedMotion })
 const isRotateMode = computed(() => stageMode.value === 'rotate' && rotation.hasFrames.value)
+
+// Pinch zoom shares one transform with the zoom slider; while pinching or
+// zoomed, the rotate drag stands down so panning doesn't spin the arc.
+const pinch = usePinchZoom({ maxScale: 2, onPinchStart: () => rotation.cancelDrag() })
+const stageTransform = computed(
+  () =>
+    `translate(${pinch.tx.value}px, ${pinch.ty.value}px) scale(${(zoom.value * pinch.scale.value).toFixed(3)})`
+)
+const stageTouchAction = computed(() =>
+  pinch.activePointers.value >= 2 || pinch.isZoomed.value ? 'none' : 'pan-y'
+)
+
+function onRotatePointerDown(e) {
+  pinch.onPointerDown(e)
+  if (pinch.activePointers.value >= 2 || pinch.isZoomed.value) return
+  rotation.onPointerDown(e)
+}
+function onRotatePointerMove(e) {
+  pinch.onPointerMove(e)
+  if (pinch.activePointers.value >= 2 || pinch.isZoomed.value) return
+  rotation.onPointerMove(e)
+}
+function onRotatePointerUp(e) {
+  pinch.onPointerUp(e)
+  rotation.onPointerUp(e)
+}
 
 const activeVariant = ref(null) // { key, choice }
 const currentVariants = computed(() => current.value?.variants || null)
@@ -257,6 +290,11 @@ watch(isVariantMode, (active) => {
   if (!active) compareMode.value = false
 })
 
+watch([stageMode, current], () => pinch.reset())
+watch([currentView, current], () => {
+  activeAnnotation.value = null
+})
+
 onBeforeUnmount(() => {
   if (expanded.value) document.body.style.overflow = ''
   window.removeEventListener('keydown', onKey)
@@ -337,16 +375,18 @@ onBeforeUnmount(() => {
               :aria-valuemin="currentFrames[0]?.angle"
               :aria-valuemax="currentFrames[currentFrames.length - 1]?.angle"
               :aria-valuenow="rotation.currentFrame.value?.angle"
-              @pointerdown="rotation.onPointerDown"
-              @pointermove="rotation.onPointerMove"
-              @pointerup="rotation.onPointerUp"
-              @pointercancel="rotation.onPointerUp"
-              @lostpointercapture="rotation.onPointerUp"
+              :style="{ touchAction: stageTouchAction }"
+              @pointerdown="onRotatePointerDown"
+              @pointermove="onRotatePointerMove"
+              @pointerup="onRotatePointerUp"
+              @pointercancel="onRotatePointerUp"
+              @lostpointercapture="onRotatePointerUp"
               @keydown="onStageKey"
             >
               <div
                 class="relative h-full transition-transform duration-500"
-                :style="{ transform: `scale(${zoom})` }"
+                :class="pinch.isZoomed.value ? 'transition-none' : ''"
+                :style="{ transform: stageTransform }"
               >
                 <img
                   v-for="(frame, index) in currentFrames"
@@ -402,7 +442,13 @@ onBeforeUnmount(() => {
               <div
                 v-else
                 class="absolute inset-0 transition-transform duration-500"
-                :style="{ transform: `scale(${zoom})` }"
+                :class="pinch.isZoomed.value ? 'transition-none' : ''"
+                :style="{ transform: stageTransform, touchAction: stageTouchAction }"
+                @pointerdown="pinch.onPointerDown"
+                @pointermove="pinch.onPointerMove"
+                @pointerup="pinch.onPointerUp"
+                @pointercancel="pinch.onPointerUp"
+                @lostpointercapture="pinch.onPointerUp"
               >
                 <BaseImage
                   v-if="variantImageFailed"
@@ -427,7 +473,16 @@ onBeforeUnmount(() => {
                 </Transition>
               </div>
             </div>
-            <div v-else class="h-full overflow-hidden">
+            <div
+              v-else
+              class="h-full overflow-hidden"
+              :style="{ touchAction: stageTouchAction }"
+              @pointerdown="pinch.onPointerDown"
+              @pointermove="pinch.onPointerMove"
+              @pointerup="pinch.onPointerUp"
+              @pointercancel="pinch.onPointerUp"
+              @lostpointercapture="pinch.onPointerUp"
+            >
               <BaseImage
                 v-if="current"
                 :key="`${current.id}-${currentView?.label}`"
@@ -439,24 +494,29 @@ onBeforeUnmount(() => {
                 rounded="rounded-none"
                 eager
                 class="h-full min-h-[26rem] transition-transform duration-500"
-                :style="{ transform: `scale(${zoom})` }"
+                :class="pinch.isZoomed.value ? 'transition-none' : ''"
+                :style="{ transform: stageTransform }"
               />
             </div>
 
             <div
               v-if="!isRotateMode && !isVariantMode && currentAnnotations.length"
               class="pointer-events-none absolute inset-0 z-10"
-              aria-hidden="true"
             >
-              <span
+              <button
                 v-for="annotation in currentAnnotations"
                 :key="annotation.label"
-                class="plan-hotspot"
+                type="button"
+                class="plan-hotspot pointer-events-auto"
+                :class="activeAnnotation === annotation.label ? 'plan-hotspot--active' : ''"
                 :style="{ top: annotation.top, left: annotation.left }"
+                :aria-pressed="activeAnnotation === annotation.label"
+                :aria-label="`Detail: ${annotation.label}`"
+                @click="toggleAnnotation(annotation)"
               >
                 <span class="plan-hotspot__dot"></span>
                 <span class="plan-hotspot__label">{{ annotation.label }}</span>
-              </span>
+              </button>
             </div>
 
             <div
@@ -467,6 +527,9 @@ onBeforeUnmount(() => {
                   {{ current.title }} · {{ stageLabel }}
                 </p>
                 <p class="mt-1 text-sm text-white/65">{{ stageText }}</p>
+                <p v-if="activeAnnotation" class="mt-1 text-sm font-semibold text-brand-300">
+                  {{ activeAnnotation }}
+                </p>
                 <div v-if="isRotateMode" class="mt-2 flex items-center gap-3">
                   <div class="flex items-center gap-1.5">
                     <button
@@ -816,6 +879,14 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 0.45rem;
   transform: translate(-0.75rem, -50%);
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.plan-hotspot--active .plan-hotspot__dot {
+  box-shadow: 0 0 0 0.5rem rgba(227, 82, 5, 0.45);
 }
 
 .plan-hotspot__dot {

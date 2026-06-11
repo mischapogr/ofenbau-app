@@ -22,6 +22,10 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
   let drag = null
   let timer = null
   let direction = 1
+  let velocityX = 0
+  let lastMoveX = 0
+  let lastMoveT = 0
+  let inertiaFrame = null
   const completedSets = new Set()
   const inflightSets = new Set()
 
@@ -35,6 +39,7 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
 
   function stepFrame(delta) {
     stopAutorotate()
+    cancelInertia()
     goToFrame(frameIndex.value + delta)
   }
 
@@ -42,29 +47,91 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     frameIndex.value = Math.floor(Math.max(0, frameCount.value - 1) / 2)
   }
 
+  function cancelInertia() {
+    if (inertiaFrame) cancelAnimationFrame(inertiaFrame)
+    inertiaFrame = null
+  }
+
+  // Flick momentum: keep stepping frames after release with decaying
+  // velocity; stops at the arc ends (no wrap-around).
+  function startInertia(velocity, pxPerFrame) {
+    cancelInertia()
+    let v = velocity
+    let travelled = 0
+    let lastT = performance.now()
+    const tick = (now) => {
+      const dt = now - lastT
+      lastT = now
+      travelled += v * dt
+      v *= Math.pow(0.9, dt / 16.7)
+      while (Math.abs(travelled) >= pxPerFrame) {
+        // Same inverted mapping as the live drag.
+        const step = travelled > 0 ? -1 : 1
+        const next = frameIndex.value + step
+        if (next < 0 || next > frameCount.value - 1) return
+        frameIndex.value = next
+        travelled -= Math.sign(travelled) * pxPerFrame
+      }
+      if (Math.abs(v) > 0.05) inertiaFrame = requestAnimationFrame(tick)
+      else inertiaFrame = null
+    }
+    inertiaFrame = requestAnimationFrame(tick)
+  }
+
+  function pxPerFrameFor(width) {
+    return Math.max(36, width / (frameCount.value * 2))
+  }
+
   function onPointerDown(event) {
     if (!hasFrames.value) return
     stopAutorotate()
-    event.currentTarget.setPointerCapture?.(event.pointerId)
+    cancelInertia()
+    try {
+      event.currentTarget.setPointerCapture?.(event.pointerId)
+    } catch {
+      // pointer may already be gone
+    }
     drag = {
       startX: event.clientX,
       startFrame: frameIndex.value,
       width: event.currentTarget.clientWidth,
     }
+    velocityX = 0
+    lastMoveX = event.clientX
+    lastMoveT = performance.now()
     isDragging.value = true
   }
 
   function onPointerMove(event) {
     if (!drag) return
+    const now = performance.now()
+    const dt = now - lastMoveT
+    if (dt > 0) {
+      const instant = (event.clientX - lastMoveX) / dt
+      velocityX = 0.8 * instant + 0.2 * velocityX
+    }
+    lastMoveX = event.clientX
+    lastMoveT = now
     const delta = event.clientX - drag.startX
-    const pxPerFrame = Math.max(36, drag.width / (frameCount.value * 2))
     // Dragging right orbits the camera left — "grab the object" feel.
-    goToFrame(drag.startFrame - Math.round(delta / pxPerFrame))
+    goToFrame(drag.startFrame - Math.round(delta / pxPerFrameFor(drag.width)))
   }
 
   function onPointerUp() {
+    const releasedDrag = drag
     drag = null
     isDragging.value = false
+    if (!releasedDrag) return
+    // Flicks faster than ~0.3 px/ms keep spinning; slower releases stop dead.
+    if (Math.abs(velocityX) > 0.3 && !reducedMotion?.value) {
+      startInertia(velocityX, pxPerFrameFor(releasedDrag.width))
+    }
+  }
+
+  function cancelDrag() {
+    drag = null
+    isDragging.value = false
+    cancelInertia()
   }
 
   function stopAutorotate() {
@@ -80,6 +147,7 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     clearInterval(timer)
     timer = null
     if (!active) return
+    cancelInertia()
     timer = setInterval(() => {
       const last = frameCount.value - 1
       // Ping-pong across the clamped arc.
@@ -104,6 +172,7 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
 
   watch(frames, () => {
     stopAutorotate()
+    cancelInertia()
     resetToCenter()
     syncReadyState()
   })
@@ -150,7 +219,10 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     }
   }
 
-  onBeforeUnmount(() => clearInterval(timer))
+  onBeforeUnmount(() => {
+    clearInterval(timer)
+    cancelInertia()
+  })
 
   return {
     frameIndex,
@@ -171,5 +243,6 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     onPointerDown,
     onPointerMove,
     onPointerUp,
+    cancelDrag,
   }
 }
