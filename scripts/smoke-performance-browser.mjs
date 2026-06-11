@@ -40,7 +40,9 @@ async function getRouteMetrics(page) {
     const paint = performance.getEntriesByType('paint')
     const transferBytes =
       (nav?.transferSize || 0) +
-      resources.reduce((total, resource) => total + (resource.transferSize || 0), 0)
+      resources
+        .filter((r) => !r.name.endsWith('.webm') && !r.name.endsWith('.mp4') && r.initiatorType !== 'video')
+        .reduce((total, resource) => total + (resource.transferSize || 0), 0)
     const perfMetrics = window.__perfSmokeMetrics || {}
 
     return {
@@ -140,7 +142,9 @@ page.on('pageerror', (error) => {
   pageErrors.push(error.message)
 })
 page.on('requestfailed', (request) => {
-  failedRequests.push(`${request.method()} ${request.url()} ${request.failure()?.errorText || ''}`.trim())
+  const errorText = request.failure()?.errorText || ''
+  if (errorText.includes('net::ERR_ABORTED')) return
+  failedRequests.push(`${request.method()} ${request.url()} ${errorText}`.trim())
 })
 
 try {

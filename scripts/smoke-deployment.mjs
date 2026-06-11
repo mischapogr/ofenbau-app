@@ -1,4 +1,6 @@
 import { services } from '../src/data/services.js'
+import { serviceRegions } from '../src/data/regions.js'
+import { knowledgeArticles } from '../src/data/knowledgeBase.js'
 
 const rawUrl = process.argv[2] || process.env.VITE_APP_URL
 
@@ -67,9 +69,12 @@ try {
   await checkProductionHeaders(home)
 
   const publicRoutes = [
+    ...serviceRegions.map((region) => `/region/${region.slug}`),
     '/leistungen',
     ...services.map((service) => `/leistungen/${service.slug}`),
     '/projekte',
+    '/ratgeber',
+    ...knowledgeArticles.map((article) => `/ratgeber/${article.slug}`),
     '/kontakt',
     '/impressum',
     '/datenschutz',
@@ -88,8 +93,16 @@ try {
   const sitemap = await fetchText('/sitemap.xml')
   check(sitemap.status === 200, `sitemap.xml responds with 200 (${sitemap.status})`)
   check(containsUrlOrLocalPath(sitemap.body, '/kontakt'), 'sitemap.xml contains contact route')
+  for (const region of serviceRegions) {
+    const path = `/region/${region.slug}`
+    check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
+  }
   for (const service of services) {
     const path = `/leistungen/${service.slug}`
+    check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
+  }
+  for (const article of knowledgeArticles) {
+    const path = `/ratgeber/${article.slug}`
     check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
   }
   check(isLocalTarget || !sitemap.body.includes('localhost'), 'sitemap.xml does not contain localhost for production target')

@@ -1,6 +1,6 @@
 # Content Review Checklist
 
-Generated: 2026-06-07T18:14:02.393Z
+Generated: 2026-06-11T06:09:40.779Z
 
 Use this as the operator/content-review worksheet for service pages and
 project references plus 3D planning examples. Approval records, photo releases,
@@ -60,7 +60,7 @@ complete.
 | kachelofen-kaminbau | Kachelöfen & Kaminbau | Kachelöfen & Kaminbau | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
 | fliesenarbeiten | Fliesenarbeiten | Fliesenarbeiten | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
 | schornsteinbau | Schornsteinbau & Sanierung | Schornsteinbau & Sanierung | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
-| 3d-planung | 3D-Planung & Entwürfe | 3D-Planung & Entwürfe | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
+| 3d-planung | 3D-Planung erleben | 3D-Planung erleben | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
 | sanierung | Sanierung & Bestand | Sanierung & Bestand | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
 | rueckruf | Rückruf wünschen | Rückruf wünschen | false | false | Confirm this contact topic label and email subject match the final request handling workflow before launch. |
 
@@ -75,7 +75,7 @@ operator offer and legal/content approval has been completed.
 | Kachelöfen & Kaminbau | `/leistungen/kachelofen-kaminbau` | 4 | 3 | 2 | `/images/service-kachelofen.webp` | Open |
 | Schornsteinbau & Sanierung | `/leistungen/schornsteinbau` | 4 | 3 | 2 | `/images/planning-example-schornstein-kaminofen.webp` | Open |
 | Fliesenarbeiten | `/leistungen/fliesenarbeiten` | 4 | 3 | 2 | `/images/service-fliesen.webp` | Open |
-| 3D-Planung & Entwürfe | `/leistungen/3d-planung` | 4 | 3 | 2 | `/images/service-3d-planung.webp` | Open |
+| 3D-Planung erleben | `/leistungen/3d-planung` | 4 | 3 | 2 | `/images/service-3d-planung.webp` | Open |
 
 ## Reference Review
 

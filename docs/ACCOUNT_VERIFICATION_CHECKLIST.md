@@ -1,6 +1,6 @@
 # Account Verification Checklist
 
-Generated: 2026-06-07T18:14:04.682Z
+Generated: 2026-06-11T06:09:43.789Z
 
 Use this worksheet for Google Search Console, GA4 and Google Business Profile
 handoff. It records what can be checked from the repository and what still

@@ -1,6 +1,6 @@
 # Performance Evidence Checklist
 
-Generated: 2026-06-07T18:14:04.397Z
+Generated: 2026-06-11T06:09:43.395Z
 
 Use this worksheet for production performance handoff. Local browser smoke
 checks catch regressions before launch; Lighthouse/PageSpeed and field data
@@ -12,7 +12,7 @@ must still be captured on the final HTTPS domain.
 | --- | --- | --- |
 | Static asset budgets | `npm run perf:budget` | JS/CSS hard budgets pass and large images are reviewed. |
 | Browser performance smoke | `npm run deploy:perf -- http://localhost:5174` inside preflight | Core public routes pass timing, resource, image and console/error checks. |
-| Visual smoke artifact | docs/audits/VISUAL_SMOKE.md | Present (2026-06-07T14:07:07.051Z). |
+| Visual smoke artifact | docs/audits/VISUAL_SMOKE.md | Present (2026-06-11T06:07:45.357Z). |
 | Production URL readiness | VITE_APP_URL=http://localhost:5173 | Open |
 
 ## Browser Smoke Budgets

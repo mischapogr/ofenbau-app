@@ -1,6 +1,6 @@
 # Operator Input Form
 
-Generated: 2026-06-07T18:14:04.540Z
+Generated: 2026-06-11T06:09:43.575Z
 
 Use this worksheet to collect real operator, legal, content and deployment
 inputs before editing source files or setting production environment values.
@@ -72,7 +72,7 @@ contracts in this repository.
 | kachelofen-kaminbau | Kachelöfen & Kaminbau | Kachelöfen & Kaminbau | false | false |  |
 | fliesenarbeiten | Fliesenarbeiten | Fliesenarbeiten | false | false |  |
 | schornsteinbau | Schornsteinbau & Sanierung | Schornsteinbau & Sanierung | false | false |  |
-| 3d-planung | 3D-Planung & Entwürfe | 3D-Planung & Entwürfe | false | false |  |
+| 3d-planung | 3D-Planung erleben | 3D-Planung erleben | false | false |  |
 | sanierung | Sanierung & Bestand | Sanierung & Bestand | false | false |  |
 | rueckruf | Rückruf wünschen | Rückruf wünschen | false | false |  |
 
@@ -83,7 +83,7 @@ contracts in this repository.
 | Kachelöfen & Kaminbau | `/leistungen/kachelofen-kaminbau` | 3 | 2 |  |
 | Schornsteinbau & Sanierung | `/leistungen/schornsteinbau` | 3 | 2 |  |
 | Fliesenarbeiten | `/leistungen/fliesenarbeiten` | 3 | 2 |  |
-| 3D-Planung & Entwürfe | `/leistungen/3d-planung` | 3 | 2 |  |
+| 3D-Planung erleben | `/leistungen/3d-planung` | 3 | 2 |  |
 
 ## Reference Approval Inputs
 

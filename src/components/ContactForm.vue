@@ -13,6 +13,7 @@ const props = defineProps({
   // Pre-fill the subject (e.g. "3D-Entwurf") when embedded on a service page.
   subject: { type: String, default: '' },
   showTopic: { type: Boolean, default: false },
+  prefilledMessage: { type: String, default: '' },
 })
 
 const store = useContactStore()
@@ -24,7 +25,7 @@ const form = reactive({
   email: '',
   phone: '',
   website: '',
-  message: '',
+  message: props.prefilledMessage || '',
   gdpr: false,
 })
 
@@ -43,6 +44,13 @@ watch(
   () => props.subject,
   () => {
     form.topic = initialTopic.value.value
+  }
+)
+
+watch(
+  () => props.prefilledMessage,
+  (newVal) => {
+    if (newVal) form.message = newVal
   }
 )
 

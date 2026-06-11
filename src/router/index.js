@@ -20,6 +20,11 @@ const routes = [
     },
   },
   {
+    path: '/region/:slug',
+    name: 'region',
+    component: () => import('@/pages/HomeView.vue'),
+  },
+  {
     path: '/leistungen',
     name: 'services',
     component: () => import('@/pages/ServicesView.vue'),
@@ -74,6 +79,21 @@ const routes = [
     meta: { title: `Datenschutz — ${siteName}` },
   },
   {
+    path: '/ratgeber',
+    name: 'knowledge',
+    component: () => import('@/pages/KnowledgeBaseView.vue'),
+    meta: {
+      title: `Ratgeber & Fachwissen — ${siteName}`,
+      description: 'Fachartikel rund um Kaminbau, 1. BImSchV Übergangsfristen, Ofen-Wartung, Strahlungswärme und meisterhafte Fliesenverlegung.',
+    },
+  },
+  {
+    path: '/ratgeber/:slug',
+    name: 'knowledge-detail',
+    component: () => import('@/pages/KnowledgeBaseView.vue'),
+    meta: { title: `Ratgeber — ${siteName}` },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundView.vue'),
@@ -85,9 +105,24 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
-    return { top: 0 }
+    if (to.path === from.path) {
+      if (savedPosition) return savedPosition
+      if (to.hash) return { el: to.hash, behavior: 'smooth' }
+      return { top: 0 }
+    }
+
+    return new Promise((resolve) => {
+      // Wait for page fade transition (180ms in App.vue) to finish before scrolling
+      setTimeout(() => {
+        if (savedPosition) {
+          resolve(savedPosition)
+        } else if (to.hash) {
+          resolve({ el: to.hash, behavior: 'smooth' })
+        } else {
+          resolve({ top: 0 })
+        }
+      }, 200)
+    })
   },
 })
 
@@ -96,6 +131,21 @@ const router = createRouter({
 router.afterEach((to) => {
   const title = to.meta?.title
   if (title) document.title = title
+
+  // Handle focusing the target hash element if present
+  if (to.hash) {
+    // Wait for route transition and rendering to complete
+    setTimeout(() => {
+      try {
+        const target = document.querySelector(to.hash)
+        if (target) {
+          target.focus({ preventScroll: true })
+        }
+      } catch (err) {
+        console.warn('Failed to focus element for hash:', to.hash, err)
+      }
+    }, 400)
+  }
 })
 
 export default router

@@ -2,6 +2,8 @@
 import PageHeader from '@/components/PageHeader.vue'
 import ServiceCards from '@/components/ServiceCards.vue'
 import ProcessTimeline from '@/components/ProcessTimeline.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
+import BudgetEstimator from '@/components/BudgetEstimator.vue'
 import CTASection from '@/components/CTASection.vue'
 import { useSeo } from '@/composables/useSeo'
 
@@ -23,6 +25,17 @@ useSeo(() => ({
     />
     <ServiceCards />
     <ProcessTimeline />
+    
+    <section
+      id="budget-kalkulator"
+      class="section bg-surface border-t border-content-muted/10 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
+      tabindex="-1"
+    >
+      <BaseContainer class="max-w-4xl">
+        <BudgetEstimator v-reveal />
+      </BaseContainer>
+    </section>
+
     <CTASection />
   </div>
 </template>

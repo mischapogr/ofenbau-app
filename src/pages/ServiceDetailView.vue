@@ -10,7 +10,10 @@ import ContactForm from '@/components/ContactForm.vue'
 import CTASection from '@/components/CTASection.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
+import HeizlastCalculator from '@/components/HeizlastCalculator.vue'
+import BimschvChecker from '@/components/BimschvChecker.vue'
 import { getService, services } from '@/data/services'
+import { serviceRegions } from '@/data/regions'
 import { planningBenefits, planningServices } from '@/data/planning'
 import { topicForService } from '@/data/contactTopics'
 import { useSeo } from '@/composables/useSeo'
@@ -49,6 +52,21 @@ useSeo(() => ({
 }))
 
 useJsonLd(() => faqJsonLd.value, 'service-faq-jsonld')
+
+useJsonLd(() => {
+  if (!service.value) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.value.title,
+    serviceType: service.value.title,
+    description: service.value.description,
+    url: `${siteUrl}/leistungen/${service.value.slug}`,
+    provider: { '@id': `${siteUrl}/#business` },
+    areaServed: serviceRegions.map((region) => ({ '@type': 'City', name: region.city })),
+    availableLanguage: 'de',
+  }
+}, 'service-jsonld')
 </script>
 
 <template>
@@ -318,6 +336,21 @@ useJsonLd(() => faqJsonLd.value, 'service-faq-jsonld')
                 <span>{{ point }}</span>
               </li>
             </ul>
+          </div>
+        </BaseContainer>
+      </section>
+
+      <!-- Interactive Tools Section -->
+      <section
+        v-if="service.slug === 'kachelofen-kaminbau' || service.slug === 'schornsteinbau'"
+        :id="service.slug === 'kachelofen-kaminbau' ? 'heizlast-rechner' : 'bimschv-ofen-check'"
+        class="section bg-surface border-t border-content-muted/10 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
+        tabindex="-1"
+      >
+        <BaseContainer class="max-w-4xl">
+          <div v-reveal>
+            <HeizlastCalculator v-if="service.slug === 'kachelofen-kaminbau'" />
+            <BimschvChecker v-if="service.slug === 'schornsteinbau'" />
           </div>
         </BaseContainer>
       </section>

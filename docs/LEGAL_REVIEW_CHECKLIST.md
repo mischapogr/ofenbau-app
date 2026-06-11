@@ -1,6 +1,6 @@
 # Legal Review Checklist
 
-Generated: 2026-06-07T18:14:03.000Z
+Generated: 2026-06-11T06:09:41.563Z
 
 Use this as a legal handoff worksheet for Impressum and Datenschutz review.
 It does not replace legal advice. Do not store private legal records, processor

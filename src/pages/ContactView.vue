@@ -12,6 +12,7 @@ import { useSeo } from '@/composables/useSeo'
 
 const route = useRoute()
 const selectedTopic = computed(() => getContactTopic(route.query.topic))
+const initialMessage = computed(() => route.query.note || route.query.message || '')
 const addressLabel = computed(
   () => `${company.address.street}, ${company.address.zip} ${company.address.city}`
 )
@@ -89,9 +90,10 @@ const details = [
           </p>
           <div class="mt-6">
             <ContactForm
-              :key="selectedTopic.value"
+              :key="`${selectedTopic.value}-${initialMessage}`"
               show-topic
               :subject="selectedTopic.value"
+              :prefilled-message="initialMessage"
               submit-label="Nachricht senden"
             />
           </div>

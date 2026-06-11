@@ -1,6 +1,6 @@
 # Deployment Cutover Checklist
 
-Generated: 2026-06-07T18:14:04.248Z
+Generated: 2026-06-11T06:09:43.197Z
 
 Use this worksheet for production DNS, HTTPS, hosting and post-deploy handoff.
 It summarizes repository deployment wiring and lists the external cutover

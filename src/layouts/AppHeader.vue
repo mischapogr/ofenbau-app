@@ -53,8 +53,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           :key="item.name"
           :to="item.to"
           class="rounded-lg px-3 py-2 text-sm font-medium text-content-muted underline-offset-8 decoration-2 transition-colors hover:text-content"
-          active-class="text-brand-600"
-          exact-active-class="underline decoration-brand-500"
+          :active-class="item.to.name === 'home' ? '' : 'text-brand-600'"
+          exact-active-class="text-brand-600 underline decoration-brand-500"
         >
           {{ item.name }}
         </RouterLink>
@@ -95,8 +95,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             :key="item.name"
             :to="item.to"
             class="press-feedback rounded-lg px-3 py-3 text-base font-medium text-content-muted underline-offset-8 decoration-2 hover:bg-surface-muted hover:text-content"
-            active-class="text-brand-600"
-            exact-active-class="underline decoration-brand-500"
+            :active-class="item.to.name === 'home' ? '' : 'text-brand-600'"
+            exact-active-class="text-brand-600 underline decoration-brand-500"
             @click="closeMobileMenu"
           >
             {{ item.name }}

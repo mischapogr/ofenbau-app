@@ -8,6 +8,12 @@ import { company } from '@/data/company'
 import { homepageAssets, homepageHeroStats } from '@/data/home'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
+const props = defineProps({
+  title: { type: String, default: 'Mit gesunder Wärme leben' },
+  titleHighlight: { type: String, default: 'Individueller Kachel- & Kaminofenbau' },
+  description: { type: String, default: 'Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.' },
+})
+
 const heroVideo = homepageAssets.hero.video || null
 const reducedMotion = useReducedMotion()
 const videoReady = ref(false)
@@ -54,13 +60,12 @@ function onVideoCanPlay() {
         </BaseBadge>
 
         <h1 class="mt-6 font-display text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-6xl">
-          Mit gesunder Wärme leben
-          <span class="mt-2 block text-brand-400">Individueller Kachel- &amp; Kaminofenbau</span>
+          {{ title }}
+          <span class="mt-2 block text-brand-400">{{ titleHighlight }}</span>
         </h1>
 
         <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-          Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und
-          meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.
+          {{ description }}
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">

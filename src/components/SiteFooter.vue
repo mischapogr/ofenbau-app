@@ -53,6 +53,21 @@ const year = new Date().getFullYear()
               Projekte
             </RouterLink>
           </li>
+          <li class="border-t border-white/5 pt-2.5 mt-2.5">
+            <RouterLink :to="{ name: 'service-detail', params: { slug: 'kachelofen-kaminbau' }, hash: '#heizlast-rechner' }" class="transition-colors hover:text-brand-400">
+              Heizlast-Rechner
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="{ name: 'services', hash: '#budget-kalkulator' }" class="transition-colors hover:text-brand-400">
+              Budget-Kalkulator
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="{ name: 'service-detail', params: { slug: 'schornsteinbau' }, hash: '#bimschv-ofen-check' }" class="transition-colors hover:text-brand-400">
+              BImSchV Ofen-Check
+            </RouterLink>
+          </li>
         </ul>
       </nav>
 
@@ -63,6 +78,11 @@ const year = new Date().getFullYear()
           <li>
             <RouterLink :to="{ name: 'about' }" class="transition-colors hover:text-brand-400">
               Über uns
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="{ name: 'knowledge' }" class="transition-colors hover:text-brand-400">
+              Ratgeber
             </RouterLink>
           </li>
           <li>

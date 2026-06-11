@@ -1,6 +1,6 @@
 # Placeholder Content Report
 
-Generated: 2026-06-07T18:14:02.541Z
+Generated: 2026-06-11T06:09:40.993Z
 
 This generated report lists structured content fields that still look like
 demo data, placeholders, or unresolved launch approvals. It is intentionally

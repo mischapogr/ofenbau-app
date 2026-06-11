@@ -1,6 +1,6 @@
 # Launch Evidence Report
 
-Generated: 2026-06-07T18:14:05.007Z
+Generated: 2026-06-11T06:09:44.211Z
 
 This generated report summarizes current local launch evidence and production
 handoff gaps. It is not a production approval and does not contain secrets,
@@ -11,7 +11,7 @@ mailbox credentials, legal contracts or private customer approvals.
 | Field | Value |
 | --- | --- |
 | Git branch | main |
-| Git commit | 9ee80ed |
+| Git commit | a016d35 |
 | Site URL in current env | http://localhost:5173 |
 | Contact API base URL in current env | /api |
 
@@ -28,17 +28,17 @@ mailbox credentials, legal contracts or private customer approvals.
 
 | Artifact | Path | Status | Detail |
 | --- | --- | --- | --- |
-| Contact delivery checklist | `docs/CONTACT_DELIVERY_CHECKLIST.md` | Present | 2026-06-07T18:14:04.104Z |
-| Deployment cutover checklist | `docs/DEPLOYMENT_CUTOVER_CHECKLIST.md` | Present | 2026-06-07T18:14:04.248Z |
-| Performance evidence checklist | `docs/PERFORMANCE_EVIDENCE_CHECKLIST.md` | Present | 2026-06-07T18:14:04.397Z |
-| Operator input form | `docs/OPERATOR_INPUT_FORM.md` | Present | 2026-06-07T18:14:04.540Z |
-| Account verification checklist | `docs/ACCOUNT_VERIFICATION_CHECKLIST.md` | Present | 2026-06-07T18:14:04.682Z |
+| Contact delivery checklist | `docs/CONTACT_DELIVERY_CHECKLIST.md` | Present | 2026-06-11T06:09:43.012Z |
+| Deployment cutover checklist | `docs/DEPLOYMENT_CUTOVER_CHECKLIST.md` | Present | 2026-06-11T06:09:43.197Z |
+| Performance evidence checklist | `docs/PERFORMANCE_EVIDENCE_CHECKLIST.md` | Present | 2026-06-11T06:09:43.395Z |
+| Operator input form | `docs/OPERATOR_INPUT_FORM.md` | Present | 2026-06-11T06:09:43.575Z |
+| Account verification checklist | `docs/ACCOUNT_VERIFICATION_CHECKLIST.md` | Present | 2026-06-11T06:09:43.789Z |
 | Launch action items | `docs/LAUNCH_ACTION_ITEMS.md` | Present | 39 open items |
-| Placeholder content report | `docs/PLACEHOLDER_CONTENT_REPORT.md` | Present | 2026-06-07T18:14:02.541Z |
-| Content review checklist | `docs/CONTENT_REVIEW_CHECKLIST.md` | Present | 2026-06-07T18:14:02.393Z |
-| Legal review checklist | `docs/LEGAL_REVIEW_CHECKLIST.md` | Present | 2026-06-07T18:14:03.000Z |
+| Placeholder content report | `docs/PLACEHOLDER_CONTENT_REPORT.md` | Present | 2026-06-11T06:09:40.993Z |
+| Content review checklist | `docs/CONTENT_REVIEW_CHECKLIST.md` | Present | 2026-06-11T06:09:40.779Z |
+| Legal review checklist | `docs/LEGAL_REVIEW_CHECKLIST.md` | Present | 2026-06-11T06:09:41.563Z |
 | Content inventory | `docs/CONTENT_INVENTORY.json` | Present | generated JSON inventory |
-| Visual smoke audit | `docs/audits/VISUAL_SMOKE.md` | Present | 2026-06-07T14:07:07.051Z |
+| Visual smoke audit | `docs/audits/VISUAL_SMOKE.md` | Present | 2026-06-11T06:07:45.357Z |
 | Launch evidence template | `docs/LAUNCH_EVIDENCE_TEMPLATE.md` | Present | manual production evidence template |
 
 ## Approval State

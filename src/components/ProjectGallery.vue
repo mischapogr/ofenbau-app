@@ -163,25 +163,86 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
           <AppIcon name="chevron" class="h-6 w-6" />
         </button>
 
-        <figure v-if="current" class="w-full max-w-3xl">
-          <BaseImage
-            :src="current.image"
-            :motif="current.motif"
-            :tone="current.tone"
-            ratio="3/2"
-            :alt="current.title"
-            eager
-          />
-          <figcaption class="mt-4 text-center text-white">
-            <p class="font-display text-xl font-semibold">{{ current.title }}</p>
-            <p v-if="current.description" class="mx-auto mt-2 max-w-2xl text-sm text-white/70">
-              {{ current.description }}
-            </p>
-            <p v-if="current.material" class="mt-2 text-xs uppercase tracking-label text-brand-300">
-              {{ current.material }}
-            </p>
-          </figcaption>
-        </figure>
+        <div
+          v-if="current"
+          class="relative w-full max-w-4xl bg-surface rounded-2xl border border-content-muted/10 overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[80vh] md:max-h-[75vh]"
+        >
+          <!-- Left side: Image -->
+          <div class="relative w-full md:w-[50%] bg-ink-950 flex items-center justify-center shrink-0">
+            <BaseImage
+              :src="current.image"
+              :motif="current.motif"
+              :tone="current.tone"
+              ratio="3/2"
+              rounded="rounded-none"
+              :alt="current.title"
+              eager
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- Right side: Details Pane -->
+          <div class="w-full flex-1 p-6 md:p-8 overflow-y-auto flex flex-col justify-between bg-surface min-h-0 text-left">
+            <div class="min-h-0">
+              <!-- Category and Title -->
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-600">
+                  {{ projectCategories.find((c) => c.key === current.category[0])?.label || 'Projekt' }}
+                </span>
+                <span v-if="current.material" class="text-xs text-content-muted">· {{ current.material }}</span>
+              </div>
+              <h3 class="font-display text-xl md:text-2xl font-semibold text-ink-900 mb-3">
+                {{ current.title }}
+              </h3>
+              <p v-if="current.description" class="text-sm text-content-muted mb-6 leading-relaxed">
+                {{ current.description }}
+              </p>
+
+              <!-- Technical Specs -->
+              <div v-if="current.specs" class="mb-6">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-ink-900 border-b border-content-muted/10 pb-2 mb-3">
+                  Technische Daten
+                </h4>
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:text-sm">
+                  <template v-for="(val, key) in current.specs" :key="key">
+                    <dt class="text-content-muted font-medium py-0.5">{{ key }}</dt>
+                    <dd class="text-ink-900 font-semibold text-right md:text-left py-0.5">{{ val }}</dd>
+                  </template>
+                </dl>
+              </div>
+
+              <!-- Case Study -->
+              <div v-if="current.caseStudy" class="mb-6">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-ink-900 border-b border-content-muted/10 pb-2 mb-3">
+                  Projektbericht &amp; Details
+                </h4>
+                <p class="text-xs md:text-sm text-content-muted leading-relaxed whitespace-pre-line">
+                  {{ current.caseStudy }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Footer / CTA inside Lightbox -->
+            <div class="mt-6 pt-4 border-t border-content-muted/10 flex items-center justify-between gap-4">
+              <BaseButton
+                :to="{ name: 'contact', query: { topic: 'beratung', note: `Anfrage zu Projekt: ${current.title}` } }"
+                size="sm"
+                class="w-full sm:w-auto"
+                @click="close"
+              >
+                Projekt anfragen
+                <AppIcon name="arrow" class="h-4 w-4" />
+              </BaseButton>
+              <button
+                type="button"
+                class="press-feedback text-xs font-medium text-content-muted hover:text-ink-900 md:hidden"
+                @click="close"
+              >
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </Transition>
   </BaseSection>

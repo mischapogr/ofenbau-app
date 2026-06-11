@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T18:14:02.695Z",
+  "generatedAt": "2026-06-11T06:09:41.175Z",
   "summary": {
     "companyNapApprovedForLaunch": false,
     "googleBusinessProfileAligned": false,
@@ -863,19 +863,19 @@
     },
     {
       "value": "3d-planung",
-      "label": "3D-Planung & Entwürfe",
+      "label": "3D-Planung erleben",
       "fields": [
         {
           "area": "contactTopics",
           "key": "3d-planung.label",
-          "value": "3D-Planung & Entwürfe",
+          "value": "3D-Planung erleben",
           "placeholder": false,
           "notes": "Displayed in the contact form topic selector."
         },
         {
           "area": "contactTopics",
           "key": "3d-planung.subject",
-          "value": "3D-Planung & Entwürfe",
+          "value": "3D-Planung erleben",
           "placeholder": false,
           "notes": "Used as the email subject suffix."
         },
@@ -1357,12 +1357,12 @@
     },
     {
       "slug": "3d-planung",
-      "title": "3D-Planung & Entwürfe",
+      "title": "3D-Planung erleben",
       "fields": [
         {
           "area": "services",
           "key": "3d-planung.title",
-          "value": "3D-Planung & Entwürfe",
+          "value": "3D-Planung erleben",
           "placeholder": false,
           "notes": ""
         },
@@ -1376,14 +1376,14 @@
         {
           "area": "services",
           "key": "3d-planung.description",
-          "value": "Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Materialauswahl und präziser Kalkulation, bevor gebaut wird.",
+          "value": "Fotorealistische 3D-Visualisierung Ihres Ofens und Ihrer Flächen — inklusive Perspektiven, Materialentscheidungen und präziser Kalkulation, bevor gebaut wird.",
           "placeholder": false,
           "notes": ""
         },
         {
           "area": "services",
           "key": "3d-planung.intro",
-          "value": "Bevor der erste Handgriff getan ist, sehen Sie Ihr Projekt fertig: Wir visualisieren Ofen und Flächen in fotorealistischem 3D, wählen Materialien am Modell und kalkulieren präzise.",
+          "value": "Bevor der erste Handgriff getan ist, erleben Sie Ihr Projekt als geführten 3D-Entwurf: Wir visualisieren Ofen und Flächen, vergleichen Materialien am Modell und kalkulieren präzise.",
           "placeholder": false,
           "notes": ""
         },
@@ -1404,7 +1404,7 @@
         {
           "area": "services",
           "key": "3d-planung.bullets.1",
-          "value": "Materialauswahl am Modell",
+          "value": "Materialauswahl und Details am Modell",
           "placeholder": false,
           "notes": ""
         },
@@ -1453,7 +1453,7 @@
         {
           "area": "services",
           "key": "3d-planung.faqs.0.answer",
-          "value": "Die 3D-Planung macht Proportionen, Materialien und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.",
+          "value": "Die 3D-Planung macht Proportionen, Materialien, Sichtachsen und Details sichtbar, bevor gebaut wird. Dadurch lassen sich Entscheidungen zu Form, Oberfläche und Budget sicherer treffen.",
           "placeholder": false,
           "notes": ""
         },
