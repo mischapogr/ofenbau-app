@@ -1162,7 +1162,8 @@ function setProjectType(type) {
               name: 'contact', 
               query: { 
                 topic: projectType === 'fliesen' ? 'fliesenarbeiten' : projectType === 'schornstein' ? 'schornsteinbau' : 'kachelofen-kaminbau', 
-                note: contactMessage 
+                note: contactMessage,
+                source: 'budget'
               } 
             }"
             block

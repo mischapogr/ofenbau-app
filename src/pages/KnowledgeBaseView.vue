@@ -179,7 +179,7 @@ function goBack() {
               Als Meisterbetrieb beraten wir Sie gerne ausführlich zur 1. BImSchV, dem Ofenaustausch oder passenden Materialien.
             </p>
             <BaseButton 
-              :to="{ name: 'contact', query: { topic: 'beratung', note: `Anfrage zum Fachartikel: ${article.title}` } }" 
+              :to="{ name: 'contact', query: { topic: 'beratung', note: `Anfrage zum Fachartikel: ${article.title}`, source: 'knowledge' } }" 
               class="mt-6"
             >
               Unverbindlich beraten lassen

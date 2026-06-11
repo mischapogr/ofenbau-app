@@ -14,6 +14,7 @@ const props = defineProps({
   subject: { type: String, default: '' },
   showTopic: { type: Boolean, default: false },
   prefilledMessage: { type: String, default: '' },
+  source: { type: String, default: '' },
 })
 
 const store = useContactStore()
@@ -24,6 +25,7 @@ const form = reactive({
   name: '',
   email: '',
   phone: '',
+  location: '',
   website: '',
   message: props.prefilledMessage || '',
   gdpr: false,
@@ -39,6 +41,110 @@ const selectedTopic = computed(() => getContactTopic(form.topic))
 const selectedSubject = computed(() =>
   props.showTopic ? selectedTopic.value?.subject : props.subject || undefined
 )
+
+const badgeText = computed(() => {
+  if (props.source === 'budget') return 'Budget-Kalkulation erfolgreich geladen'
+  if (props.source === 'bimschv') return 'BImSchV-Ofendaten erfolgreich geladen'
+  if (props.source === 'heizlast') return 'Heizlast-Raumdaten erfolgreich geladen'
+  if (props.source === '3d-planung' || props.source === 'planning3d') return 'Thema 3D-Planung ausgewählt'
+  if (props.source === 'gallery') return 'Projekt-Referenz erfolgreich geladen'
+  if (props.source === 'knowledge') return 'Ratgeber-Referenz erfolgreich geladen'
+  if (props.source === 'service-detail') return 'Thema voreingestellt'
+  return ''
+})
+
+// Geolocation & Service Area Check
+const detectingLocation = ref(false)
+const userCoords = ref(null)
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c
+}
+
+function detectLocation() {
+  if (!navigator.geolocation) return
+  detectingLocation.value = true
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords
+      userCoords.value = { lat: latitude, lon: longitude }
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=de`
+        )
+        if (response.ok) {
+          const data = await response.json()
+          const city = data.address.city || data.address.town || data.address.village || data.address.suburb || ''
+          const postcode = data.address.postcode || ''
+          form.location = postcode ? `${postcode} ${city}` : city
+        }
+      } catch (err) {
+        console.error('Reverse geocoding failed:', err)
+      } finally {
+        detectingLocation.value = false
+      }
+    },
+    (err) => {
+      console.warn('Geolocation error:', err)
+      detectingLocation.value = false
+    },
+    { timeout: 8000 }
+  )
+}
+
+const projectVolumeInfo = computed(() => {
+  const msg = form.message.toLowerCase()
+  const isPremium = msg.includes('premium') || msg.includes('exklusiv')
+  const priceMatches = [...form.message.matchAll(/[\d.]+/g)].map(m => m[0].replace(/\./g, ''))
+  const maxPrice = priceMatches.reduce((max, current) => {
+    const val = parseInt(current, 10)
+    if (!isNaN(val) && val > max && val < 100000) return val
+    return max
+  }, 0)
+  
+  // High volume if price is >= 12000, or premium tier, or large custom topic
+  const isHighVolume = maxPrice >= 12000 || isPremium || ['kachelofen-kaminbau', '3d-planung'].includes(form.topic)
+  return { isHighVolume, maxPrice }
+})
+
+const isOutsideServiceArea = computed(() => {
+  if (userCoords.value) {
+    const regions = [
+      { lat: 48.7758, lon: 9.1829 }, // Stuttgart
+      { lat: 48.8976, lon: 9.1916 }, // Ludwigsburg
+      { lat: 48.7428, lon: 9.3072 }, // Esslingen
+      { lat: 51.5584, lon: 13.0043 }, // Nordsachsen
+    ]
+    const minDist = Math.min(...regions.map(r => getDistance(userCoords.value.lat, userCoords.value.lon, r.lat, r.lon)))
+    return minDist > 75
+  }
+  
+  if (form.location.trim()) {
+    const loc = form.location.toLowerCase()
+    const inRegion = ['stuttgart', 'ludwigsburg', 'esslingen', 'nordsachsen', 'torgau', 'delitzsch', 'leipzig'].some(city => loc.includes(city))
+    const zipMatch = loc.match(/\b\d{5}\b/)
+    if (zipMatch) {
+      const zip = zipMatch[0]
+      const isSW = zip.startsWith('70') || zip.startsWith('71') || zip.startsWith('72') || zip.startsWith('73')
+      const isSN = zip.startsWith('04') || zip.startsWith('06') || zip.startsWith('08')
+      if (isSW || isSN) return false
+    }
+    if (inRegion) return false
+    return true
+  }
+  
+  return false
+})
 
 watch(
   () => props.subject,
@@ -86,6 +192,7 @@ async function onSubmit() {
     name: form.name,
     email: form.email,
     phone: form.phone,
+    location: form.location,
     website: form.website,
     message: form.message,
     subject: selectedSubject.value,
@@ -95,10 +202,12 @@ async function onSubmit() {
     form.name = ''
     form.email = ''
     form.phone = ''
+    form.location = ''
     form.website = ''
     form.message = ''
     form.gdpr = false
     touched.value = false
+    userCoords.value = null
   }
 }
 
@@ -147,6 +256,21 @@ function borderFor(key) {
 
   <!-- Form -->
   <form v-else class="space-y-5" novalidate @submit.prevent="onSubmit">
+    <div
+      v-if="badgeText"
+      class="flex items-start gap-3 rounded-xl border border-brand-500/10 bg-brand-50/50 p-4 text-sm text-content animate-fade-in"
+    >
+      <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+        <AppIcon name="check" class="h-4 w-4" />
+      </span>
+      <div>
+        <p class="font-semibold text-brand-800">{{ badgeText }}</p>
+        <p class="mt-0.5 text-xs text-content-muted">
+          Ihre Angaben aus dem vorherigen Schritt wurden als Vorlage in das Nachrichtenfeld geladen. Sie können den Text vor dem Senden beliebig anpassen.
+        </p>
+      </div>
+    </div>
+
     <AppError
       v-if="store.error"
       :retryable="false"
@@ -209,17 +333,71 @@ function borderFor(key) {
       />
     </div>
 
-    <div>
-      <label for="cf-email" class="mb-1.5 block text-sm font-medium">E-Mail</label>
-      <input
-        id="cf-email"
-        v-model.trim="form.email"
-        type="email"
-        autocomplete="email"
-        :class="[fieldClass, borderFor('email')]"
-        :aria-invalid="!!(errors.email && touched)"
-      />
-      <p v-if="errors.email && touched" class="mt-1 text-xs text-red-600">{{ errors.email }}</p>
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="cf-email" class="mb-1.5 block text-sm font-medium">E-Mail</label>
+        <input
+          id="cf-email"
+          v-model.trim="form.email"
+          type="email"
+          autocomplete="email"
+          :class="[fieldClass, borderFor('email')]"
+          :aria-invalid="!!(errors.email && touched)"
+        />
+        <p v-if="errors.email && touched" class="mt-1 text-xs text-red-600">{{ errors.email }}</p>
+      </div>
+
+      <div>
+        <label for="cf-location" class="mb-1.5 block text-sm font-medium">
+          Ort / PLZ <span class="text-content-muted">(optional)</span>
+        </label>
+        <div class="relative flex items-center">
+          <input
+            id="cf-location"
+            v-model.trim="form.location"
+            type="text"
+            placeholder="z.B. 70173 Stuttgart"
+            :class="[fieldClass, 'pr-12 border-content-muted/20 focus:border-brand-500']"
+          />
+          <button
+            type="button"
+            class="absolute right-2 p-2 text-content-muted hover:text-brand-600 transition-colors focus:outline-none"
+            :title="detectingLocation ? 'Ortung läuft...' : 'Standort automatisch ermitteln'"
+            :disabled="detectingLocation"
+            @click="detectLocation"
+          >
+            <AppIcon
+              :name="detectingLocation ? 'rotate' : 'pin'"
+              class="h-5 w-5"
+              :class="{ 'animate-spin': detectingLocation }"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Einsatzgebiet Hinweis -->
+    <div
+      v-if="isOutsideServiceArea"
+      class="rounded-xl border border-brand-500/15 bg-brand-50/25 p-4 text-xs leading-relaxed text-content animate-fade-in"
+    >
+      <div class="flex gap-2.5">
+        <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded bg-brand-500/10 text-brand-600">
+          <AppIcon name="pin" class="h-3.5 w-3.5" />
+        </span>
+        <div>
+          <p class="font-bold text-brand-800">
+            {{ projectVolumeInfo.isHighVolume ? 'Lohnendes Projekt außerhalb unseres Einzugsgebiets' : 'Außerhalb unseres Einzugsgebiets' }}
+          </p>
+          <p class="mt-1 text-content-muted">
+            {{
+              projectVolumeInfo.isHighVolume
+                ? 'Ihr Standort liegt außerhalb unseres Standard-Einsatzgebietes. Aufgrund Ihres größeren Projektumfangs prüfen wir Ihre Anfrage jedoch sehr gerne für eine überregionale Umsetzung!'
+                : 'Ihr Standort liegt außerhalb unseres Standard-Einsatzgebietes (~75 km). Wir prüfen gerne individuell, ob eine Anreise für Ihr Projekt wirtschaftlich umsetzbar ist.'
+            }}
+          </p>
+        </div>
+      </div>
     </div>
 
     <div>

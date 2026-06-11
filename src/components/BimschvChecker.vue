@@ -630,7 +630,7 @@ function handleStep2Next() {
         <div v-if="resultDetails" class="mt-6 border-t border-content-muted/10 pt-4 space-y-3">
           <!-- Contact Form CTA -->
           <BaseButton 
-            :to="{ name: 'contact', query: { topic: 'schornsteinbau', note: contactMessage } }"
+            :to="{ name: 'contact', query: { topic: 'sanierung', note: contactMessage, source: 'bimschv' } }"
             block
             size="md"
           >

@@ -94,7 +94,7 @@ useJsonLd(() => {
               Proportionen und Details sichtbar macht.
             </p>
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-              <BaseButton :to="{ name: 'contact', query: { topic: contactTopic } }" size="lg">
+              <BaseButton :to="{ name: 'contact', query: { topic: contactTopic, source: 'service-detail' } }" size="lg">
                 3D-Entwurf anfragen
                 <AppIcon name="arrow" class="h-4 w-4" />
               </BaseButton>
@@ -268,7 +268,7 @@ useJsonLd(() => {
             v-reveal="{ delay: 100 }"
             class="rounded-xl bg-surface p-5 shadow-card ring-1 ring-content-muted/10 sm:p-7"
           >
-            <ContactForm subject="3D-Entwurf" submit-label="Anfrage senden" />
+            <ContactForm subject="3D-Entwurf" submit-label="Anfrage senden" source="service-detail" />
           </div>
         </BaseContainer>
       </section>
@@ -313,7 +313,7 @@ useJsonLd(() => {
               </li>
             </ul>
             <BaseButton
-              :to="{ name: 'contact', query: { topic: contactTopic } }"
+              :to="{ name: 'contact', query: { topic: contactTopic, source: 'service-detail' } }"
               size="lg"
               class="mt-8"
             >

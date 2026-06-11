@@ -23,8 +23,70 @@ const mapHref = computed(
     )}`
 )
 
+const sourceConfig = computed(() => {
+  const src = route.query.source
+  const configs = {
+    budget: {
+      title: 'Ihr individuelles Budgetangebot',
+      subtitle: 'Ihr Projekt ist bereits durchkalkuliert. Senden Sie uns die Anfrage, um ein passendes Festpreisangebot zu erhalten.',
+      formTitle: 'Angebot anfordern',
+      formDesc: 'Ihre gewünschten Ausstattungsdaten und der berechnete Kostenrahmen wurden automatisch hinterlegt.',
+      submitLabel: 'Angebot & 3D-Entwurf anfragen',
+    },
+    bimschv: {
+      title: 'BImSchV Ofen-Check Auswertung',
+      subtitle: 'Unser BImSchV-Rechner hat Handlungsbedarf für Ihre Feuerstätte ermittelt. Wir beraten Sie gerne zu Nachrüstung oder Austausch.',
+      formTitle: 'Modernisierungs-Beratung',
+      formDesc: 'Ihre Ofendaten aus dem BImSchV-Check wurden für unseren Schornsteinfeger-Meisterbetrieb hinterlegt.',
+      submitLabel: 'Sanierungs-Check anfordern',
+    },
+    heizlast: {
+      title: 'Heizlast-Berechnung & Beratung',
+      subtitle: 'Ihre Heizlast-Werte wurden erfolgreich erfasst. Wir planen die Ofengröße optimal passend für Ihre Räume.',
+      formTitle: 'Heizlast-Beratung anfordern',
+      formDesc: 'Ihre berechnete Heizlast und Raumparameter wurden im Nachrichtentext hinterlegt.',
+      submitLabel: 'Heizlast-Beratung anfragen',
+    },
+    '3d-planung': {
+      title: '3D-Entwurfsplanung anfordern',
+      subtitle: 'Visualisieren Sie Ihren Traumofen in 3D. Füllen Sie das Formular aus, um eine fotorealistische Planung zu starten.',
+      formTitle: '3D-Planung anfordern',
+      formDesc: 'Schildern Sie uns Ihre Design-Wünsche — wir erwecken sie in einer 3D-Zeichnung zum Leben.',
+      submitLabel: '3D-Entwurf anfordern',
+    },
+    gallery: {
+      title: 'Projekt-Anfrage',
+      subtitle: 'Ihnen gefällt eines unserer Referenzprojekte? Wir bauen Ihren Ofen oder verlegen Ihre Fliesen ganz nach diesem Vorbild.',
+      formTitle: 'Projekt anfragen',
+      formDesc: 'Die Projekt-Referenz wurde in Ihrer Nachricht vermerkt. Teilen Sie uns gerne Ihre Anpassungswünsche mit.',
+      submitLabel: 'Projekt-Anfrage senden',
+    },
+    knowledge: {
+      title: 'Fragen zum Fachartikel',
+      subtitle: 'Sie möchten mehr zum Thema erfahren oder eine unverbindliche Beratung vor Ort vereinbaren?',
+      formTitle: 'Beratung anfragen',
+      formDesc: 'Der Bezug zum Ratgeber-Fachartikel wurde vermerkt. Wir melden uns mit qualifizierten Antworten bei Ihnen.',
+      submitLabel: 'Beratung anfragen',
+    },
+    'service-detail': {
+      title: 'Beratung zum Meisterhandwerk',
+      subtitle: 'Fragen zu unseren Leistungen oder ein konkretes Vorhaben? Lassen Sie uns gemeinsam Ihr Projekt planen.',
+      formTitle: 'Leistungsanfrage senden',
+      formDesc: 'Das gewählte Thema wurde voreingestellt. Beschreiben Sie uns Ihr Anliegen für ein unverbindliches Erstgespräch.',
+      submitLabel: 'Beratung anfordern',
+    },
+  }
+  return configs[src] || {
+    title: 'Lassen Sie uns über Ihr Projekt sprechen',
+    subtitle: 'Schreiben Sie uns — wir melden uns zeitnah für eine unverbindliche Beratung.',
+    formTitle: 'Anfrage senden',
+    formDesc: 'Alle Felder mit Ausnahme der Telefonnummer sind erforderlich.',
+    submitLabel: 'Nachricht senden',
+  }
+})
+
 useSeo(() => ({
-  title: 'Kontakt',
+  title: sourceConfig.value.title !== 'Lassen Sie uns über Ihr Projekt sprechen' ? `Kontakt — ${sourceConfig.value.title}` : 'Kontakt',
   description: 'Vereinbaren Sie eine unverbindliche Beratung — wir freuen uns auf Ihr Projekt.',
   path: '/kontakt',
 }))
@@ -52,8 +114,8 @@ const details = [
   <div>
     <PageHeader
       eyebrow="Kontakt"
-      title="Lassen Sie uns über Ihr Projekt sprechen"
-      subtitle="Schreiben Sie uns — wir melden uns zeitnah für eine unverbindliche Beratung."
+      :title="sourceConfig.title"
+      :subtitle="sourceConfig.subtitle"
       :crumbs="[{ name: 'Kontakt', to: { name: 'contact' } }]"
     />
 
@@ -84,17 +146,18 @@ const details = [
 
         <!-- Form -->
         <div class="rounded-2xl bg-surface-muted p-6 sm:p-8">
-          <h2 class="font-display text-2xl font-semibold">Anfrage senden</h2>
+          <h2 class="font-display text-2xl font-semibold">{{ sourceConfig.formTitle }}</h2>
           <p class="mt-2 text-sm text-content-muted">
-            Alle Felder mit Ausnahme der Telefonnummer sind erforderlich.
+            {{ sourceConfig.formDesc }}
           </p>
           <div class="mt-6">
             <ContactForm
-              :key="`${selectedTopic.value}-${initialMessage}`"
+              :key="`${selectedTopic.value}-${initialMessage}-${route.query.source}`"
               show-topic
               :subject="selectedTopic.value"
               :prefilled-message="initialMessage"
-              submit-label="Nachricht senden"
+              :source="route.query.source || ''"
+              :submit-label="sourceConfig.submitLabel"
             />
           </div>
         </div>

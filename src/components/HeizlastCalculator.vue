@@ -870,7 +870,7 @@ function reset() {
 
           <!-- Contact Form CTA -->
           <BaseButton 
-            :to="{ name: 'contact', query: { topic: 'kachelofen-kaminbau', note: contactMessage } }"
+            :to="{ name: 'contact', query: { topic: 'kachelofen-kaminbau', note: contactMessage, source: 'heizlast' } }"
             block
             size="md"
           >

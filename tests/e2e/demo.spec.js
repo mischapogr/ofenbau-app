@@ -169,6 +169,11 @@ test('Geführte Demo — gesamte Website & Funktionen', async ({ page }) => {
     await shot(page, 'kontakt-erfolg')
   })
 
+  await test.step('Kontakt — Thema Pre-Selection', async () => {
+    await page.goto('/kontakt?topic=schornsteinbau')
+    await expect(page.getByLabel('Thema')).toHaveValue('schornsteinbau')
+  })
+
   await test.step('Rechtliches — Impressum & Datenschutz (Footer)', async () => {
     await page.goto('/impressum')
     await expect(page.getByRole('heading', { name: 'Impressum' })).toBeVisible()

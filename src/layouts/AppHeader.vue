@@ -62,7 +62,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
       <div class="flex items-center gap-2">
         <BaseButton
-          :to="{ name: 'contact', query: { topic: 'beratung' } }"
+          :to="{ name: 'contact', query: { topic: 'beratung', source: 'header' } }"
           size="sm"
           class="hidden sm:inline-flex"
         >
@@ -102,7 +102,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             {{ item.name }}
           </RouterLink>
           <BaseButton
-            :to="{ name: 'contact', query: { topic: 'beratung' } }"
+            :to="{ name: 'contact', query: { topic: 'beratung', source: 'header' } }"
             block
             class="mt-3"
             @click="closeMobileMenu"

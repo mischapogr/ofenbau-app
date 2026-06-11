@@ -86,7 +86,7 @@ const year = new Date().getFullYear()
             </RouterLink>
           </li>
           <li>
-            <RouterLink :to="{ name: 'contact' }" class="transition-colors hover:text-brand-400">
+            <RouterLink :to="{ name: 'contact', query: { source: 'footer' } }" class="transition-colors hover:text-brand-400">
               Kontakt
             </RouterLink>
           </li>

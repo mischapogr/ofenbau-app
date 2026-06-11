@@ -38,7 +38,7 @@ export const primaryNav = [
   { name: '3D erleben', to: { name: 'service-detail', params: { slug: '3d-planung' } } },
   { name: 'Über uns', to: { name: 'about' } },
   { name: 'Ratgeber', to: { name: 'knowledge' } },
-  { name: 'Kontakt', to: { name: 'contact' } },
+  { name: 'Kontakt', to: { name: 'contact', query: { source: 'nav' } } },
 ]
 
 export const socialLinks = [

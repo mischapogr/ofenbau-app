@@ -225,7 +225,7 @@ const ratios = ['4/3', '3/4', '1/1', '4/5']
             <!-- Footer / CTA inside Lightbox -->
             <div class="mt-6 pt-4 border-t border-content-muted/10 flex items-center justify-between gap-4">
               <BaseButton
-                :to="{ name: 'contact', query: { topic: 'beratung', note: `Anfrage zu Projekt: ${current.title}` } }"
+                :to="{ name: 'contact', query: { topic: 'beratung', note: `Anfrage zu Projekt: ${current.title}`, source: 'gallery' } }"
                 size="sm"
                 class="w-full sm:w-auto"
                 @click="close"

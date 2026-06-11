@@ -32,7 +32,7 @@ defineProps({
           <h2 class="font-display text-3xl font-semibold sm:text-4xl">{{ title }}</h2>
           <p class="mx-auto mt-4 max-w-xl text-lg text-white/85">{{ text }}</p>
           <BaseButton
-            :to="{ name: 'contact', query: { topic: 'beratung' } }"
+            :to="{ name: 'contact', query: { topic: 'beratung', source: 'cta' } }"
             variant="light"
             size="lg"
             class="mt-8"
