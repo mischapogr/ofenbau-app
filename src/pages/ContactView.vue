@@ -47,6 +47,13 @@ const sourceConfig = computed(() => {
       formDesc: 'Ihre berechnete Heizlast und Raumparameter wurden im Nachrichtentext hinterlegt.',
       submitLabel: 'Heizlast-Beratung anfragen',
     },
+    showroom: {
+      title: 'Showroom-Muster anfragen',
+      subtitle: 'Sie haben Ihre Favoriten im 3D-Player gefunden? Wir legen die passenden Original-Muster für Ihren Showroom-Besuch bereit.',
+      formTitle: 'Musterbox anfordern',
+      formDesc: 'Ihre Material-Auswahl aus der 3D-Planung wurde in der Nachricht vermerkt. Nennen Sie uns gerne Ihren Wunschtermin.',
+      submitLabel: 'Showroom-Termin anfragen',
+    },
     '3d-planung': {
       title: '3D-Entwurfsplanung anfordern',
       subtitle: 'Visualisieren Sie Ihren Traumofen in 3D. Füllen Sie das Formular aus, um eine fotorealistische Planung zu starten.',

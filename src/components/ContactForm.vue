@@ -48,6 +48,7 @@ const badgeText = computed(() => {
   if (props.source === 'bimschv') return 'BImSchV-Ofendaten erfolgreich geladen'
   if (props.source === 'heizlast') return 'Heizlast-Raumdaten erfolgreich geladen'
   if (props.source === '3d-planung' || props.source === 'planning3d') return 'Thema 3D-Planung ausgewählt'
+  if (props.source === 'showroom') return 'Muster-Auswahl erfolgreich geladen'
   if (props.source === 'gallery') return 'Projekt-Referenz erfolgreich geladen'
   if (props.source === 'knowledge') return 'Ratgeber-Referenz erfolgreich geladen'
   if (props.source === 'service-detail') return 'Thema voreingestellt'

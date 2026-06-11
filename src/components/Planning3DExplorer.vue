@@ -36,8 +36,15 @@ const currentViews = computed(() =>
 const currentView = computed(
   () => currentViews.value[activeViewIndex.value] || currentViews.value[0] || null
 )
-const currentAnnotations = computed(
-  () => currentView.value?.annotations || current.value?.annotations || []
+// X-ray interior view: schematic look at Heizzüge, Schamotte & Co. so the
+// hidden build quality of a handcrafted stove becomes visible (premium "Aha").
+const currentXray = computed(() => current.value?.xray || null)
+const isXrayMode = computed(() => stageMode.value === 'xray' && Boolean(currentXray.value))
+
+const currentAnnotations = computed(() =>
+  isXrayMode.value
+    ? currentXray.value?.annotations || []
+    : currentView.value?.annotations || current.value?.annotations || []
 )
 // Tapped hotspot; its label is echoed in the bottom info bar so it works on
 // mobile where the inline labels are hidden.
@@ -122,18 +129,28 @@ function variantFor(key, choice) {
   return currentVariants.value?.[key]?.[choice] || null
 }
 
+// Fire simulation: a layered glow over the glass zone of the current view.
+// Only meaningful in plain view mode — rotate/variant images shift the camera.
+const flamesOn = ref(false)
+const currentFireZone = computed(() =>
+  stageMode.value === 'view' ? currentView.value?.fire || null : null
+)
+const showFlames = computed(() => flamesOn.value && Boolean(currentFireZone.value))
+
 const stageLabel = computed(() => {
   if (isVariantMode.value) {
     const option = activeDecisionOptions.value.find((item) => item.key === activeVariant.value.key)
     return `Simulation: ${option?.label} · ${activeVariant.value.choice}`
   }
   if (isRotateMode.value) return `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
+  if (isXrayMode.value) return 'Röntgenblick: Innenleben'
   return currentView.value?.label
 })
 const stageText = computed(() => {
   if (isVariantMode.value) return activeVariantData.value?.text
   if (isRotateMode.value)
     return 'Ziehen Sie das Bild, um den Entwurf aus verschiedenen Winkeln zu betrachten.'
+  if (isXrayMode.value) return currentXray.value?.text
   return currentView.value?.text
 })
 
@@ -197,6 +214,31 @@ function enterRotateMode() {
   rotation.preloadFrames({ immediate: true })
   zoom.value = 1
 }
+
+function toggleXrayMode() {
+  if (!currentXray.value) return
+  if (isXrayMode.value) {
+    syncStageMode()
+    return
+  }
+  activeVariant.value = null
+  stageMode.value = 'xray'
+  rotation.stopAutorotate()
+  zoom.value = 1
+}
+
+// Showroom sample request: carries the configured variant into the contact
+// form so the builder can prepare the exact physical tiles for the visit.
+const sampleRequestQuery = computed(() => {
+  if (!isVariantMode.value || !current.value) return null
+  const option = activeDecisionOptions.value.find((item) => item.key === activeVariant.value.key)
+  if (!option) return null
+  return {
+    topic: '3d-planung',
+    source: 'showroom',
+    note: `Ich möchte physische Muster im Showroom ansehen: ${option.label} – ${activeVariant.value.choice} (Beispiel: ${current.value.title}).`,
+  }
+})
 
 function stepView(dir) {
   if (isVariantMode.value) {
@@ -291,7 +333,7 @@ watch(isVariantMode, (active) => {
 })
 
 watch([stageMode, current], () => pinch.reset())
-watch([currentView, current], () => {
+watch([currentView, current, stageMode], () => {
   activeAnnotation.value = null
 })
 
@@ -475,7 +517,7 @@ onBeforeUnmount(() => {
             </div>
             <div
               v-else
-              class="h-full overflow-hidden"
+              class="flex h-full min-h-[26rem] justify-center overflow-hidden"
               :style="{ touchAction: stageTouchAction }"
               @pointerdown="pinch.onPointerDown"
               @pointermove="pinch.onPointerMove"
@@ -483,40 +525,69 @@ onBeforeUnmount(() => {
               @pointercancel="pinch.onPointerUp"
               @lostpointercapture="pinch.onPointerUp"
             >
-              <BaseImage
-                v-if="current"
-                :key="`${current.id}-${currentView?.label}`"
-                :src="currentView?.image"
-                :motif="current.motif"
-                :tone="current.tone"
-                :alt="`${current.title} - ${currentView?.label}`"
-                ratio="16/10"
-                rounded="rounded-none"
-                eager
-                class="h-full min-h-[26rem] transition-transform duration-500"
+              <!-- Canvas box matches the photo's 16/10 geometry exactly and is
+                   centered in the stage, so annotation/fire percentages are
+                   photo coordinates — stable at every viewport and zoom. -->
+              <div
+                class="relative h-full shrink-0 transition-transform duration-500"
                 :class="pinch.isZoomed.value ? 'transition-none' : ''"
-                :style="{ transform: stageTransform }"
-              />
-            </div>
-
-            <div
-              v-if="!isRotateMode && !isVariantMode && currentAnnotations.length"
-              class="pointer-events-none absolute inset-0 z-10"
-            >
-              <button
-                v-for="annotation in currentAnnotations"
-                :key="annotation.label"
-                type="button"
-                class="plan-hotspot pointer-events-auto"
-                :class="activeAnnotation === annotation.label ? 'plan-hotspot--active' : ''"
-                :style="{ top: annotation.top, left: annotation.left }"
-                :aria-pressed="activeAnnotation === annotation.label"
-                :aria-label="`Detail: ${annotation.label}`"
-                @click="toggleAnnotation(annotation)"
+                :style="{ transform: stageTransform, aspectRatio: '16 / 10' }"
               >
-                <span class="plan-hotspot__dot"></span>
-                <span class="plan-hotspot__label">{{ annotation.label }}</span>
-              </button>
+                <BaseImage
+                  v-if="current"
+                  :key="`${current.id}-${isXrayMode ? 'xray' : currentView?.label}`"
+                  :src="isXrayMode ? current.image : currentView?.image"
+                  :motif="current.motif"
+                  :tone="current.tone"
+                  :alt="
+                    isXrayMode
+                      ? `${current.title} - Röntgenblick`
+                      : `${current.title} - ${currentView?.label}`
+                  "
+                  fill
+                  rounded="rounded-none"
+                  eager
+                  class="absolute inset-0"
+                  :class="isXrayMode ? 'plan-xray' : ''"
+                />
+                <div
+                  v-if="showFlames"
+                  class="pointer-events-none absolute inset-0"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="plan-fire"
+                    :style="{
+                      top: currentFireZone.top,
+                      left: currentFireZone.left,
+                      width: currentFireZone.width,
+                      height: currentFireZone.height,
+                    }"
+                  >
+                    <span class="plan-fire__glow plan-fire__glow--a"></span>
+                    <span class="plan-fire__glow plan-fire__glow--b"></span>
+                  </div>
+                </div>
+                <div
+                  v-if="currentAnnotations.length"
+                  class="pointer-events-none absolute inset-0 z-10"
+                >
+                  <button
+                    v-for="annotation in currentAnnotations"
+                    :key="annotation.label"
+                    type="button"
+                    class="plan-hotspot pointer-events-auto"
+                    :class="activeAnnotation === annotation.label ? 'plan-hotspot--active' : ''"
+                    :style="{ top: annotation.top, left: annotation.left }"
+                    :aria-pressed="activeAnnotation === annotation.label"
+                    :aria-label="`Detail: ${annotation.label}`"
+                    @click="toggleAnnotation(annotation)"
+                  >
+                    <span class="plan-hotspot__dot"></span>
+                    <span class="plan-hotspot__label">{{ annotation.label }}</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div
@@ -578,6 +649,22 @@ onBeforeUnmount(() => {
                     @click="compareMode = !compareMode"
                   >
                     Vergleich Basis/Variante
+                  </button>
+                </div>
+                <div v-else-if="currentFireZone" class="mt-2">
+                  <button
+                    type="button"
+                    class="press-feedback inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors"
+                    :class="
+                      flamesOn
+                        ? 'bg-brand-500 text-white'
+                        : 'bg-white/10 text-white/65 hover:bg-white/20 hover:text-white'
+                    "
+                    :aria-pressed="flamesOn"
+                    @click="flamesOn = !flamesOn"
+                  >
+                    <AppIcon name="flame" class="h-3.5 w-3.5" />
+                    {{ flamesOn ? 'Feuer aus' : 'Feuer an' }}
                   </button>
                 </div>
               </div>
@@ -648,7 +735,10 @@ onBeforeUnmount(() => {
               </button>
             </div>
 
-            <div v-if="currentViews.length > 1 || rotation.hasFrames.value" class="mt-5">
+            <div
+              v-if="currentViews.length > 1 || rotation.hasFrames.value || currentXray"
+              class="mt-5"
+            >
               <p class="text-xs font-semibold uppercase tracking-label text-white/45">Ansichten</p>
               <button
                 v-if="rotation.hasFrames.value"
@@ -665,6 +755,31 @@ onBeforeUnmount(() => {
                 <AppIcon name="rotate" class="h-4 w-4" />
                 360°-Rundblick
               </button>
+              <button
+                v-if="currentXray"
+                type="button"
+                class="press-feedback mt-2 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors"
+                :class="
+                  isXrayMode
+                    ? 'bg-brand-500 text-white'
+                    : 'bg-white/8 text-white/65 hover:bg-white/14 hover:text-white'
+                "
+                :aria-pressed="isXrayMode"
+                @click="toggleXrayMode"
+              >
+                <AppIcon name="eye" class="h-4 w-4" />
+                Röntgenblick: Innenleben
+              </button>
+              <div v-if="isXrayMode && currentXray?.layers?.length" class="mt-2 grid gap-2">
+                <div
+                  v-for="layer in currentXray.layers"
+                  :key="layer.label"
+                  class="rounded-lg bg-white/5 p-2.5 ring-1 ring-white/10"
+                >
+                  <p class="text-xs font-semibold text-brand-300">{{ layer.label }}</p>
+                  <p class="mt-0.5 text-xs leading-relaxed text-white/60">{{ layer.text }}</p>
+                </div>
+              </div>
               <div class="mt-2 grid grid-cols-3 gap-2">
                 <button
                   v-for="(view, index) in currentViews"
@@ -751,6 +866,16 @@ onBeforeUnmount(() => {
               >
                 Variante antippen, um sie in der Bühne zu sehen.
               </p>
+              <BaseButton
+                v-if="sampleRequestQuery"
+                :to="{ name: 'contact', query: sampleRequestQuery }"
+                variant="light"
+                size="sm"
+                class="mt-3 w-full"
+              >
+                <AppIcon name="swatch" class="h-4 w-4" />
+                Showroom-Muster anfragen
+              </BaseButton>
             </div>
 
             <div v-if="current" class="mt-5 flex flex-wrap gap-2">
@@ -847,6 +972,7 @@ onBeforeUnmount(() => {
             :src="currentView?.image"
             :alt="`${current.title} - ${currentView?.label}`"
             class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
+            :class="isXrayMode ? 'plan-xray' : ''"
             decoding="async"
           />
           <figcaption class="mt-4 text-center text-white">
@@ -910,6 +1036,72 @@ onBeforeUnmount(() => {
   line-height: 1.15;
   white-space: nowrap;
   backdrop-filter: blur(8px);
+}
+
+/* X-ray: blueprint-style inversion that turns the render into a technical
+   interior schema backdrop for the construction annotations.
+   The :deep() variant is required for the stage, where the class lands on the
+   BaseImage child root that doesn't carry this component's scope attribute. */
+.plan-xray,
+:deep(.plan-xray) {
+  filter: invert(0.88) hue-rotate(190deg) saturate(0.5) contrast(1.06) brightness(1.04);
+}
+
+/* Simulated fire behind the glass: two blended glow layers with offset
+   flicker rhythms. Position/size come from the view's `fire` zone. */
+.plan-fire {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.plan-fire__glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 68%,
+    rgba(255, 214, 130, 0.95) 0%,
+    rgba(255, 138, 38, 0.72) 38%,
+    rgba(196, 60, 8, 0.34) 64%,
+    transparent 78%
+  );
+  filter: blur(6px);
+  animation: plan-fire-flicker 1.7s ease-in-out infinite alternate;
+}
+
+.plan-fire__glow--b {
+  inset: -6%;
+  background: radial-gradient(
+    ellipse at 48% 75%,
+    rgba(255, 244, 200, 0.9) 0%,
+    rgba(255, 170, 60, 0.6) 42%,
+    transparent 70%
+  );
+  filter: blur(3px);
+  animation-duration: 1.15s;
+  animation-delay: -0.45s;
+}
+
+@keyframes plan-fire-flicker {
+  0% {
+    opacity: 0.72;
+    transform: scale(0.97) translateY(0.5%);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-0.6%);
+  }
+  100% {
+    opacity: 0.84;
+    transform: scale(0.99) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-fire__glow {
+    animation: none;
+  }
 }
 
 .plan-view-enter-active,

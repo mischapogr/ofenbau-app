@@ -67,6 +67,9 @@ export const planningExamples = [
           { label: 'Keramikfläche', top: '38%', left: '45%' },
           { label: 'Speicherkörper', top: '29%', left: '54%' },
         ],
+        // Glass zone for the simulated fire overlay (box, % of the photo, like
+        // the annotations; only on views where the firebox glass is visible).
+        fire: { top: '47%', left: '46%', width: '7%', height: '13%' },
       },
       {
         label: 'Perspektive',
@@ -89,6 +92,35 @@ export const planningExamples = [
         ],
       },
     ],
+    // Interior schema for the X-ray view: explains the hidden build quality
+    // (Heizzüge, Schamotte, Speichermasse) that justifies a handcrafted stove.
+    xray: {
+      text: 'Blick unter die Keramik: Heizzüge, Schamottekern und Speichermasse zeigen, warum ein handgesetzter Speicherofen stundenlang Strahlungswärme abgibt.',
+      layers: [
+        {
+          label: 'Schamotte-Feuerraum',
+          text: 'Schwerer Feuerraumkern aus Schamottesteinen nimmt die Hitze des Abbrands auf.',
+        },
+        {
+          label: 'Keramische Heizzüge',
+          text: 'Mäanderförmig geführte Züge leiten die heißen Gase durch die Speichermasse.',
+        },
+        {
+          label: 'Speichermasse',
+          text: 'Rund 1.000 kg Masse geben die Wärme über viele Stunden als milde Strahlung ab.',
+        },
+        {
+          label: 'Dämmebene',
+          text: 'Rückseitige Dämmung schützt die Wand und lenkt die Wärme in den Raum.',
+        },
+      ],
+      annotations: [
+        { label: 'Heizzüge', top: '40%', left: '47%' },
+        { label: 'Schamottekern', top: '52%', left: '50%' },
+        { label: 'Speichermasse', top: '27%', left: '55%' },
+        { label: 'Dämmebene', top: '45%', left: '60%' },
+      ],
+    },
     frames: [
       { angle: -60, image: '/images/planning-frames/kachelofen-eckscheibe/frame-01.webp' },
       { angle: -40, image: '/images/planning-frames/kachelofen-eckscheibe/frame-02.webp' },
@@ -194,6 +226,7 @@ export const planningExamples = [
           { label: 'Außenführung', top: '34%', left: '66%' },
           { label: 'Brandschutz', top: '46%', left: '54%' },
         ],
+        fire: { top: '62%', left: '34%', width: '7%', height: '13%' },
       },
       {
         label: 'Außen',
@@ -225,6 +258,34 @@ export const planningExamples = [
       { angle: 40, image: '/images/planning-frames/schornstein-kaminofen/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/schornstein-kaminofen/frame-07.webp' },
     ],
+    // Interior schema for the X-ray view: double-wall flue construction.
+    xray: {
+      text: 'Innenaufbau des Schornsteinsystems: doppelwandiges Edelstahlrohr mit Dämmschale, Reinigungsöffnung und brandschutzsicherer Wanddurchführung.',
+      layers: [
+        {
+          label: 'Edelstahl-Innenrohr',
+          text: 'Säurebeständiges Innenrohr führt die Abgase sicher und zugstark ab.',
+        },
+        {
+          label: 'Dämmschale',
+          text: 'Mineralische Dämmung hält die Abgase heiß und den Schornsteinzug stabil.',
+        },
+        {
+          label: 'Wanddurchführung',
+          text: 'Geprüfte Durchführung mit Sicherheitsabstand zu brennbaren Bauteilen.',
+        },
+        {
+          label: 'Reinigungsöffnung',
+          text: 'Revisionsklappe für Schornsteinfeger, Kontrolle und Wartung.',
+        },
+      ],
+      annotations: [
+        { label: 'Innenrohr', top: '28%', left: '64%' },
+        { label: 'Dämmschale', top: '42%', left: '66%' },
+        { label: 'Wanddurchführung', top: '52%', left: '50%' },
+        { label: 'Reinigungsöffnung', top: '66%', left: '62%' },
+      ],
+    },
     decisions: [
       { key: 'rohr', label: 'Rohr-Finish', choices: ['Edelstahl', 'Schwarz matt'] },
       { key: 'ofen', label: 'Ofenkörper', choices: ['Stahl schwarz', 'Speckstein'] },
