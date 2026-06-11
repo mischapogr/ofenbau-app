@@ -131,7 +131,7 @@ const isOutsideServiceArea = computed(() => {
   
   if (form.location.trim()) {
     const loc = form.location.toLowerCase()
-    const inRegion = ['stuttgart', 'ludwigsburg', 'esslingen', 'nordsachsen', 'torgau', 'delitzsch', 'leipzig'].some(city => loc.includes(city))
+    const inRegion = ['leipzig', 'chemnitz', 'meissen', 'nordsachsen', 'torgau', 'delitzsch'].some(city => loc.includes(city))
     const zipMatch = loc.match(/\b\d{5}\b/)
     if (zipMatch) {
       const zip = zipMatch[0]
