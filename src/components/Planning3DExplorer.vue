@@ -1,12 +1,14 @@
 <script setup>
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import { computed, nextTick, ref, watch, onBeforeUnmount } from 'vue'
 import BaseContainer from './BaseContainer.vue'
 import BaseButton from './BaseButton.vue'
 import BaseImage from './BaseImage.vue'
+import CompareSlider from './CompareSlider.vue'
 import AppIcon from './AppIcon.vue'
 import { planningDecisionOptions, planningExamples } from '@/data/planning'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 import { useFrameRotation } from '@/composables/useFrameRotation'
+import { useDeferredImage } from '@/composables/useDeferredImage'
 
 const categories = ['Alle', ...new Set(planningExamples.map((example) => example.category))]
 const activeCategory = ref('Alle')
@@ -54,6 +56,33 @@ const activeVariantData = computed(() =>
     : null
 )
 const isVariantMode = computed(() => stageMode.value === 'variant' && Boolean(activeVariantData.value))
+
+// Decode-before-swap: the stage shows the previous variant until the next one
+// is ready, then crossfades (see .stage-fade).
+const variantImageSrc = computed(() => activeVariantData.value?.image || null)
+const displayedVariantSrc = useDeferredImage(variantImageSrc)
+
+const compareMode = ref(false)
+const compareBase = computed(() => {
+  const base = current.value?.image
+  const variant = activeVariantData.value?.image
+  return base && variant && base !== variant ? base : null
+})
+
+const failedImages = ref(new Set())
+function markFailed(src) {
+  if (!src || failedImages.value.has(src)) return
+  const next = new Set(failedImages.value)
+  next.add(src)
+  failedImages.value = next
+}
+const variantImageFailed = computed(() =>
+  Boolean(displayedVariantSrc.value && failedImages.value.has(displayedVariantSrc.value))
+)
+const currentFrameFailed = computed(() => {
+  const src = rotation.currentFrame.value?.image
+  return Boolean(src && failedImages.value.has(src))
+})
 
 function variantFor(key, choice) {
   return currentVariants.value?.[key]?.[choice] || null
@@ -131,6 +160,7 @@ function enterRotateMode() {
   activeVariant.value = null
   stageMode.value = 'rotate'
   rotation.resetToCenter()
+  rotation.preloadFrames({ immediate: true })
   zoom.value = 1
 }
 
@@ -157,9 +187,32 @@ function closeExpanded() {
   expanded.value = false
 }
 
+const modalRef = ref(null)
+const closeButtonRef = ref(null)
+let lastFocused = null
+
+function trapFocus(e) {
+  const root = modalRef.value
+  if (!root) return
+  const focusables = root.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  )
+  if (!focusables.length) return
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  if (e.shiftKey && document.activeElement === first) {
+    last.focus()
+    e.preventDefault()
+  } else if (!e.shiftKey && document.activeElement === last) {
+    first.focus()
+    e.preventDefault()
+  }
+}
+
 function onKey(e) {
   if (!expanded.value) return
   if (e.key === 'Escape') closeExpanded()
+  if (e.key === 'Tab') trapFocus(e)
   if (e.key === 'ArrowRight') stepView(1)
   if (e.key === 'ArrowLeft') stepView(-1)
 }
@@ -189,9 +242,17 @@ watch(expanded, (isOpen) => {
   if (isOpen) {
     window.addEventListener('keydown', onKey)
     rotation.stopAutorotate()
+    lastFocused = document.activeElement
+    nextTick(() => closeButtonRef.value?.focus())
   } else {
     window.removeEventListener('keydown', onKey)
+    lastFocused?.focus?.()
+    lastFocused = null
   }
+})
+
+watch(isVariantMode, (active) => {
+  if (!active) compareMode.value = false
 })
 
 onBeforeUnmount(() => {
@@ -282,12 +343,12 @@ onBeforeUnmount(() => {
               @keydown="onStageKey"
             >
               <div
-                class="h-full transition-transform duration-500"
+                class="relative h-full transition-transform duration-500"
                 :style="{ transform: `scale(${zoom})` }"
               >
                 <img
                   v-for="(frame, index) in currentFrames"
-                  v-show="index === rotation.frameIndex.value"
+                  v-show="index === rotation.frameIndex.value && !currentFrameFailed"
                   :key="frame.image"
                   :src="frame.image"
                   :alt="
@@ -300,22 +361,69 @@ onBeforeUnmount(() => {
                   draggable="false"
                   loading="eager"
                   decoding="async"
+                  @error="markFailed(frame.image)"
+                />
+                <BaseImage
+                  v-if="currentFrameFailed"
+                  :motif="current?.motif"
+                  :tone="current?.tone"
+                  :alt="`${current?.title} - Rundblick`"
+                  fill
+                  rounded="rounded-none"
                 />
               </div>
+              <div
+                v-if="!rotation.framesReady.value"
+                class="pointer-events-none absolute left-1/2 top-16 z-10 -translate-x-1/2"
+              >
+                <div
+                  class="flex items-center gap-2 rounded-full bg-ink-950/75 px-4 py-2 text-xs font-semibold text-white/80 backdrop-blur"
+                >
+                  <span>Lädt Rundblick…</span>
+                  <span class="font-mono">
+                    {{ rotation.preloadLoaded.value }}/{{
+                      rotation.preloadTotal.value || currentFrames.length
+                    }}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div
-              v-else-if="isVariantMode"
-              class="flex h-full min-h-[26rem] items-center justify-center overflow-hidden"
-            >
-              <img
-                :key="`${current.id}-${activeVariant.key}-${activeVariant.choice}`"
-                :src="activeVariantData.image"
+            <div v-else-if="isVariantMode" class="relative h-full min-h-[26rem] overflow-hidden">
+              <CompareSlider
+                v-if="compareMode && compareBase"
+                :before="compareBase"
+                :after="activeVariantData.image"
+                before-label="Basis"
+                :after-label="activeVariant.choice"
                 :alt="`${current?.title} - ${stageLabel}`"
-                class="max-h-full w-full object-contain transition-transform duration-500"
-                loading="eager"
-                decoding="async"
-                :style="{ transform: `scale(${zoom})` }"
               />
+              <div
+                v-else
+                class="absolute inset-0 transition-transform duration-500"
+                :style="{ transform: `scale(${zoom})` }"
+              >
+                <BaseImage
+                  v-if="variantImageFailed"
+                  :motif="current?.motif"
+                  :tone="current?.tone"
+                  :alt="`${current?.title} - ${stageLabel}`"
+                  fill
+                  rounded="rounded-none"
+                />
+                <Transition v-else name="stage-fade">
+                  <img
+                    v-if="displayedVariantSrc"
+                    :key="displayedVariantSrc"
+                    :src="displayedVariantSrc"
+                    :alt="`${current?.title} - ${stageLabel}`"
+                    class="absolute inset-0 h-full w-full object-contain"
+                    loading="eager"
+                    decoding="async"
+                    draggable="false"
+                    @error="markFailed(displayedVariantSrc)"
+                  />
+                </Transition>
+              </div>
             </div>
             <div v-else class="h-full overflow-hidden">
               <BaseImage
@@ -390,6 +498,21 @@ onBeforeUnmount(() => {
                     @click="rotation.toggleAutorotate()"
                   >
                     {{ rotation.autorotate.value ? 'Stopp' : 'Rundgang' }}
+                  </button>
+                </div>
+                <div v-else-if="isVariantMode && compareBase" class="mt-2">
+                  <button
+                    type="button"
+                    class="press-feedback rounded-full px-3 py-1 text-xs font-semibold transition-colors"
+                    :class="
+                      compareMode
+                        ? 'bg-brand-500 text-white'
+                        : 'bg-white/10 text-white/65 hover:bg-white/20 hover:text-white'
+                    "
+                    :aria-pressed="compareMode"
+                    @click="compareMode = !compareMode"
+                  >
+                    Vergleich Basis/Variante
                   </button>
                 </div>
               </div>
@@ -593,6 +716,7 @@ onBeforeUnmount(() => {
     <Transition name="plan-view">
       <div
         v-if="expanded && current"
+        ref="modalRef"
         class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/92 p-4 backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
@@ -600,6 +724,7 @@ onBeforeUnmount(() => {
         @click.self="closeExpanded"
       >
         <button
+          ref="closeButtonRef"
           type="button"
           class="press-feedback absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           aria-label="Schließen"
@@ -639,13 +764,19 @@ onBeforeUnmount(() => {
             @pointercancel="rotation.onPointerUp"
             @lostpointercapture="rotation.onPointerUp"
           />
-          <img
-            v-else-if="isVariantMode"
-            :src="activeVariantData.image"
-            :alt="`${current.title} - ${stageLabel}`"
-            class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
-            decoding="async"
-          />
+          <div v-else-if="isVariantMode" class="relative h-[78vh] w-full">
+            <Transition name="stage-fade">
+              <img
+                v-if="displayedVariantSrc"
+                :key="displayedVariantSrc"
+                :src="displayedVariantSrc"
+                :alt="`${current.title} - ${stageLabel}`"
+                class="absolute inset-0 h-full w-full rounded-2xl object-contain shadow-lift"
+                decoding="async"
+                @error="markFailed(displayedVariantSrc)"
+              />
+            </Transition>
+          </div>
           <img
             v-else
             :src="currentView?.image"
@@ -715,6 +846,22 @@ onBeforeUnmount(() => {
 .plan-view-enter-from,
 .plan-view-leave-to {
   opacity: 0;
+}
+
+.stage-fade-enter-active,
+.stage-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.stage-fade-enter-from,
+.stage-fade-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-fade-enter-active,
+  .stage-fade-leave-active {
+    transition: none;
+  }
 }
 
 @media (max-width: 640px) {

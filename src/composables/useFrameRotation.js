@@ -15,11 +15,15 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
   const frameIndex = ref(0)
   const isDragging = ref(false)
   const autorotate = ref(false)
+  const framesReady = ref(false)
+  const preloadLoaded = ref(0)
+  const preloadTotal = ref(0)
 
   let drag = null
   let timer = null
   let direction = 1
-  const preloadedSets = new Set()
+  const completedSets = new Set()
+  const inflightSets = new Set()
 
   const frameCount = computed(() => frames.value?.length ?? 0)
   const hasFrames = computed(() => frameCount.value >= 2)
@@ -91,25 +95,55 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     })
   }
 
+  function syncReadyState() {
+    const key = frames.value?.[0]?.image
+    framesReady.value = Boolean(key && completedSets.has(key))
+    preloadLoaded.value = 0
+    preloadTotal.value = 0
+  }
+
   watch(frames, () => {
     stopAutorotate()
     resetToCenter()
+    syncReadyState()
   })
   resetToCenter()
+  syncReadyState()
 
-  function preloadFrames() {
+  function preloadFrames({ immediate = false } = {}) {
     const list = frames.value
     if (!list?.length) return
     const key = list[0].image
-    if (preloadedSets.has(key)) return
-    preloadedSets.add(key)
+    if (completedSets.has(key)) {
+      framesReady.value = true
+      return
+    }
+    if (inflightSets.has(key)) return
+    inflightSets.add(key)
+    preloadTotal.value = list.length
+    preloadLoaded.value = 0
+    const isCurrent = () => frames.value?.[0]?.image === key
     const warm = () => {
+      let settled = 0
       list.forEach((frame) => {
         const img = new Image()
+        const settle = () => {
+          settled += 1
+          if (isCurrent()) preloadLoaded.value = settled
+          if (settled === list.length) {
+            completedSets.add(key)
+            inflightSets.delete(key)
+            if (isCurrent()) framesReady.value = true
+          }
+        }
+        img.onload = settle
+        img.onerror = settle
         img.src = frame.image
       })
     }
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    if (immediate) {
+      warm()
+    } else if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
       window.requestIdleCallback(warm, { timeout: 2000 })
     } else {
       setTimeout(warm, 200)
@@ -125,6 +159,9 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     currentFrame,
     isDragging,
     autorotate,
+    framesReady,
+    preloadLoaded,
+    preloadTotal,
     toggleAutorotate,
     stopAutorotate,
     stepFrame,
