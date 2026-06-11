@@ -46,29 +46,9 @@ export const planningServices = [
   },
 ]
 
-export const planningDecisionOptions = [
-  {
-    key: 'form',
-    label: 'Form',
-    choices: ['gerade Linie', 'Ecke', 'Sitzbank'],
-  },
-  {
-    key: 'material',
-    label: 'Material',
-    choices: ['Keramik', 'Naturstein', 'Putz'],
-  },
-  {
-    key: 'view',
-    label: 'Sichtscheibe',
-    choices: ['frontal', 'Eckscheibe', 'Panorama'],
-  },
-  {
-    key: 'detail',
-    label: 'Detail',
-    choices: ['Fuge', 'Kante', 'Anschluss'],
-  },
-]
-
+// Decision types are defined per example (`decisions`) because each use case
+// has different meaningful choices; choices without a `variants` entry render
+// as plain (non-clickable) chips.
 export const planningExamples = [
   {
     id: 'kachelofen-eckscheibe',
@@ -117,6 +97,12 @@ export const planningExamples = [
       { angle: 20, image: '/images/planning-frames/kachelofen-eckscheibe/frame-05.webp' },
       { angle: 40, image: '/images/planning-frames/kachelofen-eckscheibe/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/kachelofen-eckscheibe/frame-07.webp' },
+    ],
+    decisions: [
+      { key: 'form', label: 'Form', choices: ['gerade Linie', 'Ecke', 'Sitzbank'] },
+      { key: 'material', label: 'Material', choices: ['Keramik', 'Naturstein', 'Putz'] },
+      { key: 'view', label: 'Sichtscheibe', choices: ['frontal', 'Eckscheibe', 'Panorama'] },
+      { key: 'detail', label: 'Detail', choices: ['Fuge', 'Kante', 'Anschluss'] },
     ],
     // Decision simulation: per choice an alternative visualization of this example.
     // Choices matching the base configuration point at the base Überblick image.
@@ -239,6 +225,32 @@ export const planningExamples = [
       { angle: 40, image: '/images/planning-frames/schornstein-kaminofen/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/schornstein-kaminofen/frame-07.webp' },
     ],
+    decisions: [
+      { key: 'rohr', label: 'Rohr-Finish', choices: ['Edelstahl', 'Schwarz matt'] },
+      { key: 'ofen', label: 'Ofenkörper', choices: ['Stahl schwarz', 'Speckstein'] },
+    ],
+    variants: {
+      rohr: {
+        Edelstahl: {
+          image: '/images/planning-example-schornstein-kaminofen.webp',
+          text: 'Gebürstetes Edelstahlrohr — die Basisvariante.',
+        },
+        'Schwarz matt': {
+          image: '/images/planning-variants/schornstein-kaminofen/rohr-schwarz-matt.webp',
+          text: 'Mattschwarz beschichtetes Rauchrohr und Außenführung.',
+        },
+      },
+      ofen: {
+        'Stahl schwarz': {
+          image: '/images/planning-example-schornstein-kaminofen.webp',
+          text: 'Schwarzer Stahlkorpus — die Basisvariante.',
+        },
+        Speckstein: {
+          image: '/images/planning-variants/schornstein-kaminofen/ofen-speckstein.webp',
+          text: 'Specksteinverkleidung mit längerer Wärmespeicherung.',
+        },
+      },
+    },
     motif: 'chimney',
     tone: 'slate',
     description:
@@ -300,6 +312,32 @@ export const planningExamples = [
       { angle: 40, image: '/images/planning-frames/bad-fliesen/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/bad-fliesen/frame-07.webp' },
     ],
+    decisions: [
+      { key: 'format', label: 'Format', choices: ['Großformat', 'Mosaikakzent'] },
+      { key: 'farbwelt', label: 'Farbwelt', choices: ['Sand', 'Anthrazit'] },
+    ],
+    variants: {
+      format: {
+        Großformat: {
+          image: '/images/planning-example-bad-fliesen.webp',
+          text: 'Großformatige Feinsteinzeugplatten — die Basisvariante.',
+        },
+        Mosaikakzent: {
+          image: '/images/planning-variants/bad-fliesen/format-mosaikakzent.webp',
+          text: 'Mosaik-Akzentwand in der Dusche, Großformat im Raum.',
+        },
+      },
+      farbwelt: {
+        Sand: {
+          image: '/images/planning-example-bad-fliesen.webp',
+          text: 'Warme Sandtöne — die Basisvariante.',
+        },
+        Anthrazit: {
+          image: '/images/planning-variants/bad-fliesen/farbwelt-anthrazit.webp',
+          text: 'Anthrazitfarbene Flächen für einen kontrastreichen Auftritt.',
+        },
+      },
+    },
     motif: 'tile',
     tone: 'sand',
     description:
@@ -361,6 +399,32 @@ export const planningExamples = [
       { angle: 40, image: '/images/planning-frames/materialien/frame-06.webp' },
       { angle: 60, image: '/images/planning-frames/materialien/frame-07.webp' },
     ],
+    decisions: [
+      { key: 'farbton', label: 'Farbton', choices: ['Creme', 'Terrakotta'] },
+      { key: 'oberflaeche', label: 'Oberfläche', choices: ['Matt', 'Glänzend'] },
+    ],
+    variants: {
+      farbton: {
+        Creme: {
+          image: '/images/planning-example-materialien.webp',
+          text: 'Cremefarbene Keramik und heller Stein — die Basisvariante.',
+        },
+        Terrakotta: {
+          image: '/images/planning-variants/materialien/farbton-terrakotta.webp',
+          text: 'Warme Terrakotta-Töne für Kachel und Putzfläche.',
+        },
+      },
+      oberflaeche: {
+        Matt: {
+          image: '/images/planning-example-materialien.webp',
+          text: 'Matte, geschliffene Oberflächen — die Basisvariante.',
+        },
+        Glänzend: {
+          image: '/images/planning-variants/materialien/oberflaeche-glaenzend.webp',
+          text: 'Glasierte, glänzende Keramik mit lebendigen Reflexen.',
+        },
+      },
+    },
     motif: 'swatch',
     tone: 'ink',
     description:

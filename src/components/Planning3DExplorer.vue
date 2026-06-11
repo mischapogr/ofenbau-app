@@ -5,7 +5,7 @@ import BaseButton from './BaseButton.vue'
 import BaseImage from './BaseImage.vue'
 import CompareSlider from './CompareSlider.vue'
 import AppIcon from './AppIcon.vue'
-import { planningDecisionOptions, planningExamples } from '@/data/planning'
+import { planningExamples } from '@/data/planning'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 import { useFrameRotation } from '@/composables/useFrameRotation'
 import { useDeferredImage } from '@/composables/useDeferredImage'
@@ -14,7 +14,7 @@ const categories = ['Alle', ...new Set(planningExamples.map((example) => example
 const activeCategory = ref('Alle')
 const activeIndex = ref(0)
 const activeViewIndex = ref(0)
-const activeDecisionKey = ref(planningDecisionOptions[0]?.key || '')
+const activeDecisionKey = ref('')
 const zoom = ref(1)
 const expanded = ref(false)
 const stageMode = ref('view')
@@ -38,10 +38,11 @@ const currentView = computed(
 const currentAnnotations = computed(
   () => currentView.value?.annotations || current.value?.annotations || []
 )
+const activeDecisionOptions = computed(() => current.value?.decisions || [])
 const activeDecision = computed(
   () =>
-    planningDecisionOptions.find((option) => option.key === activeDecisionKey.value) ||
-    planningDecisionOptions[0]
+    activeDecisionOptions.value.find((option) => option.key === activeDecisionKey.value) ||
+    activeDecisionOptions.value[0]
 )
 
 const currentFrames = computed(() => current.value?.frames || [])
@@ -90,7 +91,7 @@ function variantFor(key, choice) {
 
 const stageLabel = computed(() => {
   if (isVariantMode.value) {
-    const option = planningDecisionOptions.find((item) => item.key === activeVariant.value.key)
+    const option = activeDecisionOptions.value.find((item) => item.key === activeVariant.value.key)
     return `Simulation: ${option?.label} · ${activeVariant.value.choice}`
   }
   if (isRotateMode.value) return `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
@@ -124,7 +125,7 @@ function selectChoice(option, choice) {
 }
 
 function stepVariant(dir) {
-  const option = planningDecisionOptions.find((item) => item.key === activeVariant.value?.key)
+  const option = activeDecisionOptions.value.find((item) => item.key === activeVariant.value?.key)
   if (!option) return
   const choices = option.choices.filter((choice) => variantFor(option.key, choice))
   const index = choices.indexOf(activeVariant.value.choice)
@@ -232,6 +233,7 @@ watch(
   current,
   (example) => {
     if (example?.frames?.length) rotation.preloadFrames()
+    activeDecisionKey.value = example?.decisions?.[0]?.key || ''
     syncStageMode()
   },
   { immediate: true }
@@ -632,13 +634,13 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <div class="mt-5 border-t border-white/10 pt-5">
+            <div v-if="activeDecisionOptions.length" class="mt-5 border-t border-white/10 pt-5">
               <p class="text-xs font-semibold uppercase tracking-label text-white/45">
                 Entscheidung simulieren
               </p>
               <div class="mt-3 grid grid-cols-2 gap-2">
                 <button
-                  v-for="option in planningDecisionOptions"
+                  v-for="option in activeDecisionOptions"
                   :key="option.key"
                   type="button"
                   class="press-feedback rounded-lg px-3 py-2 text-left text-xs font-semibold transition-colors"

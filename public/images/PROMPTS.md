@@ -118,3 +118,9 @@ and point the matching `image` field (see `slot`) at `/images/<id>.webp`.
 - **base-matching choices** (e.g. Ecke / Keramik / Eckscheibe for kachelofen-eckscheibe) point at
   the existing base webp — do not generate duplicates.
 - **post-processing:** same as planning-frames (crop 16:10 biased up, 1024×640, WebP q82).
+- **generated sets:** kachelofen-eckscheibe (form/material/view/detail, 9 images);
+  schornstein-kaminofen (rohr: Schwarz matt — matte black powder-coated pipe/flue; ofen:
+  Speckstein — grey soapstone cladding); bad-fliesen (format: Mosaikakzent — mosaic shower
+  accent wall; farbwelt: Anthrazit — dark anthracite walls/floor); materialien (farbton:
+  Terrakotta — terracotta/burnt-orange swatches; oberflaeche: Glänzend — glossy glazed
+  ceramic samples). Decision types live per example in `planningExamples[].decisions`.
