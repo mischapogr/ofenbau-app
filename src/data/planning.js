@@ -217,11 +217,11 @@ export const planningExamples = [
     category: 'Schornstein',
     title: 'Kaminofen mit Außenschornstein',
     label: 'Schornstein',
-    image: '/images/planning-example-schornstein-kaminofen.webp',
+    image: '/images/planning-example-schornstein-exterior-v2.webp',
     views: [
       {
         label: 'Schnitt',
-        image: '/images/planning-example-schornstein-kaminofen.webp',
+        image: '/images/planning-example-schornstein-kaminofen-v2.webp',
         text: 'Innen- und Außenbezug mit Ofenanschluss und Wanddurchführung.',
         annotations: [
           { label: 'Wanddurchführung', top: '27%', left: '54%' },
@@ -233,7 +233,7 @@ export const planningExamples = [
       },
       {
         label: 'Außen',
-        image: '/images/planning-example-schornstein-exterior.webp',
+        image: '/images/planning-example-schornstein-exterior-v2.webp',
         text: 'Fassadenansicht mit Schornsteinführung, Haltern und Dachabschluss.',
         annotations: [
           { label: 'Dachabschluss', top: '6%', left: '70%' },
@@ -244,7 +244,7 @@ export const planningExamples = [
       },
       {
         label: 'Anschluss',
-        image: '/images/planning-example-schornstein-detail.webp',
+        image: '/images/planning-example-schornstein-detail-v2.webp',
         text: 'Detailansicht von Wanddurchführung, Schelle und Edelstahlrohr.',
         annotations: [
           { label: 'Edelstahlrohr', top: '12%', left: '44%' },
@@ -266,13 +266,9 @@ export const planningExamples = [
       },
     ],
     frames: [
-      { angle: -60, image: '/images/planning-frames/schornstein-kaminofen/frame-01.webp' },
-      { angle: -40, image: '/images/planning-frames/schornstein-kaminofen/frame-02.webp' },
-      { angle: -20, image: '/images/planning-frames/schornstein-kaminofen/frame-03.webp' },
-      { angle: 0, image: '/images/planning-frames/schornstein-kaminofen/frame-04.webp' },
-      { angle: 20, image: '/images/planning-frames/schornstein-kaminofen/frame-05.webp' },
-      { angle: 40, image: '/images/planning-frames/schornstein-kaminofen/frame-06.webp' },
-      { angle: 60, image: '/images/planning-frames/schornstein-kaminofen/frame-07.webp' },
+      { angle: -45, image: '/images/planning-frames/schornstein-kaminofen/frame-v2-01.webp' },
+      { angle: 0, image: '/images/planning-frames/schornstein-kaminofen/frame-v2-02.webp' },
+      { angle: 45, image: '/images/planning-frames/schornstein-kaminofen/frame-v2-03.webp' },
     ],
     // Interior schema for the X-ray view: double-wall flue construction.
     xray: {
@@ -309,21 +305,21 @@ export const planningExamples = [
     variants: {
       rohr: {
         Edelstahl: {
-          image: '/images/planning-example-schornstein-kaminofen.webp',
+          image: '/images/planning-example-schornstein-kaminofen-v2.webp',
           text: 'Gebürstetes Edelstahlrohr — die Basisvariante.',
         },
         'Schwarz matt': {
-          image: '/images/planning-variants/schornstein-kaminofen/rohr-schwarz-matt.webp',
+          image: '/images/planning-variants/schornstein-kaminofen/rohr-schwarz-matt-v2.webp',
           text: 'Mattschwarz beschichtetes Rauchrohr und Außenführung.',
         },
       },
       ofen: {
         'Stahl schwarz': {
-          image: '/images/planning-example-schornstein-kaminofen.webp',
+          image: '/images/planning-example-schornstein-kaminofen-v2.webp',
           text: 'Schwarzer Stahlkorpus — die Basisvariante.',
         },
         Speckstein: {
-          image: '/images/planning-variants/schornstein-kaminofen/ofen-speckstein.webp',
+          image: '/images/planning-variants/schornstein-kaminofen/ofen-speckstein-v2.webp',
           text: 'Specksteinverkleidung mit längerer Wärmespeicherung.',
         },
       },
@@ -334,10 +330,10 @@ export const planningExamples = [
       'Planungsansicht für Kaminofen, Wanddurchführung und Edelstahl-Außenschornstein inklusive Anschlussdetails.',
     specs: ['Edelstahl', 'Wanddurchführung', 'Brandschutz', 'Ofenanschluss'],
     annotations: [
-      { label: 'Wanddurchführung', top: '27%', left: '54%' },
-      { label: 'Ofenanschluss', top: '42%', left: '30%' },
-      { label: 'Außenführung', top: '55%', left: '72%' },
-      { label: 'Brandschutz', top: '16%', left: '60%' },
+      { label: 'Dachabschluss', top: '6%', left: '70%' },
+      { label: 'Rohrführung', top: '19%', left: '70%' },
+      { label: 'Wandhalter', top: '49%', left: '67%' },
+      { label: 'Wandanschluss', top: '85%', left: '68%' },
     ],
     review: { ...pendingPlanningApproval },
   },

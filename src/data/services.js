@@ -54,7 +54,7 @@ export const services = [
       'Neue Schornsteinsysteme, Edelstahlschornsteine und Sanierungen für Kaminofen, Kachelofen und Heizkamin — fachgerecht geplant und montiert.',
     motif: 'chimney',
     tone: 'slate',
-    image: '/images/planning-example-schornstein-kaminofen.webp',
+    image: '/images/planning-example-schornstein-kaminofen-v2.webp',
     bullets: [
       'Edelstahl-Außenschornsteine für neue Feuerstätten',
       'Schornsteinsanierung und Querschnittsanpassung',

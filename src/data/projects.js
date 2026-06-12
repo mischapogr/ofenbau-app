@@ -197,7 +197,7 @@ export const projects = [
     category: ['schornstein', 'modern'],
     motif: 'chimney',
     tone: 'slate',
-    image: '/images/planning-example-schornstein-kaminofen.webp',
+    image: '/images/planning-example-schornstein-kaminofen-v2.webp',
     review: { ...pendingReferenceApproval },
     specs: {
       'System': 'Doppelwandiger Edelstahlschornstein',
