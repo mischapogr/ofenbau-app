@@ -237,8 +237,8 @@ export const planningExamples = [
         text: 'Fassadenansicht mit Schornsteinführung, Haltern und Dachabschluss.',
         annotations: [
           { label: 'Dachabschluss', top: '6%', left: '70%' },
-          { label: 'Rohrführung', top: '30%', left: '69%' },
-          { label: 'Wandhalter', top: '56%', left: '67%' },
+          { label: 'Rohrführung', top: '19%', left: '70%' },
+          { label: 'Wandhalter', top: '49%', left: '67%' },
           { label: 'Wandanschluss', top: '85%', left: '68%' },
         ],
       },
