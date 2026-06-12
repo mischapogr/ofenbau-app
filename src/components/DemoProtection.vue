@@ -195,9 +195,9 @@ async function submitAccessCode() {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
+  display: flex;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 1.25rem;
   background:
     linear-gradient(rgba(252, 248, 240, 0.92), rgba(252, 248, 240, 0.92)),
@@ -206,6 +206,9 @@ async function submitAccessCode() {
 
 .demo-gate__panel {
   width: min(100%, 28rem);
+  /* margin auto centers the panel when it fits the viewport and keeps the top
+     edge reachable (scrollable) when it is taller, unlike place-items: center. */
+  margin: auto;
   border: 1px solid rgba(44, 36, 28, 0.16);
   border-radius: 8px;
   padding: clamp(1.25rem, 3vw, 2rem);
