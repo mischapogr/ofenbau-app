@@ -11,6 +11,14 @@ export const knowledgeArticles = [
     date: '2026-04-10',
     readTime: '5 Min. Lesezeit',
     tags: ['BImSchV', 'Schornstein', 'Gesetz'],
+    figure: {
+      src: '/images/feinstaub-staubabscheider.webp',
+      ratio: '1/1',
+      narrow: true,
+      alt: 'Kaminofen mit elektrostatischem Staubabscheider im Rauchrohr: Feinstaubpartikel vor dem Abscheider, gereinigtes Abgas danach',
+      caption:
+        'Statt Stilllegung: Ein nachgerüsteter Staubabscheider im Rauchrohr kann Bestandsöfen die Grenzwerte der 1. BImSchV einhalten lassen.',
+    },
     content: `
       In Deutschland regelt die **Erste Verordnung zur Durchführung des Bundes-Immissionsschutzgesetzes (1. BImSchV)** die Emissionsgrenzwerte für kleinere und mittlere Feuerungsanlagen, wie Kaminöfen, Kachelöfen und Heizkamine. 
 
@@ -84,6 +92,13 @@ export const knowledgeArticles = [
     date: '2026-06-01',
     readTime: '6 Min. Lesezeit',
     tags: ['Großformate', 'Feinsteinzeug', 'Fliesenleger'],
+    figure: {
+      src: '/images/fliesen-schichtaufbau.webp',
+      ratio: '1/1',
+      alt: 'Explosionszeichnung des Bodenaufbaus: Heizestrich, Grundierung, Ausgleichsmasse, Flexkleber, XXL-Fliese und Dehnfuge',
+      caption:
+        'Der Schichtaufbau entscheidet: Bei XXL-Formaten muss jede Lage — von der Grundierung über die Ausgleichsmasse bis zum Flexkleber — absolut plan sein.',
+    },
     content: `
       Der Trend im modernen Baddesign und im großzügigen Wohnbereich geht eindeutig zu großen Formaten. Ob 80x80 cm, 120x120 cm oder sogar Platten bis 300x100 cm — XXL-Fliesen schaffen ein extrem homogenes, ruhiges Raumbild mit minimalen Fugenanteilen. 
       
@@ -115,6 +130,13 @@ export const knowledgeArticles = [
     date: '2026-01-20',
     readTime: '6 Min. Lesezeit',
     tags: ['Kachelofen', 'Kosten', 'Grundofen'],
+    figure: {
+      src: '/images/material-musterboard.webp',
+      ratio: '1/1',
+      alt: 'Musterboard mit Kacheln, Naturstein, Putzproben, Stahlrahmen-Profil und Fugenfarben für die Ofenplanung',
+      caption:
+        'Material bestimmt den Preis: Kacheln, Naturstein, Putz und Detailarbeit machen den größten Teil der Kosten eines handgesetzten Ofens aus.',
+    },
     content: `
       **Die kurze Antwort:** Ein individuell handgesetzter Kachelofen kostet in Deutschland je nach Bauart, Größe und Material zwischen **9.000 und 35.000 EUR** inklusive Montage. Ein industriell gefertigter Kaminofen ist bereits ab 1.500 bis 6.000 EUR erhältlich, bietet jedoch keine vergleichbare Speicherwärme und Lebensdauer.
 
@@ -149,11 +171,11 @@ export const knowledgeArticles = [
     readTime: '5 Min. Lesezeit',
     tags: ['Grundofen', 'Kaminofen', 'Vergleich'],
     figure: {
-      src: '/images/kachelofen-schnitt.webp',
-      ratio: '22/15',
-      alt: 'Schnittdarstellung eines Kachelofens mit Heizgaszügen, Wärmespeichermasse und Schamotte-Feuerraum',
+      src: '/images/kaminofen-vs-grundofen.webp',
+      ratio: '1/1',
+      alt: 'Vergleich: Kaminofen mit aufsteigender Konvektionsluft neben einem Grundofen mit Speicherkern und seitlich abstrahlender Strahlungswärme',
       caption:
-        'Das Grundofen-Prinzip im Schnitt: lange Heizgaszüge laden die Speichermasse auf — ein Kaminofen gibt seine Wärme dagegen direkt über den Feuerraum ab.',
+        'Zwei Heizprinzipien im Vergleich: Der Kaminofen erwärmt die Raumluft per Konvektion, der Grundofen strahlt gespeicherte Wärme über Stunden gleichmäßig ab.',
     },
     content: `
       **Die kurze Antwort:** Ein Kaminofen liefert innerhalb von 15 Minuten spürbare Wärme, gibt sie aber nur ab, solange Feuer brennt. Ein Grundofen braucht 1 - 2 Stunden Vorlauf, speichert dafür die Energie eines einzigen Abbrands und gibt sie über **12 bis 24 Stunden** als milde Strahlungswärme ab. Für dauerhaft bewohnte Räume ist der Grundofen die komfortablere und effizientere Lösung, für gelegentliches Heizen der Kaminofen die flexiblere.
@@ -185,6 +207,13 @@ export const knowledgeArticles = [
     date: '2026-02-28',
     readTime: '6 Min. Lesezeit',
     tags: ['Schornstein', 'Sanierung', 'Edelstahl'],
+    figure: {
+      src: '/images/schornstein-wanddurchfuehrung.webp',
+      ratio: '1/1',
+      alt: 'Explosionszeichnung einer Wanddurchführung: Rauchrohr, Brandschutzabstand, gedämmte Durchführung und Edelstahl-Außenschornstein mit Wandhaltern',
+      caption:
+        'Edelstahl-Außenschornstein im Detail: Rauchrohr, gedämmte Wanddurchführung mit Brandschutzabstand und Wandhalter an der Fassade.',
+    },
     content: `
       **Die kurze Antwort:** Eine Schornsteinsanierung kostet je nach Verfahren zwischen **1.500 und 6.000 EUR**. Am häufigsten wird ein Edelstahlrohr in den bestehenden Zug eingezogen (ca. 150 - 300 EUR pro Meter inkl. Montage). Ein kompletter Edelstahl-Außenschornstein liegt bei 3.000 - 8.000 EUR.
 
@@ -219,6 +248,13 @@ export const knowledgeArticles = [
     date: '2026-03-15',
     readTime: '5 Min. Lesezeit',
     tags: ['Heizlast', 'Planung', 'Nennwärmeleistung'],
+    figure: {
+      src: '/images/grundofen-schnitt.webp',
+      ratio: '1/1',
+      alt: 'Schnittdarstellung eines Grundofens mit Schamotte-Feuerraum, gewundenen Heizgaszügen, Speichermasse und Dämmung — der Wärmeweg ist mit Pfeilen markiert',
+      caption:
+        'Leistung entsteht im Inneren: Feuerraumgröße, Zuglänge und Speichermasse bestimmen, wie viel kW ein Ofen abgibt — und wie lange.',
+    },
     content: `
       **Die kurze Antwort:** Als Faustformel gilt: **Altbau (vor 1995): ca. 100 W pro m²**, **Baujahr 1995 - 2010: ca. 60 - 80 W pro m²**, **Neubau/Niedrigenergiehaus: 30 - 50 W pro m²**. Ein 40-m²-Wohnzimmer im Altbau braucht demnach rund 4 kW Nennwärmeleistung, im Neubau genügen 1,5 - 2 kW. Nutzen Sie für eine erste Einschätzung unseren Heizlast-Rechner auf der Seite "3D-Planung".
 
@@ -249,6 +285,14 @@ export const knowledgeArticles = [
     date: '2026-03-30',
     readTime: '5 Min. Lesezeit',
     tags: ['Feinstaub', 'BImSchV', 'Filter'],
+    figure: {
+      src: '/images/feinstaub-staubabscheider.webp',
+      ratio: '1/1',
+      narrow: true,
+      alt: 'Elektrostatischer Staubabscheider im Rauchrohr eines Kaminofens: unterhalb viele Feinstaubpartikel, oberhalb gereinigtes Abgas',
+      caption:
+        'So arbeitet ein elektrostatischer Staubabscheider: Die Hochspannungselektrode lädt Partikel auf, sie lagern sich an der Rohrwand ab — bis zu 90 % weniger Feinstaub.',
+    },
     content: `
       **Die kurze Antwort:** Hält Ihr Ofen die Grenzwerte der 1. BImSchV Stufe 2 (0,04 g/m³ Staub bei Typprüfung bzw. 0,15 g/m³ im Bestand) nicht ein, kann statt Stilllegung oder Austausch ein **Staubabscheider nachgerüstet** werden. Die Kosten liegen je nach System bei **600 - 1.500 EUR** zuzüglich Einbau. Handwerklich gesetzte Grund- und Kachelöfen profitieren besonders, da sie von der Typprüfung ausgenommen sind, aber teils Filterauflagen erhalten.
 
@@ -276,6 +320,13 @@ export const knowledgeArticles = [
     date: '2026-04-25',
     readTime: '6 Min. Lesezeit',
     tags: ['Wasserführend', 'Heizung', 'Pufferspeicher'],
+    figure: {
+      src: '/images/wasserfuehrender-kaminofen.webp',
+      ratio: '1/1',
+      alt: 'Systemdarstellung eines wasserführenden Kaminofens: Wassertasche um den Feuerraum, Vorlauf und Rücklauf zum Pufferspeicher, dahinter Heizkörper und Fußbodenheizung',
+      caption:
+        'Das System im Überblick: Die Wassertasche speist über Vorlauf und Rücklauf den Pufferspeicher — der versorgt Heizkörper und Fußbodenheizung.',
+    },
     content: `
       **Die kurze Antwort:** Ein wasserführender Kaminofen oder Heizkamin besitzt eine integrierte Wassertasche, die **50 - 70 % der Verbrennungsleistung** an die Zentralheizung abgibt. Mit einem 8-kW-Gerät heizen Sie also nicht nur das Wohnzimmer, sondern unterstützen mit 4 - 5 kW Warmwasser und Heizkreislauf. Komplettkosten inklusive Pufferspeicher und hydraulischer Einbindung: **12.000 - 25.000 EUR**.
 
@@ -308,6 +359,13 @@ export const knowledgeArticles = [
     date: '2026-05-05',
     readTime: '5 Min. Lesezeit',
     tags: ['Heizen', 'Brennholz', 'Praxis'],
+    figure: {
+      src: '/images/anfeuern-von-oben.webp',
+      ratio: '1/1',
+      alt: 'Drei Schritte des Anfeuerns von oben: Scheite unten und Anzündmodul oben, brennendes Anzündholz, Abbrand nach unten',
+      caption:
+        'Anfeuern von oben in drei Schritten: Scheite unten, Anzündmodul oben — das Feuer brennt kontrolliert nach unten und verbrennt die Rauchgase nahezu vollständig.',
+    },
     content: `
       **Die kurze Antwort:** Richtig heizen heißt: **trockenes Holz (unter 20 % Restfeuchte)**, **Anzünden von oben** mit Anzündholz und wachsbasiertem Anzünder, **volle Luftzufuhr in der Anbrandphase** und Nachlegen erst auf die Grundglut. Wer diese vier Regeln beachtet, senkt Feinstaub- und Rußemissionen um ein Vielfaches und holt bis zu 30 % mehr Wärme aus demselben Holz.
 
@@ -378,6 +436,13 @@ export const knowledgeArticles = [
     date: '2026-06-08',
     readTime: '5 Min. Lesezeit',
     tags: ['Fußbodenheizung', 'Feinsteinzeug', 'Fliesenleger'],
+    figure: {
+      src: '/images/fliesen-schichtaufbau.webp',
+      ratio: '1/1',
+      alt: 'Explosionszeichnung eines gefliesten Bodens auf Fußbodenheizung: Heizestrich mit Heizrohren, Grundierung, Ausgleichsmasse, Flexkleber, Fliese und Dehnfuge',
+      caption:
+        'Vom Heizestrich bis zur Dehnfuge: Jede Schicht des Aufbaus beeinflusst, wie schnell die Wärme der Fußbodenheizung im Raum ankommt.',
+    },
     content: `
       **Die kurze Antwort:** Fliesen und Naturstein sind die effizientesten Beläge für Fußbodenheizungen: Ihr Wärmedurchlasswiderstand liegt bei nur **ca. 0,012 m²K/W pro cm** — Parkett oder Teppich dämmen drei- bis zehnmal stärker. Das senkt die nötige Vorlauftemperatur und spart Heizenergie. Entscheidend für die dauerhafte Haltbarkeit sind Flexkleber (C2-Qualität), das Aufheizprotokoll des Estrichs und korrekt geplante Dehnungsfugen.
 

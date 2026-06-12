@@ -464,6 +464,18 @@ export const planningExamples = [
           { label: 'Steinstruktur', top: '50%', left: '64%' },
         ],
       },
+      {
+        label: 'Musterboard',
+        image: '/images/material-musterboard.webp',
+        text: 'Beschriftetes Musterboard mit allen Material-Optionen: Kacheln, Naturstein, Putz, Stahlrahmen und Fugenfarben.',
+        annotations: [
+          { label: 'Kacheln', top: '28%', left: '38%' },
+          { label: 'Naturstein', top: '38%', left: '78%' },
+          { label: 'Putz', top: '57%', left: '25%' },
+          { label: 'Stahlrahmen', top: '50%', left: '55%' },
+          { label: 'Fugenfarben', top: '72%', left: '82%' },
+        ],
+      },
     ],
     frames: [
       { angle: -60, image: '/images/planning-frames/materialien/frame-01.webp' },
