@@ -352,6 +352,38 @@ useJsonLd(() => {
         tabindex="-1"
       >
         <BaseContainer class="max-w-4xl">
+          <!-- Technical cutaway: shows why Speichermasse and Zuglänge matter,
+               as context for the Heizlast calculator below. -->
+          <div
+            v-if="service.slug === 'kachelofen-kaminbau'"
+            v-reveal
+            class="mb-14 grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12"
+          >
+            <BaseImage
+              src="/images/kachelofen-schnitt.webp"
+              ratio="22/15"
+              alt="Schnittdarstellung eines Kachelofens: Schamotte-Feuerraum, Heizgaszüge, Wärmespeichermasse und Dämmung"
+              rounded="rounded-xl"
+              enlargeable
+              caption="Schnitt durch einen handgesetzten Speicherofen"
+            />
+            <div>
+              <p class="eyebrow">Innenaufbau</p>
+              <h2 class="mt-3 font-display text-2xl font-semibold leading-tight sm:text-3xl">
+                Warum Speichermasse und Zuglänge zählen
+              </h2>
+              <p class="mt-4 text-sm leading-relaxed text-content-muted">
+                Der Schnitt zeigt, was die Kachel verbirgt: Der Schamotte-Feuerraum nimmt die
+                Hitze des Abbrands auf, lange Heizgaszüge führen die heißen Gase durch die
+                Wärmespeichermasse, und die Dämmebene lenkt die Strahlung in den Raum.
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-content-muted">
+                Je größer die Speichermasse und je länger die Züge, desto länger hält die Wärme —
+                und desto genauer muss die Leistung zum Raum passen. Berechnen Sie unten die
+                Heizlast, damit Ihr Ofen weder über- noch unterdimensioniert wird.
+              </p>
+            </div>
+          </div>
           <div v-reveal>
             <HeizlastCalculator v-if="service.slug === 'kachelofen-kaminbau'" />
             <BimschvChecker v-if="service.slug === 'schornsteinbau'" />

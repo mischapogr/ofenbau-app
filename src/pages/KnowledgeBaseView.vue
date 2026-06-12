@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
 import BaseContainer from '@/components/BaseContainer.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import BaseImage from '@/components/BaseImage.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { knowledgeArticles, getArticle } from '@/data/knowledgeBase'
 import { company } from '@/data/company'
@@ -113,6 +114,22 @@ function goBack() {
             <span>·</span>
             <span>{{ article.readTime }}</span>
           </div>
+
+          <!-- Optional technical figure (e.g. cutaway or exploded drawing) -->
+          <figure v-if="article.figure" class="mb-8" :class="article.figure.narrow && 'mx-auto max-w-sm'">
+            <BaseImage
+              :src="article.figure.src"
+              :ratio="article.figure.ratio || '4/3'"
+              :alt="article.figure.alt"
+              rounded="rounded-xl"
+              enlargeable
+              :caption="article.figure.caption"
+              eager
+            />
+            <figcaption class="mt-3 text-center text-xs leading-relaxed text-content-muted">
+              {{ article.figure.caption }}
+            </figcaption>
+          </figure>
 
           <!-- Article Body — parseArticleContent HTML-escapes all text before
                injecting <strong> tags, so v-html is safe here. -->

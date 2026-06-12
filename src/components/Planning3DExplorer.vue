@@ -38,8 +38,12 @@ const currentView = computed(
 )
 // X-ray interior view: schematic look at Heizzüge, Schamotte & Co. so the
 // hidden build quality of a handcrafted stove becomes visible (premium "Aha").
+// With a dedicated `xray.image` (technical cutaway rendering) the stage shows
+// it as-is; without one it falls back to the CSS-inverted base photo.
 const currentXray = computed(() => current.value?.xray || null)
 const isXrayMode = computed(() => stageMode.value === 'xray' && Boolean(currentXray.value))
+const xrayImage = computed(() => currentXray.value?.image || null)
+const xrayLabel = computed(() => currentXray.value?.label || 'Röntgenblick: Innenleben')
 
 const currentAnnotations = computed(() =>
   isXrayMode.value
@@ -143,7 +147,7 @@ const stageLabel = computed(() => {
     return `Simulation: ${option?.label} · ${activeVariant.value.choice}`
   }
   if (isRotateMode.value) return `Rundblick ${rotation.currentFrame.value?.angle ?? 0}°`
-  if (isXrayMode.value) return 'Röntgenblick: Innenleben'
+  if (isXrayMode.value) return xrayLabel.value
   return currentView.value?.label
 })
 const stageText = computed(() => {
@@ -536,19 +540,19 @@ onBeforeUnmount(() => {
                 <BaseImage
                   v-if="current"
                   :key="`${current.id}-${isXrayMode ? 'xray' : currentView?.label}`"
-                  :src="isXrayMode ? current.image : currentView?.image"
+                  :src="isXrayMode ? xrayImage || current.image : currentView?.image"
                   :motif="current.motif"
                   :tone="current.tone"
                   :alt="
                     isXrayMode
-                      ? `${current.title} - Röntgenblick`
+                      ? `${current.title} - ${xrayLabel}`
                       : `${current.title} - ${currentView?.label}`
                   "
                   fill
                   rounded="rounded-none"
                   eager
                   class="absolute inset-0"
-                  :class="isXrayMode ? 'plan-xray' : ''"
+                  :class="isXrayMode && !xrayImage ? 'plan-xray' : ''"
                 />
                 <div
                   v-if="showFlames"
@@ -768,7 +772,7 @@ onBeforeUnmount(() => {
                 @click="toggleXrayMode"
               >
                 <AppIcon name="eye" class="h-4 w-4" />
-                Röntgenblick: Innenleben
+                {{ xrayLabel }}
               </button>
               <div v-if="isXrayMode && currentXray?.layers?.length" class="mt-2 grid gap-2">
                 <div
@@ -787,11 +791,11 @@ onBeforeUnmount(() => {
                   type="button"
                   class="press-feedback overflow-hidden rounded-lg text-left transition-colors"
                   :class="
-                    !isRotateMode && activeViewIndex === index
+                    !isRotateMode && !isXrayMode && activeViewIndex === index
                       ? 'ring-2 ring-brand-400/70'
                       : 'opacity-75 ring-1 ring-white/10 hover:opacity-100'
                   "
-                  :aria-pressed="!isRotateMode && activeViewIndex === index"
+                  :aria-pressed="!isRotateMode && !isXrayMode && activeViewIndex === index"
                   @click="selectView(index)"
                 >
                   <BaseImage
@@ -804,7 +808,7 @@ onBeforeUnmount(() => {
                   />
                   <span
                     class="block px-2 py-1.5 text-xs font-semibold"
-                    :class="!isRotateMode && activeViewIndex === index ? 'text-white' : 'text-white/65'"
+                    :class="!isRotateMode && !isXrayMode && activeViewIndex === index ? 'text-white' : 'text-white/65'"
                   >
                     {{ view.label }}
                   </span>
@@ -969,10 +973,10 @@ onBeforeUnmount(() => {
           </div>
           <img
             v-else
-            :src="currentView?.image"
-            :alt="`${current.title} - ${currentView?.label}`"
+            :src="isXrayMode ? xrayImage || current.image : currentView?.image"
+            :alt="isXrayMode ? `${current.title} - ${xrayLabel}` : `${current.title} - ${currentView?.label}`"
             class="max-h-[82vh] w-full rounded-2xl object-contain shadow-lift"
-            :class="isXrayMode ? 'plan-xray' : ''"
+            :class="isXrayMode && !xrayImage ? 'plan-xray' : ''"
             decoding="async"
           />
           <figcaption class="mt-4 text-center text-white">

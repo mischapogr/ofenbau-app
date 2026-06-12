@@ -92,10 +92,13 @@ export const planningExamples = [
         ],
       },
     ],
-    // Interior schema for the X-ray view: explains the hidden build quality
-    // (Heizzüge, Schamotte, Speichermasse) that justifies a handcrafted stove.
+    // Interior schema for the X-ray view: a real technical cutaway rendering
+    // (`image`) explains the hidden build quality — Heizzüge, Schamotte,
+    // Speichermasse — that justifies a handcrafted stove.
     xray: {
-      text: 'Blick unter die Keramik: Heizzüge, Schamottekern und Speichermasse zeigen, warum ein handgesetzter Speicherofen stundenlang Strahlungswärme abgibt.',
+      label: 'Innenaufbau',
+      image: '/images/planning-cutaway-kachelofen.webp',
+      text: 'Schnitt durch den Speicherofen: Heizzüge, Schamottekern und Speichermasse zeigen, warum ein handgesetzter Speicherofen stundenlang Strahlungswärme abgibt.',
       layers: [
         {
           label: 'Schamotte-Feuerraum',
@@ -115,10 +118,10 @@ export const planningExamples = [
         },
       ],
       annotations: [
-        { label: 'Heizzüge', top: '40%', left: '47%' },
-        { label: 'Schamottekern', top: '52%', left: '50%' },
-        { label: 'Speichermasse', top: '27%', left: '55%' },
-        { label: 'Dämmebene', top: '45%', left: '60%' },
+        { label: 'Heizzüge', top: '40%', left: '54.5%' },
+        { label: 'Schamottekern', top: '59%', left: '69%' },
+        { label: 'Speichermasse', top: '46%', left: '48.5%' },
+        { label: 'Dämmebene', top: '54%', left: '51.5%' },
       ],
     },
     frames: [
@@ -246,6 +249,17 @@ export const planningExamples = [
           { label: 'Schelle', top: '30%', left: '51%' },
           { label: 'Dichtkragen', top: '37%', left: '63%' },
           { label: 'Edelstahlrohr', top: '60%', left: '37%' },
+        ],
+      },
+      {
+        label: 'Bauteile',
+        image: '/images/planning-explosion-schornstein.webp',
+        text: 'Explosionszeichnung aller Bauteile: vom Sockel über Brennkammer und Heizgaszüge bis zum Rauchrohranschluss.',
+        annotations: [
+          { label: 'Rauchrohr', top: '7%', left: '54.5%' },
+          { label: 'Schamotte', top: '34%', left: '54.5%' },
+          { label: 'Feuerraumtür', top: '59.5%', left: '53%' },
+          { label: 'Zuluft', top: '80%', left: '52.5%' },
         ],
       },
     ],

@@ -47,6 +47,14 @@ export const knowledgeArticles = [
     date: '2026-05-15',
     readTime: '4 Min. Lesezeit',
     tags: ['Grundofen', 'Strahlungswärme', 'Gesundheit'],
+    // Optional hero figure rendered above the article body.
+    figure: {
+      src: '/images/kachelofen-schnitt.webp',
+      ratio: '22/15',
+      alt: 'Schnittdarstellung eines Kachelofens mit Schamotte-Feuerraum, Heizgaszügen, Wärmespeichermasse und Dämmung',
+      caption:
+        'Schnitt durch einen Speicherofen: Schamotte-Feuerraum, Heizgaszüge und Wärmespeichermasse erzeugen milde Strahlungswärme statt Konvektionsluft.',
+    },
     content: `
       Die Art und Weise, wie ein Raum beheizt wird, hat einen enormen Einfluss auf das Raumklima und unser Wohlbefinden. Grundsätzlich unterscheidet man beim Heizen zwischen zwei physikalischen Prinzipien: **Konvektion** und **Wärmestrahlung**.
 
@@ -140,6 +148,13 @@ export const knowledgeArticles = [
     date: '2026-02-12',
     readTime: '5 Min. Lesezeit',
     tags: ['Grundofen', 'Kaminofen', 'Vergleich'],
+    figure: {
+      src: '/images/kachelofen-schnitt.webp',
+      ratio: '22/15',
+      alt: 'Schnittdarstellung eines Kachelofens mit Heizgaszügen, Wärmespeichermasse und Schamotte-Feuerraum',
+      caption:
+        'Das Grundofen-Prinzip im Schnitt: lange Heizgaszüge laden die Speichermasse auf — ein Kaminofen gibt seine Wärme dagegen direkt über den Feuerraum ab.',
+    },
     content: `
       **Die kurze Antwort:** Ein Kaminofen liefert innerhalb von 15 Minuten spürbare Wärme, gibt sie aber nur ab, solange Feuer brennt. Ein Grundofen braucht 1 - 2 Stunden Vorlauf, speichert dafür die Energie eines einzigen Abbrands und gibt sie über **12 bis 24 Stunden** als milde Strahlungswärme ab. Für dauerhaft bewohnte Räume ist der Grundofen die komfortablere und effizientere Lösung, für gelegentliches Heizen der Kaminofen die flexiblere.
 
@@ -327,6 +342,14 @@ export const knowledgeArticles = [
     date: '2026-05-25',
     readTime: '5 Min. Lesezeit',
     tags: ['Wartung', 'Schamotte', 'Schornsteinfeger'],
+    figure: {
+      src: '/images/kachelofen-explosion.webp',
+      ratio: '15/22',
+      narrow: true,
+      alt: 'Explosionszeichnung eines Kachelofens: Rauchrohranschluss, Rauchgaszüge, Schamottesteine, Brennkammer, Feuerraumtür und Zuluftregelung',
+      caption:
+        'Alle Wartungspunkte auf einen Blick: Schamottesteine, Rauchrohranschluss, Feuerraumtür mit Sichtscheibe und Zuluftregelung.',
+    },
     content: `
       **Die kurze Antwort:** Ein holzbefeuerter Ofen sollte **einmal jährlich** (idealerweise vor der Heizsaison) gewartet werden: Dichtungen, Schamotte, Scheibe und Verbrennungsluftwege prüfen. Der Schornstein wird je nach Nutzung **ein- bis dreimal pro Jahr** gekehrt (geregelt in der Kehr- und Überprüfungsordnung, KÜO). Typische Wartungskosten: 40 - 80 EUR Schornsteinfeger pro Jahr, Verschleißteile wie Dichtbänder 20 - 60 EUR, ein Schamottestein 30 - 80 EUR.
 
