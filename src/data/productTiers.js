@@ -37,7 +37,7 @@ export const productTiers = [
       { label: 'Interaktive Rechner: Heizlast, Budget & 1. BImSchV', icon: 'calculator' },
       { label: '3D-Planung erleben mit interaktivem Explorer', icon: 'cube' },
       { label: 'Smartes Kontaktformular mit Standort & Einzugsgebiet', icon: 'pin' },
-      { label: 'Regionale Landingpages: Leipzig, Chemnitz, Meißen, Nordsachsen', icon: 'chimney' },
+      { label: 'Regionale Landingpages für Städte im 50-km-Einsatzgebiet', icon: 'chimney' },
       { label: 'KI-/GEO-Sichtbarkeit: llms.txt, Prerendering, IndexNow', icon: 'render' },
     ],
   },

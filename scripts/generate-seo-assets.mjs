@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import {
   buildRoutes,
   company,
+  getActiveRegions,
   isDemoMode,
   knowledgeArticles,
   loadModeEnv,
@@ -11,7 +12,6 @@ import {
   publicDir,
   resolveSiteUrl,
   resolveTier,
-  serviceRegions,
   services,
   tierFeatures,
 } from './lib/site-data.mjs'
@@ -22,6 +22,7 @@ const siteUrl = resolveSiteUrl(env)
 const isDemo = isDemoMode(mode, env)
 const tier = resolveTier(env)
 const features = tierFeatures(tier)
+const activeRegions = getActiveRegions(tier)
 // The GEO/AI discoverability suite (llms.txt, AI-crawler allowlist, markdown
 // mirrors, IndexNow) is a premium feature. Basis ships plain SEO only.
 const geoAi = !isDemo && features.geoAiSuite
@@ -101,7 +102,7 @@ ${services.map((s) => `- [${s.title}](${siteUrl}/leistungen/${s.slug}): ${s.desc
 
 ## Regionen
 
-${serviceRegions.map((r) => `- [${r.title}](${siteUrl}/region/${r.slug}): ${r.description}`).join('\n')}
+${activeRegions.map((r) => `- [${r.title}](${siteUrl}/region/${r.slug}): ${r.description}`).join('\n')}
 
 ## Ratgeber
 
@@ -127,9 +128,7 @@ ${knowledgeArticles
 function buildLlmsFullTxt() {
   const serviceSections = services
     .map((s) => {
-      const faqs = (s.faqs || [])
-        .map((faq) => `**${faq.question}**\n\n${faq.answer}`)
-        .join('\n\n')
+      const faqs = (s.faqs || []).map((faq) => `**${faq.question}**\n\n${faq.answer}`).join('\n\n')
       return `### ${s.title}
 
 ${siteUrl}/leistungen/${s.slug}
@@ -146,7 +145,7 @@ ${faqs}`
     })
     .join('\n\n')
 
-  const regionSections = serviceRegions
+  const regionSections = activeRegions
     .map((r) => `### ${r.title}\n\n${siteUrl}/region/${r.slug}\n\n${r.intro}`)
     .join('\n\n')
 

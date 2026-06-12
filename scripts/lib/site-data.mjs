@@ -16,7 +16,7 @@ export const projectRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url
 export const publicDir = join(projectRoot, 'public')
 export const distDir = join(projectRoot, 'dist')
 
-export { services, serviceRegions, knowledgeArticles, company, projects }
+export { services, serviceRegions, getActiveRegions, knowledgeArticles, company, projects }
 
 export const PLACEHOLDER_URL_PATTERN = /example\.de|localhost|127\.0\.0\.1/i
 

@@ -1,5 +1,5 @@
 import { services } from '../src/data/services.js'
-import { serviceRegions } from '../src/data/regions.js'
+import { getActiveRegions } from '../src/data/regions.js'
 import { knowledgeArticles } from '../src/data/knowledgeBase.js'
 
 const rawUrl = process.argv[2] || process.env.VITE_APP_URL
@@ -38,7 +38,12 @@ function expectSecurityHeaders(response, label) {
   expectHeader(response, 'x-frame-options', /^SAMEORIGIN$/i, label)
   expectHeader(response, 'x-content-type-options', /^nosniff$/i, label)
   expectHeader(response, 'referrer-policy', /^strict-origin-when-cross-origin$/i, label)
-  expectHeader(response, 'permissions-policy', /camera=\(\).*microphone=\(\).*geolocation=\(\)/i, label)
+  expectHeader(
+    response,
+    'permissions-policy',
+    /camera=\(\).*microphone=\(\).*geolocation=\(\)/i,
+    label
+  )
 }
 
 async function checkProductionHeaders(home) {
@@ -69,7 +74,7 @@ try {
   await checkProductionHeaders(home)
 
   const publicRoutes = [
-    ...serviceRegions.map((region) => `/region/${region.slug}`),
+    ...getActiveRegions().map((region) => `/region/${region.slug}`),
     '/leistungen',
     ...services.map((service) => `/leistungen/${service.slug}`),
     '/projekte',
@@ -93,7 +98,7 @@ try {
   const sitemap = await fetchText('/sitemap.xml')
   check(sitemap.status === 200, `sitemap.xml responds with 200 (${sitemap.status})`)
   check(containsUrlOrLocalPath(sitemap.body, '/kontakt'), 'sitemap.xml contains contact route')
-  for (const region of serviceRegions) {
+  for (const region of getActiveRegions()) {
     const path = `/region/${region.slug}`
     check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
   }
@@ -105,7 +110,10 @@ try {
     const path = `/ratgeber/${article.slug}`
     check(containsUrlOrLocalPath(sitemap.body, path), `sitemap.xml contains ${path}`)
   }
-  check(isLocalTarget || !sitemap.body.includes('localhost'), 'sitemap.xml does not contain localhost for production target')
+  check(
+    isLocalTarget || !sitemap.body.includes('localhost'),
+    'sitemap.xml does not contain localhost for production target'
+  )
 
   if (!skipApiHealth) {
     const apiHealth = await fetchText('/api/healthz')

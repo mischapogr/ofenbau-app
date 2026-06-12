@@ -6,7 +6,8 @@ import AppIcon from './AppIcon.vue'
 import PrivacyContent from './PrivacyContent.vue'
 import { useContactStore } from '@/stores/contact'
 import { contactTopics, getContactTopic } from '@/data/contactTopics'
-import { hasFeature } from '@/config/tier'
+import { SERVICE_AREA_RADIUS_KM, getActiveRegions, getServiceAreaAliases } from '@/data/regions'
+import { hasFeature, tier } from '@/config/tier'
 
 const props = defineProps({
   // Label shown on the submit button + first field placeholder context.
@@ -47,7 +48,8 @@ const badgeText = computed(() => {
   if (props.source === 'budget') return 'Budget-Kalkulation erfolgreich geladen'
   if (props.source === 'bimschv') return 'BImSchV-Ofendaten erfolgreich geladen'
   if (props.source === 'heizlast') return 'Heizlast-Raumdaten erfolgreich geladen'
-  if (props.source === '3d-planung' || props.source === 'planning3d') return 'Thema 3D-Planung ausgewählt'
+  if (props.source === '3d-planung' || props.source === 'planning3d')
+    return 'Thema 3D-Planung ausgewählt'
   if (props.source === 'showroom') return 'Muster-Auswahl erfolgreich geladen'
   if (props.source === 'gallery') return 'Projekt-Referenz erfolgreich geladen'
   if (props.source === 'knowledge') return 'Ratgeber-Referenz erfolgreich geladen'
@@ -58,6 +60,8 @@ const badgeText = computed(() => {
 // Geolocation & Service Area Check
 const detectingLocation = ref(false)
 const userCoords = ref(null)
+const serviceAreaRegions = getActiveRegions(tier)
+const serviceAreaAliases = getServiceAreaAliases(tier)
 
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371
@@ -86,7 +90,12 @@ function detectLocation() {
         )
         if (response.ok) {
           const data = await response.json()
-          const city = data.address.city || data.address.town || data.address.village || data.address.suburb || ''
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            data.address.suburb ||
+            ''
           const postcode = data.address.postcode || ''
           form.location = postcode ? `${postcode} ${city}` : city
         }
@@ -107,44 +116,37 @@ function detectLocation() {
 const projectVolumeInfo = computed(() => {
   const msg = form.message.toLowerCase()
   const isPremium = msg.includes('premium') || msg.includes('exklusiv')
-  const priceMatches = [...form.message.matchAll(/[\d.]+/g)].map(m => m[0].replace(/\./g, ''))
+  const priceMatches = [...form.message.matchAll(/[\d.]+/g)].map((m) => m[0].replace(/\./g, ''))
   const maxPrice = priceMatches.reduce((max, current) => {
     const val = parseInt(current, 10)
     if (!isNaN(val) && val > max && val < 100000) return val
     return max
   }, 0)
-  
+
   // High volume if price is >= 12000, or premium tier, or large custom topic
-  const isHighVolume = maxPrice >= 12000 || isPremium || ['kachelofen-kaminbau', '3d-planung'].includes(form.topic)
+  const isHighVolume =
+    maxPrice >= 12000 || isPremium || ['kachelofen-kaminbau', '3d-planung'].includes(form.topic)
   return { isHighVolume, maxPrice }
 })
 
 const isOutsideServiceArea = computed(() => {
   if (userCoords.value) {
-    const regions = [
-      { lat: 48.7758, lon: 9.1829 }, // Stuttgart
-      { lat: 48.8976, lon: 9.1916 }, // Ludwigsburg
-      { lat: 48.7428, lon: 9.3072 }, // Esslingen
-      { lat: 51.5584, lon: 13.0043 }, // Nordsachsen
-    ]
-    const minDist = Math.min(...regions.map(r => getDistance(userCoords.value.lat, userCoords.value.lon, r.lat, r.lon)))
-    return minDist > 75
+    if (!serviceAreaRegions.length) return true
+    const minDist = Math.min(
+      ...serviceAreaRegions.map((r) =>
+        getDistance(userCoords.value.lat, userCoords.value.lon, r.lat, r.lon)
+      )
+    )
+    return minDist > SERVICE_AREA_RADIUS_KM
   }
-  
+
   if (form.location.trim()) {
     const loc = form.location.toLowerCase()
-    const inRegion = ['leipzig', 'chemnitz', 'meissen', 'nordsachsen', 'torgau', 'delitzsch'].some(city => loc.includes(city))
-    const zipMatch = loc.match(/\b\d{5}\b/)
-    if (zipMatch) {
-      const zip = zipMatch[0]
-      const isSW = zip.startsWith('70') || zip.startsWith('71') || zip.startsWith('72') || zip.startsWith('73')
-      const isSN = zip.startsWith('04') || zip.startsWith('06') || zip.startsWith('08')
-      if (isSW || isSN) return false
-    }
+    const inRegion = serviceAreaAliases.some((city) => loc.includes(city))
     if (inRegion) return false
     return true
   }
-  
+
   return false
 })
 
@@ -262,13 +264,16 @@ function borderFor(key) {
       v-if="badgeText"
       class="flex items-start gap-3 rounded-xl border border-brand-500/10 bg-brand-50/50 p-4 text-sm text-content animate-fade-in"
     >
-      <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+      <span
+        class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
+      >
         <AppIcon name="check" class="h-4 w-4" />
       </span>
       <div>
         <p class="font-semibold text-brand-800">{{ badgeText }}</p>
         <p class="mt-0.5 text-xs text-content-muted">
-          Ihre Angaben aus dem vorherigen Schritt wurden als Vorlage in das Nachrichtenfeld geladen. Sie können den Text vor dem Senden beliebig anpassen.
+          Ihre Angaben aus dem vorherigen Schritt wurden als Vorlage in das Nachrichtenfeld geladen.
+          Sie können den Text vor dem Senden beliebig anpassen.
         </p>
       </div>
     </div>
@@ -385,12 +390,18 @@ function borderFor(key) {
       class="rounded-xl border border-brand-500/15 bg-brand-50/25 p-4 text-xs leading-relaxed text-content animate-fade-in"
     >
       <div class="flex gap-2.5">
-        <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded bg-brand-500/10 text-brand-600">
+        <span
+          class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded bg-brand-500/10 text-brand-600"
+        >
           <AppIcon name="pin" class="h-3.5 w-3.5" />
         </span>
         <div>
           <p class="font-bold text-brand-800">
-            {{ projectVolumeInfo.isHighVolume ? 'Lohnendes Projekt außerhalb unseres Einzugsgebiets' : 'Außerhalb unseres Einzugsgebiets' }}
+            {{
+              projectVolumeInfo.isHighVolume
+                ? 'Lohnendes Projekt außerhalb unseres Einzugsgebiets'
+                : 'Außerhalb unseres Einzugsgebiets'
+            }}
           </p>
           <p class="mt-1 text-content-muted">
             {{

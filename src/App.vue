@@ -47,7 +47,10 @@ useJsonLd(
       addressLocality: company.address.city,
       addressCountry: 'DE',
     },
-    areaServed: getActiveRegions(tier).map((region) => ({ '@type': 'City', name: region.city })),
+    areaServed: getActiveRegions(tier).map((region) => ({
+      '@type': region.slug === 'nordsachsen' ? 'AdministrativeArea' : 'City',
+      name: region.city,
+    })),
     knowsAbout: getActiveServices(tier).map((service) => service.title),
     openingHoursSpecification: [
       {

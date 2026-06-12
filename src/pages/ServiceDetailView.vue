@@ -67,7 +67,10 @@ useJsonLd(() => {
     description: service.value.description,
     url: `${siteUrl}/leistungen/${service.value.slug}`,
     provider: { '@id': `${siteUrl}/#business` },
-    areaServed: getActiveRegions(tier).map((region) => ({ '@type': 'City', name: region.city })),
+    areaServed: getActiveRegions(tier).map((region) => ({
+      '@type': region.slug === 'nordsachsen' ? 'AdministrativeArea' : 'City',
+      name: region.city,
+    })),
     availableLanguage: 'de',
   }
 }, 'service-jsonld')
@@ -98,7 +101,10 @@ useJsonLd(() => {
               Proportionen und Details sichtbar macht.
             </p>
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-              <BaseButton :to="{ name: 'contact', query: { topic: contactTopic, source: 'service-detail' } }" size="lg">
+              <BaseButton
+                :to="{ name: 'contact', query: { topic: contactTopic, source: 'service-detail' } }"
+                size="lg"
+              >
                 3D-Entwurf anfragen
                 <AppIcon name="arrow" class="h-4 w-4" />
               </BaseButton>
@@ -272,7 +278,11 @@ useJsonLd(() => {
             v-reveal="{ delay: 100 }"
             class="rounded-xl bg-surface p-5 shadow-card ring-1 ring-content-muted/10 sm:p-7"
           >
-            <ContactForm subject="3D-Entwurf" submit-label="Anfrage senden" source="service-detail" />
+            <ContactForm
+              subject="3D-Entwurf"
+              submit-label="Anfrage senden"
+              source="service-detail"
+            />
           </div>
         </BaseContainer>
       </section>
@@ -346,7 +356,10 @@ useJsonLd(() => {
 
       <!-- Interactive Tools Section -->
       <section
-        v-if="hasFeature('calculators') && (service.slug === 'kachelofen-kaminbau' || service.slug === 'schornsteinbau')"
+        v-if="
+          hasFeature('calculators') &&
+          (service.slug === 'kachelofen-kaminbau' || service.slug === 'schornsteinbau')
+        "
         :id="service.slug === 'kachelofen-kaminbau' ? 'heizlast-rechner' : 'bimschv-ofen-check'"
         class="section bg-surface border-t border-content-muted/10 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
         tabindex="-1"
@@ -373,8 +386,8 @@ useJsonLd(() => {
                 Warum Speichermasse und Zuglänge zählen
               </h2>
               <p class="mt-4 text-sm leading-relaxed text-content-muted">
-                Der Schnitt zeigt, was die Kachel verbirgt: Der Schamotte-Feuerraum nimmt die
-                Hitze des Abbrands auf, lange Heizgaszüge führen die heißen Gase durch die
+                Der Schnitt zeigt, was die Kachel verbirgt: Der Schamotte-Feuerraum nimmt die Hitze
+                des Abbrands auf, lange Heizgaszüge führen die heißen Gase durch die
                 Wärmespeichermasse, und die Dämmebene lenkt die Strahlung in den Raum.
               </p>
               <p class="mt-3 text-sm leading-relaxed text-content-muted">
