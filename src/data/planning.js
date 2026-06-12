@@ -76,9 +76,9 @@ export const planningExamples = [
         image: '/images/planning-example-kachelofen-perspective.webp',
         text: 'Seitliche Perspektive für Tiefe, Sitzbank und Raumwirkung.',
         annotations: [
-          { label: 'Raumtiefe', top: '48%', left: '56%' },
-          { label: 'Sitzkante', top: '66%', left: '35%' },
-          { label: 'Feuerraum', top: '55%', left: '48%' },
+          { label: 'Raumtiefe', top: '30%', left: '44%' },
+          { label: 'Sitzkante', top: '69%', left: '39%' },
+          { label: 'Feuerraum', top: '53%', left: '60%' },
         ],
       },
       {
@@ -86,9 +86,9 @@ export const planningExamples = [
         image: '/images/planning-example-kachelofen-detail.webp',
         text: 'Detailansicht von Keramik, Fugenbild, Kanten und Feuerraum.',
         annotations: [
-          { label: 'Fugenbild', top: '40%', left: '36%' },
-          { label: 'Kachelkante', top: '55%', left: '53%' },
-          { label: 'Feuerraum', top: '54%', left: '66%' },
+          { label: 'Fugenbild', top: '40%', left: '40%' },
+          { label: 'Kachelkante', top: '45%', left: '64%' },
+          { label: 'Feuerraum', top: '45%', left: '73%' },
         ],
       },
     ],
@@ -233,9 +233,9 @@ export const planningExamples = [
         image: '/images/planning-example-schornstein-exterior.webp',
         text: 'Fassadenansicht mit Schornsteinführung, Haltern und Dachabschluss.',
         annotations: [
-          { label: 'Dachabschluss', top: '18%', left: '59%' },
-          { label: 'Rohrführung', top: '43%', left: '61%' },
-          { label: 'Wandhalter', top: '55%', left: '55%' },
+          { label: 'Dachabschluss', top: '11%', left: '55%' },
+          { label: 'Rohrführung', top: '38%', left: '55%' },
+          { label: 'Wandhalter', top: '49%', left: '55%' },
         ],
       },
       {
@@ -243,9 +243,9 @@ export const planningExamples = [
         image: '/images/planning-example-schornstein-detail.webp',
         text: 'Detailansicht von Wanddurchführung, Schelle und Edelstahlrohr.',
         annotations: [
-          { label: 'Schelle', top: '38%', left: '51%' },
-          { label: 'Dichtkragen', top: '52%', left: '43%' },
-          { label: 'Edelstahlrohr', top: '45%', left: '62%' },
+          { label: 'Schelle', top: '30%', left: '51%' },
+          { label: 'Dichtkragen', top: '37%', left: '63%' },
+          { label: 'Edelstahlrohr', top: '60%', left: '37%' },
         ],
       },
     ],
@@ -349,8 +349,8 @@ export const planningExamples = [
         text: 'Eingangsperspektive für Wegeführung, Licht und Materialwirkung.',
         annotations: [
           { label: 'Wegeführung', top: '62%', left: '47%' },
-          { label: 'Lichtkante', top: '29%', left: '38%' },
-          { label: 'Materialwirkung', top: '44%', left: '68%' },
+          { label: 'Lichtkante', top: '33%', left: '53%' },
+          { label: 'Materialwirkung', top: '40%', left: '67%' },
         ],
       },
       {
@@ -435,9 +435,9 @@ export const planningExamples = [
         image: '/images/planning-example-materialien-perspective.webp',
         text: 'Breitere Materialtafel neben dem geplanten Kamin.',
         annotations: [
-          { label: 'Materialtafel', top: '40%', left: '31%' },
-          { label: 'Kaminbezug', top: '45%', left: '70%' },
-          { label: 'Oberfläche', top: '61%', left: '43%' },
+          { label: 'Materialtafel', top: '52%', left: '33%' },
+          { label: 'Kaminbezug', top: '35%', left: '68%' },
+          { label: 'Oberfläche', top: '62%', left: '48%' },
         ],
       },
       {
@@ -445,9 +445,9 @@ export const planningExamples = [
         image: '/images/planning-example-materialien-detail.webp',
         text: 'Nahansicht der Oberflächen für Glanz, Relief und Steinstruktur.',
         annotations: [
-          { label: 'Glanzgrad', top: '34%', left: '32%' },
-          { label: 'Relief', top: '51%', left: '48%' },
-          { label: 'Steinstruktur', top: '59%', left: '65%' },
+          { label: 'Glanzgrad', top: '30%', left: '30%' },
+          { label: 'Relief', top: '46%', left: '38%' },
+          { label: 'Steinstruktur', top: '50%', left: '64%' },
         ],
       },
     ],
