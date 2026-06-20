@@ -8,6 +8,7 @@ import BaseImage from '@/components/BaseImage.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { knowledgeArticles, getArticle } from '@/data/knowledgeBase'
 import { company } from '@/data/company'
+import { hasFeature } from '@/config/tier'
 import { useSeo } from '@/composables/useSeo'
 import { useJsonLd } from '@/composables/useJsonLd'
 import { parseArticleContent } from '@/utils/articleMarkdown'
@@ -169,8 +170,8 @@ function goBack() {
           <!-- eslint-enable vue/no-v-html -->
 
           <!-- Specific BImSchV CTA if reading the BImSchV article -->
-          <div 
-            v-if="article.slug === 'bimschv-kaminofen-austauschpflicht'"
+          <div
+            v-if="hasFeature('calculators') && article.slug === 'bimschv-kaminofen-austauschpflicht'"
             class="mt-12 rounded-2xl bg-brand-50 border border-brand-200 p-6 flex flex-col md:flex-row items-center justify-between gap-6"
           >
             <div class="text-left">

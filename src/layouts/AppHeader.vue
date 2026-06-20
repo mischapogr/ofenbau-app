@@ -1,10 +1,23 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseContainer from '@/components/BaseContainer.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { primaryNav, company } from '@/data/company'
+import { getActiveServices } from '@/data/services'
+import { tier } from '@/config/tier'
+
+// Drop nav items that point to a service the active tier doesn't ship
+// (e.g. "3D erleben" → 3d-planung in basis) so they don't dead-end on
+// the "Leistung nicht gefunden" detail page.
+const activeSlugs = new Set(getActiveServices(tier).map((service) => service.slug))
+const visibleNav = computed(() =>
+  primaryNav.filter((item) => {
+    const slug = item.to?.params?.slug
+    return !slug || activeSlugs.has(slug)
+  })
+)
 
 const mobileOpen = ref(false)
 const scrolled = ref(false)
@@ -49,7 +62,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       <!-- Desktop nav -->
       <nav class="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
         <RouterLink
-          v-for="item in primaryNav"
+          v-for="item in visibleNav"
           :key="item.name"
           :to="item.to"
           class="rounded-lg px-3 py-2 text-sm font-medium text-content-muted underline-offset-8 decoration-2 transition-colors hover:text-content"
@@ -91,7 +104,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       >
         <BaseContainer class="flex flex-col py-3">
           <RouterLink
-            v-for="item in primaryNav"
+            v-for="item in visibleNav"
             :key="item.name"
             :to="item.to"
             class="press-feedback rounded-lg px-3 py-3 text-base font-medium text-content-muted underline-offset-8 decoration-2 hover:bg-surface-muted hover:text-content"

@@ -3,8 +3,10 @@ import { RouterLink } from 'vue-router'
 import BaseContainer from './BaseContainer.vue'
 import AppIcon from './AppIcon.vue'
 import { company, publicSocialLinks } from '@/data/company'
-import { services } from '@/data/services'
+import { getActiveServices } from '@/data/services'
+import { tier, hasFeature } from '@/config/tier'
 
+const services = getActiveServices(tier)
 const year = new Date().getFullYear()
 </script>
 
@@ -53,17 +55,17 @@ const year = new Date().getFullYear()
               Projekte
             </RouterLink>
           </li>
-          <li class="border-t border-white/5 pt-2.5 mt-2.5">
+          <li v-if="hasFeature('calculators')" class="border-t border-white/5 pt-2.5 mt-2.5">
             <RouterLink :to="{ name: 'service-detail', params: { slug: 'kachelofen-kaminbau' }, hash: '#heizlast-rechner' }" class="transition-colors hover:text-brand-400">
               Heizlast-Rechner
             </RouterLink>
           </li>
-          <li>
+          <li v-if="hasFeature('calculators')">
             <RouterLink :to="{ name: 'services', hash: '#budget-kalkulator' }" class="transition-colors hover:text-brand-400">
               Budget-Kalkulator
             </RouterLink>
           </li>
-          <li>
+          <li v-if="hasFeature('calculators')">
             <RouterLink :to="{ name: 'service-detail', params: { slug: 'schornsteinbau' }, hash: '#bimschv-ofen-check' }" class="transition-colors hover:text-brand-400">
               BImSchV Ofen-Check
             </RouterLink>
