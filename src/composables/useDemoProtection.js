@@ -99,7 +99,9 @@ export function useDemoProtection() {
 
       state.verifying = true
       try {
-        const candidateHash = await sha256Hex(String(code || ''))
+        // Trim surrounding whitespace: password autofill and mobile keyboards
+        // routinely append a stray space, which would otherwise reject a valid code.
+        const candidateHash = await sha256Hex(String(code || '').trim())
         if (candidateHash !== accessCodeHash) {
           state.accessError = 'Der Zugangscode ist nicht korrekt.'
           return false
