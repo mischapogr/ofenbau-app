@@ -20,11 +20,11 @@ const showCatalog = computed(
   () => props.protection.featureCatalogEnabled && !props.protection.blockedReason
 )
 
-// Each package is deployed under its own demo domain. The card for the package
-// this build ships ("Diese Demo") stays put; the other card forwards to its
-// deployment so a prospect can switch packages straight from the gate.
+// Each package is deployed under its own demo domain. Both cards forward to
+// their deployment so a prospect can choose a package straight from the gate;
+// the card for the package this build ships is flagged with a "Diese Demo"
+// badge but stays clickable (it simply reloads its own gate).
 function cardHref(t) {
-  if (t.id === activeTier) return null
   return props.protection.demoUrls?.[t.id] || null
 }
 
@@ -110,12 +110,9 @@ async function submitAccessCode() {
                 <span>{{ feature.label }}</span>
               </li>
             </ul>
-            <span v-if="cardHref(t)" class="demo-tier__cta">
-              {{ t.name }}-Demo ansehen
+            <span class="demo-tier__cta">
+              {{ t.id === activeTier ? 'Diese Demo öffnen' : `${t.name}-Demo ansehen` }}
               <AppIcon name="arrow" class="demo-tier__cta-icon" />
-            </span>
-            <span v-else class="demo-tier__cta demo-tier__cta--current">
-              Diese Demo ist geöffnet
             </span>
           </component>
         </div>
@@ -471,11 +468,6 @@ async function submitAccessCode() {
   width: 1rem;
   height: 1rem;
   transition: transform 0.15s ease;
-}
-
-.demo-tier__cta--current {
-  color: var(--color-content-muted);
-  font-weight: 600;
 }
 
 @media (max-width: 640px) {
