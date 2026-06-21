@@ -26,6 +26,8 @@
     "demo:pages": "npm run build:demo:basis && wrangler pages deploy dist --project-name=ofenbau-basis-demo --branch=main",
     "demo:pages:basis": "npm run build:demo:basis && wrangler pages deploy dist --project-name=ofenbau-basis-demo --branch=main",
     "demo:pages:premium": "npm run build:demo:premium && wrangler pages deploy dist --project-name=ofenbau-premium-demo --branch=main",
+    "demo:pages:generic": "npm run build:demo:premium && wrangler pages deploy dist --project-name=ofenbau-demo --branch=main",
+    "demo:pages:all": "npm run demo:pages:basis && npm run demo:pages:premium && npm run demo:pages:generic",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write \"src/**/*.{js,vue,css,json}\"",
