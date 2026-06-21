@@ -20,6 +20,18 @@ const showCatalog = computed(
   () => props.protection.featureCatalogEnabled && !props.protection.blockedReason
 )
 
+// Each package is deployed under its own demo domain. The card for the package
+// this build ships ("Diese Demo") stays put; the other card forwards to its
+// deployment so a prospect can switch packages straight from the gate.
+function cardHref(t) {
+  if (t.id === activeTier) return null
+  return props.protection.demoUrls?.[t.id] || null
+}
+
+function cardTag(t) {
+  return cardHref(t) ? 'a' : 'article'
+}
+
 async function submitAccessCode() {
   await props.protection.verifyAccessCode(accessCode.value)
 }
@@ -60,17 +72,21 @@ async function submitAccessCode() {
 
       <div v-if="showCatalog" class="demo-catalog">
         <p class="demo-catalog__lead">
-          Diese Website ist in zwei Paketen verfügbar. Wählen Sie nach dem Login
-          frei — die Demo zeigt das markierte Paket.
+          Diese Website ist in zwei Paketen verfügbar. Klicken Sie ein Paket an,
+          um direkt zur passenden Demo zu wechseln — anschließend geben Sie Ihren
+          Zugangscode ein.
         </p>
         <div class="demo-catalog__grid">
-          <article
+          <component
+            :is="cardTag(t)"
             v-for="t in productTiers"
             :key="t.id"
+            :href="cardHref(t)"
             class="demo-tier"
             :class="{
               'demo-tier--premium': t.highlight,
               'demo-tier--active': t.id === activeTier,
+              'demo-tier--link': cardHref(t),
             }"
           >
             <header class="demo-tier__head">
@@ -94,7 +110,14 @@ async function submitAccessCode() {
                 <span>{{ feature.label }}</span>
               </li>
             </ul>
-          </article>
+            <span v-if="cardHref(t)" class="demo-tier__cta">
+              {{ t.name }}-Demo ansehen
+              <AppIcon name="arrow" class="demo-tier__cta-icon" />
+            </span>
+            <span v-else class="demo-tier__cta demo-tier__cta--current">
+              Diese Demo ist geöffnet
+            </span>
+          </component>
         </div>
       </div>
 
@@ -315,6 +338,27 @@ async function submitAccessCode() {
   border-radius: 10px;
   padding: 1.15rem 1.25rem;
   background: #fffaf2;
+  color: rgb(var(--color-content));
+  text-decoration: none;
+}
+
+.demo-tier--link {
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.demo-tier--link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(227, 82, 5, 0.5);
+  box-shadow: 0 0.9rem 2rem rgba(44, 36, 28, 0.16);
+}
+
+.demo-tier--link:focus-visible {
+  outline: 3px solid rgba(227, 82, 5, 0.32);
+  outline-offset: 2px;
 }
 
 .demo-tier--premium {
@@ -405,6 +449,33 @@ async function submitAccessCode() {
   height: 1.1rem;
   margin-top: 0.1rem;
   color: rgb(var(--color-brand-600));
+}
+
+.demo-tier__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(44, 36, 28, 0.1);
+  color: rgb(var(--color-brand-700));
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.demo-tier--link:hover .demo-tier__cta-icon {
+  transform: translateX(3px);
+}
+
+.demo-tier__cta-icon {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.15s ease;
+}
+
+.demo-tier__cta--current {
+  color: var(--color-content-muted);
+  font-weight: 600;
 }
 
 @media (max-width: 640px) {

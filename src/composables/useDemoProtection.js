@@ -64,6 +64,10 @@ export function useDemoProtection() {
     authorEmail: env.VITE_DEMO_AUTHOR_EMAIL || '66591935+mischapogr@users.noreply.github.com',
     watermarkEnabled: protectionEnabled && env.VITE_DEMO_WATERMARK_ENABLED !== 'false',
     featureCatalogEnabled: protectionEnabled && env.VITE_DEMO_FEATURE_CATALOG_ENABLED !== 'false',
+    demoUrls: {
+      basis: env.VITE_DEMO_URL_BASIS || '',
+      premium: env.VITE_DEMO_URL_PREMIUM || '',
+    },
     watermarkFactor: Math.max(
       0,
       Math.min(5, parseFloat(env.VITE_DEMO_WATERMARK_FACTOR ?? '1') || 1)
