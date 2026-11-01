@@ -38,7 +38,8 @@ real export should be, so swapping it out changes nothing in the app.
    `<model-viewer>` decodes Draco, meshopt and KTX2 on its own.
 4. Keep `poster` in `planning.js` pointing at the matching render so the stage
    doesn't shift while the viewer loads.
-5. Check the result in the explorer (`npm run dev` → "3D-Modell") and run
+5. Re-render the 360° turntable from the new model: `npm run gen:turntable`.
+6. Check the result in the explorer (`npm run dev` → "3D-Modell") and run
    `npx playwright test tests/e2e/planning-explorer.spec.js`.
 
 iOS Quick Look needs a `.usdz`; set it via `ios-src` on the element when you

@@ -100,7 +100,7 @@ All copy/structure is data-driven so components stay presentational:
 - `data/services.js` — the four services (drives cards, overview, detail pages; `BASIS_SERVICE_SLUGS` for the basis tier)
 - `data/projects.js` — gallery items + filter categories
 - `data/process.js` — the four process steps
-- `data/planning.js` — 3D benefits + service columns + the explorer examples (views, frame arcs, x-ray, decisions/`variants`, `budget` map, `model`; schema documented inline). All visuals are AI-generated demo content (`planningContentReview.demoContent`).
+- `data/planning.js` — 3D benefits + service columns + the explorer examples (views, frame arcs — the Kachelofen one a 24-frame 360° turntable rendered from the model by `scripts/render-turntable.mjs` —, x-ray, decisions/`variants`, `budget` map, `model`; schema documented inline). All visuals are AI-generated demo content (`planningContentReview.demoContent`).
 
 For handover/editing guidance see [`docs/CONTENT_GUIDE.md`](./CONTENT_GUIDE.md).
 Run `npm run content:inventory` to export `docs/CONTENT_INVENTORY.json` with

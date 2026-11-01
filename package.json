@@ -36,6 +36,7 @@
     "gen:images": "node scripts/generate-images.mjs",
     "gen:video": "node scripts/generate-intro-video.mjs",
     "gen:model": "node scripts/generate-stove-model.mjs",
+    "gen:turntable": "node scripts/render-turntable.mjs",
     "company:check": "node scripts/check-company-profile.mjs",
     "content:review": "node scripts/write-content-review-checklist.mjs",
     "content:placeholders": "node scripts/write-placeholder-content-report.mjs",

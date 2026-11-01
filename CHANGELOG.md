@@ -19,6 +19,8 @@ All notable changes to this project are documented here. The format follows
   procedurally generated stove GLB (`npm run gen:model`) whose parts (tiles,
   cornice, bench slab, plinth, frame, joints) switch materials independently,
   with style presets and a fire toggle.
+- 360° turntable for the Kachelofen example rendered from the 3D model
+  (`npm run gen:turntable`, 24 frames), replacing the AI-generated ±60° arc.
 
 ### Changed
 

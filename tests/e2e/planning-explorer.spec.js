@@ -28,27 +28,42 @@ async function openExplorer(page) {
 }
 
 test.describe('Planning explorer', () => {
-  test('is lazy-loaded and the turntable steps with the keyboard', async ({ page }) => {
+  test('is lazy-loaded and the rendered turntable spins a full circle', async ({ page }) => {
     const { explorer, stage } = await openExplorer(page)
 
-    // Honest label: the arc is -60° … +60°, not "360°".
-    await expect(explorer.getByRole('button', { name: /^Rundblick -60° bis \+60°$/ })).toBeVisible()
-    await expect(explorer.getByText('360°')).toHaveCount(0)
+    // The Kachelofen frames are rendered from the 3D model: 24 × 15°, wrapping.
+    await expect(explorer.getByRole('button', { name: /^360°-Rundblick$/ })).toBeVisible()
 
     await expect(stage).toHaveAttribute('aria-valuenow', '0')
     await stage.focus()
     await page.keyboard.press('ArrowRight')
-    await expect(stage).toHaveAttribute('aria-valuenow', '20')
+    await expect(stage).toHaveAttribute('aria-valuenow', '15')
     await page.keyboard.press('ArrowLeft')
     await page.keyboard.press('ArrowLeft')
-    await expect(stage).toHaveAttribute('aria-valuenow', '-20')
+    await expect(stage).toHaveAttribute('aria-valuenow', '-15')
 
     // Interaction warmed the frame set: every frame is now in the DOM.
-    await expect(stage.locator('img')).toHaveCount(7)
+    await expect(stage.locator('img')).toHaveCount(24)
 
-    // The arc is clamped: stepping past the end stays at the end.
-    for (let i = 0; i < 6; i += 1) await page.keyboard.press('ArrowLeft')
-    await expect(stage).toHaveAttribute('aria-valuenow', '-60')
+    // Past the first frame it wraps around to the last one instead of stopping.
+    for (let i = 0; i < 10; i += 1) await page.keyboard.press('ArrowLeft')
+    await expect(stage).toHaveAttribute('aria-valuenow', '-165')
+    await page.keyboard.press('ArrowLeft')
+    await expect(stage).toHaveAttribute('aria-valuenow', '180')
+  })
+
+  test('a partial arc is labelled honestly and clamps at its ends', async ({ page }) => {
+    const { explorer } = await openExplorer(page)
+    await explorer
+      .getByRole('button', { name: /Kaminofen mit Au(ß|ss)enschornstein/ })
+      .first()
+      .click()
+    await explorer.getByRole('button', { name: /^Rundblick -45° bis \+45°$/ }).click()
+    const stage = page.getByRole('slider', { name: /Rundblick/ })
+    await expect(stage).toHaveAttribute('aria-valuenow', '0')
+    await stage.focus()
+    for (let i = 0; i < 4; i += 1) await page.keyboard.press('ArrowRight')
+    await expect(stage).toHaveAttribute('aria-valuenow', '45')
   })
 
   test('only the current frame is requested before any interaction', async ({ page }) => {
