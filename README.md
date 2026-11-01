@@ -10,11 +10,11 @@ Basis/Premium packages. Built with **Vue 3 + Vite + Tailwind**, hosted on
   <img src="docs/screenshots/turntable.webp" width="640" alt="360°-Rundblick des 3D-Kachelofens im Stil Modern">
 </p>
 
-| 3D model with per-part materials                                                | Budget calculator                                      |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| ![3D-Modell mit Material-Konfigurator](docs/screenshots/explorer-3d-model.webp) | ![Budget-Kalkulator](docs/screenshots/calculator.webp) |
-| **360° turntable per material preset**                                          | **Home page (desktop & mobile)**                       |
-| ![360°-Rundblick](docs/screenshots/explorer-turntable.webp)                     | ![Startseite](docs/screenshots/home.webp)              |
+| 3D model with per-part materials                                                | Budget calculator                                                                                                                                      |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ![3D-Modell mit Material-Konfigurator](docs/screenshots/explorer-3d-model.webp) | ![Budget-Kalkulator](docs/screenshots/calculator.webp)                                                                                                 |
+| **360° turntable per material preset**                                          | **Home page (desktop & mobile)**                                                                                                                       |
+| ![360°-Rundblick](docs/screenshots/explorer-turntable.webp)                     | <img src="docs/screenshots/home.webp" width="300" alt="Startseite Desktop"> <img src="docs/screenshots/mobile.webp" width="92" alt="Startseite Mobil"> |
 
 ## Zusammenarbeit · Work with me
 

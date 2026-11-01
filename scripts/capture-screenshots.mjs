@@ -52,6 +52,9 @@ async function dismissCookies(page) {
   }
 }
 
+// Crop targets: the dark explorer box and the calculator card (no headings/margins).
+const explorerBox = (explorer) => explorer.locator('.rounded-2xl.bg-ink-950').first()
+
 // Section shots: hide the fixed site header so it doesn't overlay the section.
 const hideHeader = (page) =>
   page.addStyleTag({ content: 'header { visibility: hidden !important; }' })
@@ -103,7 +106,7 @@ try {
     await page.keyboard.press('ArrowRight')
     await page.mouse.move(0, 0)
     await page.waitForTimeout(800)
-    await saveWebp(await explorer.screenshot(), 'explorer-turntable')
+    await saveWebp(await explorerBox(explorer).screenshot(), 'explorer-turntable')
     await page.close()
   }
 
@@ -125,7 +128,7 @@ try {
       el.jumpCameraToGoal()
     })
     await page.waitForTimeout(1500)
-    await saveWebp(await explorer.screenshot(), 'explorer-3d-model')
+    await saveWebp(await explorerBox(explorer).screenshot(), 'explorer-3d-model')
     await page.close()
   }
 
@@ -139,7 +142,7 @@ try {
     await section.scrollIntoViewIfNeeded()
     await section.getByText('Kachelofen / Grundofen').first().click()
     await page.waitForTimeout(800)
-    await saveWebp(await section.screenshot(), 'calculator')
+    await saveWebp(await section.locator('.rounded-2xl').first().screenshot(), 'calculator')
     await page.close()
   }
 
