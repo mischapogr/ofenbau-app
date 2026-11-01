@@ -47,8 +47,8 @@ active in this application.
 
 | Stitch design system | Asset id | Status | Role |
 |---|---|---|---|
-| Ofenbau Mustermann | `assets/5933609171211310555` | Active | Warm light hearth system implemented in this repo |
-| Max Mustermann | `assets/3824a26f7e40400292d99c26618d270f` | Inactive | Separate dark monolith concept; do not use for this site |
+| Ofenbau Mustermann | `assets/<your-light-system-id>` | Active | Warm light hearth system implemented in this repo |
+| Max Mustermann | `assets/<your-dark-system-id>` | Inactive | Separate dark monolith concept; do not use for this site |
 
 The active Ofenbau Mustermann system is mirrored in
 [design/ofenbau-mustermann.design.md](../design/ofenbau-mustermann.design.md).
