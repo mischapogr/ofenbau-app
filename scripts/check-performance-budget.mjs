@@ -11,7 +11,12 @@ const budgets = {
   cssAssetKb: 60,
   imageKb: 350,
   videoKb: 5500,
+  // Vendor chunks that are only fetched on explicit user intent (dynamic import)
+  // and therefore never block the initial render. Reviewed as warnings instead.
+  lazyJsAssetKb: 1200,
 }
+
+const LAZY_JS_CHUNKS = [/[\\/]model-viewer-[^\\/]+\.js$/]
 
 const failures = []
 const warnings = []
@@ -33,7 +38,14 @@ function checkAssets() {
 
   for (const file of files) {
     const size = kb(file)
-    if (file.endsWith('.js') && size > budgets.jsAssetKb) {
+    const isLazyChunk = LAZY_JS_CHUNKS.some((pattern) => pattern.test(file))
+    if (file.endsWith('.js') && isLazyChunk && size > budgets.lazyJsAssetKb) {
+      failures.push(`${file} is ${size} KB, over lazy-chunk budget ${budgets.lazyJsAssetKb} KB`)
+    } else if (file.endsWith('.js') && isLazyChunk && size > budgets.jsAssetKb) {
+      warnings.push(
+        `${file} is ${size} KB (lazy-loaded on demand; above the ${budgets.jsAssetKb} KB initial-JS budget)`
+      )
+    } else if (file.endsWith('.js') && size > budgets.jsAssetKb) {
       failures.push(`${file} is ${size} KB, over JS budget ${budgets.jsAssetKb} KB`)
     }
     if (file.endsWith('.css') && size > budgets.cssAssetKb) {
