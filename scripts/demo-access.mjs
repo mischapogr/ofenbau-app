@@ -144,7 +144,8 @@ function issue(record) {
   const next = {
     label: flag('label') || record?.label || customer,
     created: record?.created || new Date().toISOString(),
-    lastLogin: record?.lastLogin || null,
+    // A new code starts without logins, so the column always refers to the current code.
+    lastLogin: null,
     codeHash,
     codeEnc: encryptCode(code),
     expires,
