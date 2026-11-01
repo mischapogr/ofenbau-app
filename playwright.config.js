@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const port = Number(process.env.E2E_PORT || 5173)
+// CI runs assertion-only: no video/trace, no slow-motion.
+const isCI = Boolean(process.env.CI)
 const baseURL = `http://localhost:${port}`
 const webServer = process.env.E2E_NO_WEBSERVER
   ? undefined
@@ -32,38 +34,38 @@ export default defineConfig({
   reporter: [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
   use: {
     baseURL,
-    video: 'on',
-    screenshot: 'on',
-    trace: 'on',
+    video: isCI ? 'off' : 'on',
+    screenshot: isCI ? 'only-on-failure' : 'on',
+    trace: isCI ? 'retain-on-failure' : 'on',
     actionTimeout: 15_000,
   },
   projects: [
     {
       name: 'desktop-demo',
-      testMatch: /demo\.spec\.js/,
+      testMatch: /(demo|planning-explorer)\.spec\.js/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },
-        launchOptions: { slowMo: 250 }, // slow down so the recording is watchable
+        launchOptions: { slowMo: isCI ? 0 : 250 }, // slow down so the recording is watchable
       },
     },
     {
       name: 'mobile-demo',
-      testMatch: /mobile\.spec\.js/,
+      testMatch: /(mobile|planning-explorer)\.spec\.js/,
       use: {
         ...devices['Pixel 7'],
-        launchOptions: { slowMo: 250 },
+        launchOptions: { slowMo: isCI ? 0 : 250 },
       },
     },
     {
       name: 'tablet-demo',
-      testMatch: /tablet\.spec\.js/,
+      testMatch: /(tablet|planning-explorer)\.spec\.js/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 768, height: 1024 },
         isMobile: true,
         hasTouch: true,
-        launchOptions: { slowMo: 250 },
+        launchOptions: { slowMo: isCI ? 0 : 250 },
       },
     },
   ],

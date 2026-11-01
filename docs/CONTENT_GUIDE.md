@@ -52,7 +52,7 @@ approval:
 npm run content:review
 ```
 
-This writes `docs/CONTENT_REVIEW_CHECKLIST.md`, including contact topic rows,
+This writes `docs/generated/CONTENT_REVIEW_CHECKLIST.md`, including contact topic rows,
 homepage review sections, standalone about/contact page sections, every service
 detail route, content counts, project media path, 3D planning example path and
 per-item approval state.
@@ -65,7 +65,7 @@ Generate a machine-readable inventory:
 npm run content:inventory
 ```
 
-This writes `docs/CONTENT_INVENTORY.json`, including placeholder flags for known
+This writes `docs/generated/CONTENT_INVENTORY.json`, including placeholder flags for known
 demo patterns such as `Muster`, `Mustermann`, dummy phone numbers, `.test`,
 `example.com` and localhost values.
 
@@ -77,7 +77,7 @@ Generate a human-readable placeholder and approval report:
 npm run content:placeholders
 ```
 
-This writes `docs/PLACEHOLDER_CONTENT_REPORT.md`, listing structured fields that
+This writes `docs/generated/PLACEHOLDER_CONTENT_REPORT.md`, listing structured fields that
 still look like demo data, generic social links or unresolved launch approvals.
 
 ## Launch Editing Checklist
@@ -99,4 +99,4 @@ project or 3D planning example points at a missing file.
 
 For a complete operator-facing list of required real-world inputs, use
 `docs/PRODUCTION_INPUTS.md`. To generate a fillable worksheet from the current
-repo state, run `npm run launch:inputs`; it writes `docs/OPERATOR_INPUT_FORM.md`.
+repo state, run `npm run launch:inputs`; it writes `docs/generated/OPERATOR_INPUT_FORM.md`.

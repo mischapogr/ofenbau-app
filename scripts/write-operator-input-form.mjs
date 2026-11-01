@@ -15,7 +15,7 @@ import { projectReferenceReview, projects } from '../src/data/projects.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'OPERATOR_INPUT_FORM.md')
+const outPath = join(root, 'docs', 'generated', 'OPERATOR_INPUT_FORM.md')
 
 const appTitle = process.env.VITE_APP_TITLE || ''
 const siteUrl = process.env.VITE_APP_URL || 'http://localhost:5173'

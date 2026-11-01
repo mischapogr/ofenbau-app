@@ -1,6 +1,6 @@
 # Ofenbau Mustermann — Bild-Prompts (image generation set)
 
-Generated from the configured Stitch design + the legal best-practices in `_tmp/TODO`
+Generated from the configured Stitch design + simple legal best-practices (no logos, no readable text, no identifiable people)
 (tight crops on the craftsmanship, warm light interiors, **no recognizable people**,
 no private clutter, anonymized).
 

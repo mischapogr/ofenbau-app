@@ -21,7 +21,7 @@ import { projectReferenceReview, projects } from '../src/data/projects.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'PLACEHOLDER_CONTENT_REPORT.md')
+const outPath = join(root, 'docs', 'generated', 'PLACEHOLDER_CONTENT_REPORT.md')
 
 function escapeTable(value) {
   return String(value ?? '')

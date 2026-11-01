@@ -5,7 +5,7 @@ import { company } from '../src/data/company.js'
 import { legalProfile } from '../src/data/legal.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'LEGAL_REVIEW_CHECKLIST.md')
+const outPath = join(root, 'docs', 'generated', 'LEGAL_REVIEW_CHECKLIST.md')
 
 const legalView = readFileSync(join(root, 'src/pages/LegalView.vue'), 'utf8')
 const privacyContent = readFileSync(join(root, 'src/components/PrivacyContent.vue'), 'utf8')

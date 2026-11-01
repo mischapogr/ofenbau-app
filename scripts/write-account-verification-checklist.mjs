@@ -5,7 +5,7 @@ import { companyProfileReview } from '../src/data/company.js'
 import { legalProfile } from '../src/data/legal.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'ACCOUNT_VERIFICATION_CHECKLIST.md')
+const outPath = join(root, 'docs', 'generated', 'ACCOUNT_VERIFICATION_CHECKLIST.md')
 
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const gaId = process.env.VITE_GA_MEASUREMENT_ID || ''

@@ -25,7 +25,7 @@ import {
 } from '../src/data/planning.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'CONTENT_INVENTORY.json')
+const outPath = join(root, 'docs', 'generated', 'CONTENT_INVENTORY.json')
 
 function placeholder(value) {
   return /muster|mustermann|000000|\.test|example\.com|localhost|demo\/generated|replace demo|before launch/i.test(

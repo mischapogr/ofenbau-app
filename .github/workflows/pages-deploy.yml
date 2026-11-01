@@ -1,0 +1,47 @@
+name: Deploy demo to Cloudflare Pages
+
+# Manual or on push to main. Needs the repository secrets CLOUDFLARE_API_TOKEN
+# (Account → Cloudflare Pages → Edit), CLOUDFLARE_ACCOUNT_ID and, optionally,
+# DEMO_ACCESS_CODE_HASH. Forks and pull requests never receive these secrets.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - tier: basis
+            project: ofenbau-basis-demo
+          - tier: premium
+            project: ofenbau-premium-demo
+    steps:
+      - id: creds
+        run: echo "present=${{ secrets.CLOUDFLARE_API_TOKEN != '' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.creds.outputs.present == 'false'
+        run: echo "No Cloudflare credentials configured — skipping deploy."
+      - if: steps.creds.outputs.present == 'true'
+        uses: actions/checkout@v4
+      - if: steps.creds.outputs.present == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.creds.outputs.present == 'true'
+        run: npm ci
+      - if: steps.creds.outputs.present == 'true'
+        run: npm run build:demo:${{ matrix.tier }}
+        env:
+          VITE_DEMO_ACCESS_CODE_HASH: ${{ secrets.DEMO_ACCESS_CODE_HASH }}
+      - if: steps.creds.outputs.present == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ matrix.project }} --branch=main

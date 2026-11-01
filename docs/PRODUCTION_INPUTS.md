@@ -2,33 +2,33 @@
 
 Use this as the handover checklist before running `npm run launch:check`.
 Run `npm run launch:contact` to regenerate
-`docs/CONTACT_DELIVERY_CHECKLIST.md`, the production SMTP and mailbox delivery
+`docs/generated/CONTACT_DELIVERY_CHECKLIST.md`, the production SMTP and mailbox delivery
 proof worksheet.
 Run `npm run launch:deployment` to regenerate
-`docs/DEPLOYMENT_CUTOVER_CHECKLIST.md`, the DNS/HTTPS/hosting cutover worksheet.
+`docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md`, the DNS/HTTPS/hosting cutover worksheet.
 Run `npm run launch:performance` to regenerate
-`docs/PERFORMANCE_EVIDENCE_CHECKLIST.md`, the local and production performance
+`docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md`, the local and production performance
 evidence worksheet.
-Run `npm run launch:inputs` to regenerate `docs/OPERATOR_INPUT_FORM.md`, a
+Run `npm run launch:inputs` to regenerate `docs/generated/OPERATOR_INPUT_FORM.md`, a
 fillable worksheet for collecting real operator/legal/content/deployment values
 before editing source files or setting production env vars.
 Run `npm run launch:accounts` to regenerate
-`docs/ACCOUNT_VERIFICATION_CHECKLIST.md`, the account-level checklist for
+`docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md`, the account-level checklist for
 Search Console, GA4 and Google Business Profile verification.
 Run `npm run launch:actions` whenever the structured content or deployment env
-changes; it regenerates `docs/LAUNCH_ACTION_ITEMS.md` with the current open
+changes; it regenerates `docs/generated/LAUNCH_ACTION_ITEMS.md` with the current open
 handoff items.
 Run `npm run launch:evidence` to regenerate
-`docs/LAUNCH_EVIDENCE_REPORT.md`, a current local evidence snapshot and
+`docs/generated/LAUNCH_EVIDENCE_REPORT.md`, a current local evidence snapshot and
 production proof gap summary.
 Run `npm run content:review` after editing contact topics, homepage,
 about/contact page, service, project/reference or 3D planning data; it regenerates
-`docs/CONTENT_REVIEW_CHECKLIST.md` for operator approval.
+`docs/generated/CONTENT_REVIEW_CHECKLIST.md` for operator approval.
 Run `npm run content:placeholders` after replacing demo values; it regenerates
-`docs/PLACEHOLDER_CONTENT_REPORT.md` with any remaining structured placeholder
+`docs/generated/PLACEHOLDER_CONTENT_REPORT.md` with any remaining structured placeholder
 or unresolved approval findings.
 Run `npm run legal:review` after editing legal or privacy data; it regenerates
-`docs/LEGAL_REVIEW_CHECKLIST.md` for legal handoff.
+`docs/generated/LEGAL_REVIEW_CHECKLIST.md` for legal handoff.
 Do not commit secrets or private mailbox credentials. Put deployment secrets in
 the hosting environment.
 

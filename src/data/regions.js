@@ -1,3 +1,5 @@
+// NOTE: the towns below are illustrative sample data for the regional-SEO feature
+// (a plausible 50 km service area). Replace them with your own service area.
 /**
  * Regions / Einsatzgebiete - drives the region-specific local SEO landing pages.
  * Keep this as the single source of truth for sitemap, GEO text, JSON-LD and

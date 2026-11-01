@@ -21,13 +21,13 @@ approval documents in this repository.
 | Item | Command or action | Expected result | Actual result / evidence link | Status | Follow-up |
 | --- | --- | --- | --- | --- | --- |
 | Local preflight | `npm run preflight` | Build, lint, content, config, route/header, SEO, analytics/Maps consent, accessibility, contact-link, visual, performance, contact API smoke and desktop/mobile/tablet walkthrough pass. |  |  |  |
-| Contact delivery checklist | `npm run launch:contact` | `docs/CONTACT_DELIVERY_CHECKLIST.md` lists production SMTP/env readiness and mailbox delivery proof steps. |  |  |  |
-| Deployment cutover checklist | `npm run launch:deployment` | `docs/DEPLOYMENT_CUTOVER_CHECKLIST.md` lists DNS, HTTPS, hosting, rollback and post-deploy proof steps. |  |  |  |
-| Performance evidence checklist | `npm run launch:performance` | `docs/PERFORMANCE_EVIDENCE_CHECKLIST.md` lists local browser budgets, production smoke checks, Lighthouse/PageSpeed and field Core Web Vitals proof steps. |  |  |  |
-| Operator input form | `npm run launch:inputs` | `docs/OPERATOR_INPUT_FORM.md` lists current company, legal, contact-topic, homepage, public-page, service, reference, 3D-planning and deployment inputs to collect. |  |  |  |
-| Account verification checklist | `npm run launch:accounts` | `docs/ACCOUNT_VERIFICATION_CHECKLIST.md` lists Search Console, GA4 and Google Business Profile setup and verification steps. |  |  |  |
-| Placeholder content report | `npm run content:placeholders` | `docs/PLACEHOLDER_CONTENT_REPORT.md` lists remaining structured demo values and unresolved approval flags by source field. |  |  |  |
-| Local evidence snapshot | `npm run launch:evidence` | `docs/LAUNCH_EVIDENCE_REPORT.md` summarizes current local artifacts, approval flags, env readiness and production proof gaps. |  |  |  |
+| Contact delivery checklist | `npm run launch:contact` | `docs/generated/CONTACT_DELIVERY_CHECKLIST.md` lists production SMTP/env readiness and mailbox delivery proof steps. |  |  |  |
+| Deployment cutover checklist | `npm run launch:deployment` | `docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md` lists DNS, HTTPS, hosting, rollback and post-deploy proof steps. |  |  |  |
+| Performance evidence checklist | `npm run launch:performance` | `docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md` lists local browser budgets, production smoke checks, Lighthouse/PageSpeed and field Core Web Vitals proof steps. |  |  |  |
+| Operator input form | `npm run launch:inputs` | `docs/generated/OPERATOR_INPUT_FORM.md` lists current company, legal, contact-topic, homepage, public-page, service, reference, 3D-planning and deployment inputs to collect. |  |  |  |
+| Account verification checklist | `npm run launch:accounts` | `docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md` lists Search Console, GA4 and Google Business Profile setup and verification steps. |  |  |  |
+| Placeholder content report | `npm run content:placeholders` | `docs/generated/PLACEHOLDER_CONTENT_REPORT.md` lists remaining structured demo values and unresolved approval flags by source field. |  |  |  |
+| Local evidence snapshot | `npm run launch:evidence` | `docs/generated/LAUNCH_EVIDENCE_REPORT.md` summarizes current local artifacts, approval flags, env readiness and production proof gaps. |  |  |  |
 | Launch gate | `npm run launch:check` with production env values | No placeholder company/legal/domain/SMTP/GA4/Search Console blockers remain. |  |  |  |
 | Company / NAP data | `npm run company:check` | Company data is structurally valid; only accepted launch warnings remain. |  |  |  |
 | Content approvals | `npm run content:review`, `npm run content:assets` and `npm run content:inventory` | Required assets exist; contact-topic, homepage, public-page, service, reference and 3D-planning approvals are complete or explicitly accepted. |  |  |  |

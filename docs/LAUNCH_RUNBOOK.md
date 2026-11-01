@@ -5,15 +5,15 @@ Use this before moving the site from staging/demo to a public production domain.
 ## Required Production Inputs
 
 Use `docs/PRODUCTION_INPUTS.md` as the item-by-item handover checklist,
-`docs/CONTACT_DELIVERY_CHECKLIST.md` for SMTP/mailbox proof,
-`docs/DEPLOYMENT_CUTOVER_CHECKLIST.md` for DNS/HTTPS/hosting cutover,
-`docs/PERFORMANCE_EVIDENCE_CHECKLIST.md` for local and production performance
+`docs/generated/CONTACT_DELIVERY_CHECKLIST.md` for SMTP/mailbox proof,
+`docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md` for DNS/HTTPS/hosting cutover,
+`docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md` for local and production performance
 proof,
-`docs/OPERATOR_INPUT_FORM.md` to collect the real operator/legal/content values
-before implementation, `docs/PLACEHOLDER_CONTENT_REPORT.md` to locate remaining
-demo values and unresolved approval flags, `docs/ACCOUNT_VERIFICATION_CHECKLIST.md` for Google
+`docs/generated/OPERATOR_INPUT_FORM.md` to collect the real operator/legal/content values
+before implementation, `docs/generated/PLACEHOLDER_CONTENT_REPORT.md` to locate remaining
+demo values and unresolved approval flags, `docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md` for Google
 Search Console/GA4/Google Business Profile checks,
-`docs/LAUNCH_EVIDENCE_REPORT.md` for the current local evidence snapshot, and
+`docs/generated/LAUNCH_EVIDENCE_REPORT.md` for the current local evidence snapshot, and
 `docs/LAUNCH_EVIDENCE_TEMPLATE.md` to record the final production evidence.
 
 - Real company name, legal name, address, phone, WhatsApp, email and opening hours in `src/data/company.js`.
@@ -28,33 +28,33 @@ Search Console/GA4/Google Business Profile checks,
 npm run preflight
 ```
 
-`npm run launch:actions` regenerates `docs/LAUNCH_ACTION_ITEMS.md` from the current
+`npm run launch:actions` regenerates `docs/generated/LAUNCH_ACTION_ITEMS.md` from the current
 placeholder data, review flags and deployment env values. Use it as the current
 item-by-item handoff list.
-`npm run launch:inputs` regenerates `docs/OPERATOR_INPUT_FORM.md`, a fillable
+`npm run launch:inputs` regenerates `docs/generated/OPERATOR_INPUT_FORM.md`, a fillable
 worksheet for gathering real company, legal, contact-topic, homepage,
 public-page, service, reference, 3D-planning and deployment inputs before
 editing the source files.
 `npm run content:placeholders` regenerates
-`docs/PLACEHOLDER_CONTENT_REPORT.md` so remaining demo values and unresolved
+`docs/generated/PLACEHOLDER_CONTENT_REPORT.md` so remaining demo values and unresolved
 approval flags are visible by source field.
-`npm run launch:contact` regenerates `docs/CONTACT_DELIVERY_CHECKLIST.md` for
+`npm run launch:contact` regenerates `docs/generated/CONTACT_DELIVERY_CHECKLIST.md` for
 production SMTP env readiness, `/api/healthz` verification and real mailbox
 delivery proof.
 `npm run launch:deployment` regenerates
-`docs/DEPLOYMENT_CUTOVER_CHECKLIST.md` for DNS, HTTPS, hosting, rollback and
+`docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md` for DNS, HTTPS, hosting, rollback and
 post-deploy proof.
 `npm run launch:performance` regenerates
-`docs/PERFORMANCE_EVIDENCE_CHECKLIST.md` for local browser budget evidence,
+`docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md` for local browser budget evidence,
 production smoke evidence, Lighthouse/PageSpeed and field Core Web Vitals
 handoff.
 `npm run launch:accounts` regenerates
-`docs/ACCOUNT_VERIFICATION_CHECKLIST.md` for account-level Search Console, GA4
+`docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md` for account-level Search Console, GA4
 and Google Business Profile verification.
-`npm run launch:evidence` regenerates `docs/LAUNCH_EVIDENCE_REPORT.md`, which
+`npm run launch:evidence` regenerates `docs/generated/LAUNCH_EVIDENCE_REPORT.md`, which
 summarizes generated handoff artifacts, current approval flags, env readiness and
 the production evidence still missing.
-`npm run legal:review` regenerates `docs/LEGAL_REVIEW_CHECKLIST.md` for
+`npm run legal:review` regenerates `docs/generated/LEGAL_REVIEW_CHECKLIST.md` for
 Impressum and Datenschutz handoff.
 `npm run launch:report` prints remaining blockers without failing the shell. Use it while replacing placeholder data.
 `npm run preflight` runs the full local sequence: build, lint, content review

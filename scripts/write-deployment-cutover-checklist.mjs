@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'DEPLOYMENT_CUTOVER_CHECKLIST.md')
+const outPath = join(root, 'docs', 'generated', 'DEPLOYMENT_CUTOVER_CHECKLIST.md')
 
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const apiBaseUrl = process.env.VITE_API_BASE_URL || '/api'

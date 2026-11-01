@@ -13,11 +13,11 @@ if (!rawUrl) {
 
 const siteUrl = rawUrl.replace(/\/+$/, '')
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'audits', 'VISUAL_SMOKE.md')
+const outPath = join(root, 'docs', 'generated', 'VISUAL_SMOKE.md')
 
 const maxOverflowPx = Number(process.env.VISUAL_SMOKE_MAX_OVERFLOW_PX || 1)
 const writeScreenshots = process.env.VISUAL_SMOKE_SCREENSHOTS === '1'
-const screenshotDir = join(root, 'docs', 'audits', 'visual-smoke')
+const screenshotDir = join(root, 'docs', 'generated', 'visual-smoke')
 
 const viewports = [
   { key: 'desktop', width: 1440, height: 1000, isMobile: false },

@@ -9,7 +9,7 @@ export default [
   },
   {
     name: 'app/files-to-ignore',
-    ignores: [
+    ignores: ['.claude/**', 'docs/generated/**', 
       'dist/**',
       'node_modules/**',
       'coverage/**',

@@ -68,7 +68,7 @@ Source of truth, in priority order:
    and the whole UI follows.
 2. `design/ofenbau-mustermann.design.md` — the same system in Google Stitch
    `design.md` format, mirrored in the Stitch project as the design system
-   **"Ofenbau Mustermann"** (`assets/5933609171211310555`). Keep it in sync with `tokens.css`.
+   **"Ofenbau Mustermann"** (your own Stitch project/asset ids). Keep it in sync with `tokens.css`.
 3. `docs/ARCHITECTURE.md` — narrative map (token table, components, imagery, Stitch sync).
 
 **Identity:** one warm, **light** "hearth" theme — **there is NO dark mode** (the
@@ -96,7 +96,7 @@ labels + process step numbers). Fonts are loaded in `index.html`.
 
 - Don't add `dark:` variants, a second accent colour, hard/black shadows, or sharp
   0-radius "monolith" styling. That brutalist dark look is the **separate** Stitch
-  design system **"Max Mustermann"** (`assets/3824a26f7e40400292d99c26618d270f`),
+  design system **"Max Mustermann"** (a second asset in the same Stitch project),
   which is intentionally kept but **not used** by this app — never mix the two.
 
 ## Conventions for AI agents

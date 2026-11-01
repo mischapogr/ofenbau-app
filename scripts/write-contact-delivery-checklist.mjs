@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { company } from '../src/data/company.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'CONTACT_DELIVERY_CHECKLIST.md')
+const outPath = join(root, 'docs', 'generated', 'CONTACT_DELIVERY_CHECKLIST.md')
 
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 const apiBaseUrl = process.env.VITE_API_BASE_URL || '/api'

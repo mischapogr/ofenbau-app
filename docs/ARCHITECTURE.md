@@ -104,13 +104,13 @@ The canonical, authoritative design system is the repo itself
 (`src/styles/tokens.css` + this doc), exported as a Stitch-format design.md at
 [`design/ofenbau-mustermann.design.md`](../design/ofenbau-mustermann.design.md).
 
-The configured Stitch project (`6396586097530756068`) holds **two** design
+The configured Stitch project (`STITCH_PROJECT_ID`, see `.mcp.env.example`) holds **two** design
 systems that must never be mixed:
 
 | Stitch design system | Asset id | Role |
 | --- | --- | --- |
-| **Ofenbau Mustermann** (light "hearth") | `assets/5933609171211310555` | **Primary** — mirrors this repo (light, `#e35205`, ROUND_EIGHT, Fraunces/Inter/Space Mono) |
-| **Max Mustermann** (dark "monolith") | `assets/3824a26f7e40400292d99c26618d270f` | Kept, unused by the app (dark brutalist variant) |
+| **Ofenbau Mustermann** (light "hearth") | `assets/<your-light-system-id>` | **Primary** — mirrors this repo (light, `#e35205`, ROUND_EIGHT, Fraunces/Inter/Space Mono) |
+| **Max Mustermann** (dark "monolith") | `assets/<your-dark-system-id>` | Kept, unused by the app (dark brutalist variant) |
 
 The light system was re-created from `design.md` (it had been removed from the
 project by mistake). To re-sync after editing tokens: update
@@ -133,7 +133,7 @@ The accompanying photography spec lives in
 [`public/images/PROMPTS.md`](../public/images/PROMPTS.md) (human-readable) and
 [`public/images/manifest.json`](../public/images/manifest.json) (machine-readable)
 — each slot has a ratio, the data field it maps to, and a photorealistic
-generation prompt following the legal guidance in `_tmp/TODO` (warm light
+generation prompt following simple legal guidance (warm light
 interiors, no logos, no readable text, anonymized craft where people are implied).
 
 To replace a photo slot: export `public/images/<id>.webp` and point the matching

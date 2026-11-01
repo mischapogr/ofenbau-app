@@ -15,7 +15,7 @@ import { projectReferenceReview, projects } from '../src/data/projects.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'LAUNCH_ACTION_ITEMS.md')
+const outPath = join(root, 'docs', 'generated', 'LAUNCH_ACTION_ITEMS.md')
 
 const appTitle = process.env.VITE_APP_TITLE || ''
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
@@ -505,7 +505,7 @@ add(
   'No production visual smoke evidence is recorded in this repository.',
   'Run the browser visual smoke against the public HTTPS domain and review the generated route/viewport report.',
   '`npm run deploy:visual -- https://domain.example`',
-  '`docs/audits/VISUAL_SMOKE.md`'
+  '`docs/generated/VISUAL_SMOKE.md`'
 )
 
 add(

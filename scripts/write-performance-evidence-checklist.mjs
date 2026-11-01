@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'PERFORMANCE_EVIDENCE_CHECKLIST.md')
+const outPath = join(root, 'docs', 'generated', 'PERFORMANCE_EVIDENCE_CHECKLIST.md')
 
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
 
@@ -53,7 +53,7 @@ const smokeBudgets = [
 const localRows = [
   ['Static asset budgets', '`npm run perf:budget`', 'JS/CSS hard budgets pass and large images are reviewed.'],
   ['Browser performance smoke', '`npm run deploy:perf -- http://localhost:5174` inside preflight', 'Core public routes pass timing, resource, image and console/error checks.'],
-  ['Visual smoke artifact', 'docs/audits/VISUAL_SMOKE.md', `${pathExists('docs/audits/VISUAL_SMOKE.md') ? `Present (${readGeneratedLine('docs/audits/VISUAL_SMOKE.md')})` : 'Missing'}.`],
+  ['Visual smoke artifact', 'docs/generated/VISUAL_SMOKE.md', `${pathExists('docs/generated/VISUAL_SMOKE.md') ? `Present (${readGeneratedLine('docs/generated/VISUAL_SMOKE.md')})` : 'Missing'}.`],
   ['Production URL readiness', `VITE_APP_URL=${siteUrl}`, status(siteUrlReady)],
 ]
 
@@ -149,4 +149,4 @@ lines.push(
 writeFileSync(outPath, `${lines.join('\n')}\n`)
 console.log(`Wrote ${outPath}`)
 console.log(`Production URL ready: ${status(siteUrlReady)}`)
-console.log(`Visual smoke artifact: ${pathExists('docs/audits/VISUAL_SMOKE.md') ? 'Present' : 'Missing'}`)
+console.log(`Visual smoke artifact: ${pathExists('docs/generated/VISUAL_SMOKE.md') ? 'Present' : 'Missing'}`)

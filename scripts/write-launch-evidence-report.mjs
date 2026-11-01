@@ -16,7 +16,7 @@ import { projectReferenceReview, projects } from '../src/data/projects.js'
 import { serviceContentReview, services } from '../src/data/services.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
-const outPath = join(root, 'docs', 'LAUNCH_EVIDENCE_REPORT.md')
+const outPath = join(root, 'docs', 'generated', 'LAUNCH_EVIDENCE_REPORT.md')
 
 const appTitle = process.env.VITE_APP_TITLE || ''
 const siteUrl = (process.env.VITE_APP_URL || 'http://localhost:5173').replace(/\/+$/, '')
@@ -78,8 +78,8 @@ function readGeneratedLine(path) {
 }
 
 function readLaunchActionCount() {
-  if (!pathExists('docs/LAUNCH_ACTION_ITEMS.md')) return 'missing'
-  const match = read('docs/LAUNCH_ACTION_ITEMS.md').match(/^Open action count:\s*(\d+)$/m)
+  if (!pathExists('docs/generated/LAUNCH_ACTION_ITEMS.md')) return 'missing'
+  const match = read('docs/generated/LAUNCH_ACTION_ITEMS.md').match(/^Open action count:\s*(\d+)$/m)
   return match?.[1] || 'unknown'
 }
 
@@ -164,7 +164,7 @@ const summaryRows = [
   [
     'Operator inputs',
     'Done',
-    '`docs/OPERATOR_INPUT_FORM.md` is generated from the current company, legal, contact-topic, homepage, public-page, service, reference, 3D-planning and env state.',
+    '`docs/generated/OPERATOR_INPUT_FORM.md` is generated from the current company, legal, contact-topic, homepage, public-page, service, reference, 3D-planning and env state.',
     'Fill real values outside this repo before editing source/deployment env.',
   ],
   [
@@ -176,17 +176,17 @@ const summaryRows = [
 ]
 
 const artifactRows = [
-  ['Contact delivery checklist', 'docs/CONTACT_DELIVERY_CHECKLIST.md', artifactStatus('docs/CONTACT_DELIVERY_CHECKLIST.md'), readGeneratedLine('docs/CONTACT_DELIVERY_CHECKLIST.md')],
-  ['Deployment cutover checklist', 'docs/DEPLOYMENT_CUTOVER_CHECKLIST.md', artifactStatus('docs/DEPLOYMENT_CUTOVER_CHECKLIST.md'), readGeneratedLine('docs/DEPLOYMENT_CUTOVER_CHECKLIST.md')],
-  ['Performance evidence checklist', 'docs/PERFORMANCE_EVIDENCE_CHECKLIST.md', artifactStatus('docs/PERFORMANCE_EVIDENCE_CHECKLIST.md'), readGeneratedLine('docs/PERFORMANCE_EVIDENCE_CHECKLIST.md')],
-  ['Operator input form', 'docs/OPERATOR_INPUT_FORM.md', artifactStatus('docs/OPERATOR_INPUT_FORM.md'), readGeneratedLine('docs/OPERATOR_INPUT_FORM.md')],
-  ['Account verification checklist', 'docs/ACCOUNT_VERIFICATION_CHECKLIST.md', artifactStatus('docs/ACCOUNT_VERIFICATION_CHECKLIST.md'), readGeneratedLine('docs/ACCOUNT_VERIFICATION_CHECKLIST.md')],
-  ['Launch action items', 'docs/LAUNCH_ACTION_ITEMS.md', artifactStatus('docs/LAUNCH_ACTION_ITEMS.md'), `${readLaunchActionCount()} open items`],
-  ['Placeholder content report', 'docs/PLACEHOLDER_CONTENT_REPORT.md', artifactStatus('docs/PLACEHOLDER_CONTENT_REPORT.md'), readGeneratedLine('docs/PLACEHOLDER_CONTENT_REPORT.md')],
-  ['Content review checklist', 'docs/CONTENT_REVIEW_CHECKLIST.md', artifactStatus('docs/CONTENT_REVIEW_CHECKLIST.md'), readGeneratedLine('docs/CONTENT_REVIEW_CHECKLIST.md')],
-  ['Legal review checklist', 'docs/LEGAL_REVIEW_CHECKLIST.md', artifactStatus('docs/LEGAL_REVIEW_CHECKLIST.md'), readGeneratedLine('docs/LEGAL_REVIEW_CHECKLIST.md')],
-  ['Content inventory', 'docs/CONTENT_INVENTORY.json', artifactStatus('docs/CONTENT_INVENTORY.json'), 'generated JSON inventory'],
-  ['Visual smoke audit', 'docs/audits/VISUAL_SMOKE.md', artifactStatus('docs/audits/VISUAL_SMOKE.md'), readGeneratedLine('docs/audits/VISUAL_SMOKE.md')],
+  ['Contact delivery checklist', 'docs/generated/CONTACT_DELIVERY_CHECKLIST.md', artifactStatus('docs/generated/CONTACT_DELIVERY_CHECKLIST.md'), readGeneratedLine('docs/generated/CONTACT_DELIVERY_CHECKLIST.md')],
+  ['Deployment cutover checklist', 'docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md', artifactStatus('docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md'), readGeneratedLine('docs/generated/DEPLOYMENT_CUTOVER_CHECKLIST.md')],
+  ['Performance evidence checklist', 'docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md', artifactStatus('docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md'), readGeneratedLine('docs/generated/PERFORMANCE_EVIDENCE_CHECKLIST.md')],
+  ['Operator input form', 'docs/generated/OPERATOR_INPUT_FORM.md', artifactStatus('docs/generated/OPERATOR_INPUT_FORM.md'), readGeneratedLine('docs/generated/OPERATOR_INPUT_FORM.md')],
+  ['Account verification checklist', 'docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md', artifactStatus('docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md'), readGeneratedLine('docs/generated/ACCOUNT_VERIFICATION_CHECKLIST.md')],
+  ['Launch action items', 'docs/generated/LAUNCH_ACTION_ITEMS.md', artifactStatus('docs/generated/LAUNCH_ACTION_ITEMS.md'), `${readLaunchActionCount()} open items`],
+  ['Placeholder content report', 'docs/generated/PLACEHOLDER_CONTENT_REPORT.md', artifactStatus('docs/generated/PLACEHOLDER_CONTENT_REPORT.md'), readGeneratedLine('docs/generated/PLACEHOLDER_CONTENT_REPORT.md')],
+  ['Content review checklist', 'docs/generated/CONTENT_REVIEW_CHECKLIST.md', artifactStatus('docs/generated/CONTENT_REVIEW_CHECKLIST.md'), readGeneratedLine('docs/generated/CONTENT_REVIEW_CHECKLIST.md')],
+  ['Legal review checklist', 'docs/generated/LEGAL_REVIEW_CHECKLIST.md', artifactStatus('docs/generated/LEGAL_REVIEW_CHECKLIST.md'), readGeneratedLine('docs/generated/LEGAL_REVIEW_CHECKLIST.md')],
+  ['Content inventory', 'docs/generated/CONTENT_INVENTORY.json', artifactStatus('docs/generated/CONTENT_INVENTORY.json'), 'generated JSON inventory'],
+  ['Visual smoke audit', 'docs/generated/VISUAL_SMOKE.md', artifactStatus('docs/generated/VISUAL_SMOKE.md'), readGeneratedLine('docs/generated/VISUAL_SMOKE.md')],
   ['Launch evidence template', 'docs/LAUNCH_EVIDENCE_TEMPLATE.md', artifactStatus('docs/LAUNCH_EVIDENCE_TEMPLATE.md'), 'manual production evidence template'],
 ]
 
