@@ -11,7 +11,11 @@ import { useReducedMotion } from '@/composables/useReducedMotion'
 const props = defineProps({
   title: { type: String, default: 'Mit gesunder Wärme leben' },
   titleHighlight: { type: String, default: 'Individueller Kachel- & Kaminofenbau' },
-  description: { type: String, default: 'Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.' },
+  description: {
+    type: String,
+    default:
+      'Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.',
+  },
 })
 
 const heroVideo = homepageAssets.hero.video || null
@@ -69,7 +73,10 @@ function onVideoCanPlay() {
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">
-          <BaseButton :to="{ name: 'contact', query: { topic: 'beratung', source: 'hero' } }" size="lg">
+          <BaseButton
+            :to="{ name: 'contact', query: { topic: 'beratung', source: 'hero' } }"
+            size="lg"
+          >
             Beratung vereinbaren
             <AppIcon name="arrow" class="h-4 w-4" />
           </BaseButton>

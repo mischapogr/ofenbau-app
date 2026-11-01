@@ -26,7 +26,7 @@ useSeo(() => ({
     />
     <ServiceCards />
     <ProcessTimeline />
-    
+
     <section
       v-if="hasFeature('calculators')"
       id="budget-kalkulator"

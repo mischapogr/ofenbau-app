@@ -91,7 +91,13 @@ function onKeydown(event) {
     <span class="compare-slider__badge right-3">{{ afterLabel }}</span>
     <div class="compare-slider__divider" :style="{ left: `${position}%` }" aria-hidden="true">
       <span class="compare-slider__handle">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="h-4 w-4">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          class="h-4 w-4"
+        >
           <path d="M9 6l-4 6 4 6M15 6l4 6-4 6" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </span>

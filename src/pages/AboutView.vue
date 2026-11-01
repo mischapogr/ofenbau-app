@@ -13,7 +13,6 @@ useSeo(() => ({
   description: 'Tradition, Handwerk und moderne Technik — der Meisterbetrieb hinter Ihrer Wärme.',
   path: '/ueber-uns',
 }))
-
 </script>
 
 <template>

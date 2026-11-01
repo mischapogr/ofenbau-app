@@ -13,8 +13,8 @@ import { legalProfile } from '@/data/legal'
     <h2 class="font-display text-xl font-semibold text-content">2. Kontaktformular</h2>
     <p>
       Wenn Sie uns über das Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben inklusive
-      der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von
-      Anschlussfragen bei uns gespeichert.
+      der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall
+      von Anschlussfragen bei uns gespeichert.
     </p>
     <h2 class="font-display text-xl font-semibold text-content">3. Cookies und Analyse</h2>
     <p>
@@ -36,8 +36,8 @@ import { legalProfile } from '@/data/legal'
     </p>
     <h2 class="font-display text-xl font-semibold text-content">6. Auftragsverarbeitung</h2>
     <p>
-      Angaben zu eingesetzten Dienstleistern, Auftragsverarbeitung, Speicherdauer und Rechtsgrundlagen
-      müssen mit den finalen Betreiberangaben geprüft und ergänzt werden.
+      Angaben zu eingesetzten Dienstleistern, Auftragsverarbeitung, Speicherdauer und
+      Rechtsgrundlagen müssen mit den finalen Betreiberangaben geprüft und ergänzt werden.
       <template v-if="legalProfile.privacyNeedsReview">
         {{ legalProfile.privacyReviewNote }}
       </template>

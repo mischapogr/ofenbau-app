@@ -17,9 +17,15 @@ import { hasFeature } from '@/config/tier'
 const route = useRoute()
 const region = computed(() => getRegion(route.params.slug))
 
-const heroTitle = computed(() => region.value ? region.value.title : 'Mit gesunder Wärme leben')
-const heroHighlight = computed(() => region.value ? 'Meisterbetrieb vor Ort' : 'Individueller Kachel- & Kaminofenbau')
-const heroDesc = computed(() => region.value ? region.value.intro : 'Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.')
+const heroTitle = computed(() => (region.value ? region.value.title : 'Mit gesunder Wärme leben'))
+const heroHighlight = computed(() =>
+  region.value ? 'Meisterbetrieb vor Ort' : 'Individueller Kachel- & Kaminofenbau'
+)
+const heroDesc = computed(() =>
+  region.value
+    ? region.value.intro
+    : 'Vom ersten Entwurf bis zum letzten Handgriff: handgesetzte Kachelöfen, Kamine und meisterhafte Fliesenarbeiten — für ein Zuhause, das über Jahrzehnte behaglich bleibt.'
+)
 
 useSeo(() => {
   if (region.value) {
@@ -40,11 +46,7 @@ useSeo(() => {
 
 <template>
   <div>
-    <HeroSection 
-      :title="heroTitle" 
-      :title-highlight="heroHighlight"
-      :description="heroDesc"
-    />
+    <HeroSection :title="heroTitle" :title-highlight="heroHighlight" :description="heroDesc" />
     <ServiceCards />
     <AboutSection />
     <ProcessTimeline />

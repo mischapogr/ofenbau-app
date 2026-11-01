@@ -153,7 +153,9 @@ onBeforeUnmount(() => {
             <input v-model="preferences.comfort" type="checkbox" class="accent-brand-500" />
             Komfort
           </span>
-          <span class="mt-2 block">Speichert optionale Einstellungen für ein besseres Erlebnis.</span>
+          <span class="mt-2 block"
+            >Speichert optionale Einstellungen für ein besseres Erlebnis.</span
+          >
         </label>
 
         <div class="sm:col-span-3 sm:text-right">

@@ -56,17 +56,34 @@ const year = new Date().getFullYear()
             </RouterLink>
           </li>
           <li v-if="hasFeature('calculators')" class="border-t border-white/5 pt-2.5 mt-2.5">
-            <RouterLink :to="{ name: 'service-detail', params: { slug: 'kachelofen-kaminbau' }, hash: '#heizlast-rechner' }" class="transition-colors hover:text-brand-400">
+            <RouterLink
+              :to="{
+                name: 'service-detail',
+                params: { slug: 'kachelofen-kaminbau' },
+                hash: '#heizlast-rechner',
+              }"
+              class="transition-colors hover:text-brand-400"
+            >
               Heizlast-Rechner
             </RouterLink>
           </li>
           <li v-if="hasFeature('calculators')">
-            <RouterLink :to="{ name: 'services', hash: '#budget-kalkulator' }" class="transition-colors hover:text-brand-400">
+            <RouterLink
+              :to="{ name: 'services', hash: '#budget-kalkulator' }"
+              class="transition-colors hover:text-brand-400"
+            >
               Budget-Kalkulator
             </RouterLink>
           </li>
           <li v-if="hasFeature('calculators')">
-            <RouterLink :to="{ name: 'service-detail', params: { slug: 'schornsteinbau' }, hash: '#bimschv-ofen-check' }" class="transition-colors hover:text-brand-400">
+            <RouterLink
+              :to="{
+                name: 'service-detail',
+                params: { slug: 'schornsteinbau' },
+                hash: '#bimschv-ofen-check',
+              }"
+              class="transition-colors hover:text-brand-400"
+            >
               BImSchV Ofen-Check
             </RouterLink>
           </li>
@@ -88,7 +105,10 @@ const year = new Date().getFullYear()
             </RouterLink>
           </li>
           <li>
-            <RouterLink :to="{ name: 'contact', query: { source: 'footer' } }" class="transition-colors hover:text-brand-400">
+            <RouterLink
+              :to="{ name: 'contact', query: { source: 'footer' } }"
+              class="transition-colors hover:text-brand-400"
+            >
               Kontakt
             </RouterLink>
           </li>

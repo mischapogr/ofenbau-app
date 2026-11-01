@@ -12,7 +12,11 @@ import SiteFooter from '@/components/SiteFooter.vue'
       Zum Inhalt springen
     </a>
     <AppHeader />
-    <main id="main" class="min-h-screen flex-1 scroll-mt-16 lg:scroll-mt-20 focus:outline-none" tabindex="-1">
+    <main
+      id="main"
+      class="min-h-screen flex-1 scroll-mt-16 lg:scroll-mt-20 focus:outline-none"
+      tabindex="-1"
+    >
       <slot />
     </main>
     <SiteFooter />
