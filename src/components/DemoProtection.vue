@@ -305,7 +305,7 @@ a.demo-packages__item:focus-visible {
 .demo-gate h1 {
   margin: 0;
   color: rgb(var(--color-content));
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Fraunces Variable', 'Fraunces', Georgia, serif;
   font-size: clamp(2rem, 6vw, 3rem);
   line-height: 1;
 }
@@ -434,7 +434,7 @@ a.demo-packages__item:focus-visible {
 
 .demo-tier__name {
   margin: 0;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Fraunces Variable', 'Fraunces', Georgia, serif;
   font-size: 1.5rem;
   line-height: 1.1;
   color: rgb(var(--color-content));

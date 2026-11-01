@@ -27,6 +27,18 @@ All notable changes to this project are documented here. The format follows
   choice stays available when no access code is configured. The public demos
   now run without an access code.
 
+- Demo builds name the real operator in the Impressum (§ 5 DDG) and privacy
+  policy (`VITE_DEMO_OPERATOR_*`), state that the business is fictional and the
+  images AI-generated, and refuse to deploy without operator details. The demo
+  contact form says it neither sends nor stores data.
+- The privacy policy covers Cloudflare Pages hosting and the optional
+  OpenStreetMap (Nominatim) location lookup.
+
+### Changed
+
+- Fonts are self-hosted (Latin subset) instead of loaded from Google Fonts.
+- Legal pages cite § 5 DDG and § 18 Abs. 2 MStV instead of the repealed § 5 TMG.
+
 ### Fixed
 
 - Material colours are converted from sRGB to linear before reaching the 3D

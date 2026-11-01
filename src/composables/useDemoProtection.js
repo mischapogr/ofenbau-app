@@ -82,7 +82,7 @@ export function useDemoProtection() {
       .join(' · '),
     copyrightNotice:
       env.VITE_DEMO_COPYRIGHT_NOTICE ||
-      'Demo-Ansicht zur Vorschau. Inhalte, Bilder und Daten sind Platzhalter.',
+      'Demo-Ansicht: Das Unternehmen ist fiktiv, Inhalte und Daten sind Platzhalter, Bilder KI-generiert.',
     blockedReason: isFileProtocol
       ? 'Diese Demo kann nicht direkt als Datei geoeffnet werden.'
       : !isAllowedHost

@@ -1,4 +1,5 @@
 <script setup>
+import { demoOperator } from '@/config/demoOperator'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import BaseButton from './BaseButton.vue'
 import AppError from './AppError.vue'
@@ -447,6 +448,15 @@ function borderFor(key) {
       </label>
       <p v-if="errors.gdpr && touched" class="mt-1 text-xs text-red-600">{{ errors.gdpr }}</p>
     </div>
+
+    <p
+      v-if="demoOperator.enabled"
+      class="rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-content"
+      data-testid="demo-form-notice"
+    >
+      <strong>Demo:</strong> Dieses Formular wird nicht versendet und nichts wird gespeichert. Bitte
+      geben Sie keine echten persönlichen Daten ein.
+    </p>
 
     <BaseButton type="submit" block size="lg" :disabled="store.isSubmitting">
       {{ store.isSubmitting ? 'Senden …' : submitLabel }}

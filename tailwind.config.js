@@ -45,8 +45,8 @@ export default {
       fontFamily: {
         // Display = warm serif (premium craft feel, matches the Stitch renders),
         // body/UI = Inter (the Stitch project body font).
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Fraunces', 'Georgia', 'ui-serif', 'serif'],
+        sans: ['"Inter Variable"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'ui-serif', 'serif'],
         mono: ['"Space Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {

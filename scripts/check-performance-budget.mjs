@@ -8,7 +8,9 @@ const publicVideosDir = join(root, 'public', 'videos')
 
 const budgets = {
   jsAssetKb: 180,
-  cssAssetKb: 60,
+  // 64 KB since the fonts are self-hosted: their @font-face rules (~1.4 KB)
+  // moved from Google's stylesheet into the bundle (was 60 KB).
+  cssAssetKb: 64,
   imageKb: 350,
   videoKb: 5500,
   // Vendor chunks that are only fetched on explicit user intent (dynamic import)

@@ -16,6 +16,25 @@ For ad-hoc, throwaway shares from your own machine, see the quick tunnel in
   server-side gate below. The owner's code lives in the encrypted secrets file:
   `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE`.
 
+## Operator details (required)
+
+The business on the demo is fictional, so a public demo's Impressum (§ 5 DDG)
+and privacy policy name **you** as the operator. Set these once — they are
+public on the site but owner-specific, so they don't belong in the open-source
+repo:
+
+```bash
+VITE_DEMO_OPERATOR_NAME="…"
+VITE_DEMO_OPERATOR_STREET="…"
+VITE_DEMO_OPERATOR_CITY="PLZ Ort"
+VITE_DEMO_OPERATOR_EMAIL="…"
+VITE_DEMO_OPERATOR_PHONE=""   # optional
+```
+
+Put them in the git-ignored `.env.demo.local`, or (owner) in the encrypted
+secrets file via `npm run secrets:edit`. Every `demo:pages:*` script runs
+`scripts/check-demo-operator.mjs` first and refuses to deploy without them.
+
 ## One-time setup
 
 ```bash
