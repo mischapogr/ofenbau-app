@@ -35,7 +35,7 @@ composable and `theme` store were removed. To re-skin, edit `tokens.css` only.
 ```
 /                      Home — full conversion flow (one section per block)
 /leistungen            Services overview (cards + process + CTA)
-/leistungen/:slug      Service detail (kachelofen-kaminbau | fliesenarbeiten | 3d-planung)
+/leistungen/:slug      Service detail (kachelofen-kaminbau | schornsteinbau | fliesenarbeiten | 3d-planung*)
 /projekte              Project gallery (filters + lightbox)
 /ueber-uns             About (story + values + process)
 /kontakt               Contact (NAP + form)
@@ -43,9 +43,14 @@ composable and `theme` store were removed. To re-skin, edit `tokens.css` only.
 /* (catch-all)         NotFound
 ```
 
+`*` premium only: `src/config/tier.js` (`VITE_TIER=basis|premium`, injected by
+`vite.config.js`) exposes `hasFeature()`; `/leistungen/3d-planung` redirects to
+`/leistungen` in a basis build (router `beforeEnter`), the nav item and the Home
+sections are hidden, and `getActiveServices(tier)` filters the service cards.
+
 The **Home** page composes the brief's flow in order:
 `HeroSection → ServiceCards → AboutSection → ProcessTimeline → ProjectGallery →
-Planning3DSection → CTASection`.
+Planning3DSection → Planning3DExplorer (lazy) → CTASection`.
 
 ## Components
 
@@ -58,7 +63,30 @@ gradient/motif placeholder fallback), `AppIcon` (single line-icon set),
 
 **Sections / blocks** — `HeroSection`, `ServiceCards` (+ `ServiceCard`),
 `AboutSection`, `ProcessTimeline`, `ProjectGallery`, `Planning3DSection`,
-`CTASection`, `ContactForm`, `PageHeader`, `Breadcrumbs`, `SiteFooter`.
+`Planning3DExplorer`, `CTASection`, `ContactForm`, `PageHeader`, `Breadcrumbs`,
+`SiteFooter`, plus the calculators `BudgetEstimator`, `HeizlastCalculator`,
+`BimschvChecker`.
+
+**Planning explorer** (`Planning3DExplorer.vue` + `components/planning/`) —
+an image-based "pseudo-3D" viewer with an optional real glTF stage:
+
+- `composables/usePlanningExplorer.js` holds all state/actions and provides it
+  to the sub-components (`useExplorerContext()`); the orchestrator only lays
+  out section, stage switch and aside.
+- Stages: `ExplorerStageRotate` (drag/keyboard frame arc via
+  `useFrameRotation`, honest arc label — only a frame set covering 360° wraps),
+  `ExplorerStageView` (photo + hotspots + CSS fire), `ExplorerStageXray`
+  (cutaway), `ExplorerStageVariant` (decision simulation: whole-image swaps,
+  stackable `layer` overlays, compare slider), `ExplorerStageModel`
+  (`<model-viewer>` loaded on first open: orbit, AR, `KHR_materials_variants`,
+  hotspots; offered only with WebGL and without `saveData`).
+- `ExplorerControls` (aside), `ExplorerStageBar` (info bar: dots/autorotate,
+  compare, "Budget schätzen" hand-off into `BudgetEstimator` query params,
+  fire toggle, zoom), `ExplorerFullscreen` (teleported modal with focus trap),
+  `ExplorerLazy` (mounts the explorer chunk near the viewport).
+- Frames are fetched on the first interaction with the stage, not on mount.
+- Placeholder model: `public/models/kachelofen-eckscheibe.glb`
+  (`npm run gen:model`, see `public/models/README.md`).
 
 Layout: `layouts/DefaultLayout.vue` (skip-link + `AppHeader` + `<main>` +
 `SiteFooter`) and `layouts/AppHeader.vue` (sticky, scroll shadow, persistent CTA,
@@ -69,10 +97,10 @@ accessible mobile menu).
 All copy/structure is data-driven so components stay presentational:
 
 - `data/company.js` — name, NAP, primary nav, social links, trust badges
-- `data/services.js` — the three services (drives cards, overview, detail pages)
+- `data/services.js` — the four services (drives cards, overview, detail pages; `BASIS_SERVICE_SLUGS` for the basis tier)
 - `data/projects.js` — gallery items + filter categories
 - `data/process.js` — the four process steps
-- `data/planning.js` — 3D benefits + service columns
+- `data/planning.js` — 3D benefits + service columns + the explorer examples (views, frame arcs, x-ray, decisions/`variants`, `budget` map, `model`; schema documented inline). All visuals are AI-generated demo content (`planningContentReview.demoContent`).
 
 For handover/editing guidance see [`docs/CONTENT_GUIDE.md`](./CONTENT_GUIDE.md).
 Run `npm run content:inventory` to export `docs/CONTENT_INVENTORY.json` with
