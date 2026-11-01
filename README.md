@@ -1,23 +1,49 @@
-# Ofenbau Mustermann — Vue 3 craft-business website template
+# Ofenbau Mustermann — Vue 3 website template for craft businesses
 
-An open-source, production-shaped marketing website for a fictional stove &
-fireplace business (Kachelofen / Kamin). Built with **Vue 3 + Vite + Tailwind**,
-it ships everything a small craft business site needs plus a few showcase
-features: an optional **demo mode** (access gate + watermark), a **Basis/Premium
-tier switch** via feature flags, interactive **calculators**, regional SEO pages,
-and an image-based **planning explorer** with an optional real-3D stage.
+Open-source marketing website for a (fictional) stove & fireplace business —
+with an interactive **3D planning explorer**: a 360° turntable rendered from a
+real 3D model, per-part material configurator, budget calculator and
+Basis/Premium packages. Built with **Vue 3 + Vite + Tailwind**, hosted on
+**Cloudflare Pages**.
 
-The UI and content are German; code and docs are English. All business data,
-photos and references are placeholders (AI-generated imagery, see
-[`public/images/PROMPTS.md`](./public/images/PROMPTS.md)).
+<p align="center">
+  <img src="docs/screenshots/turntable.webp" width="640" alt="360°-Rundblick des 3D-Kachelofens im Stil Modern">
+</p>
 
-> Licensed under [MIT](./LICENSE). Contributions welcome — see
-> [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+| 3D model with per-part materials                                                | Budget calculator                                      |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| ![3D-Modell mit Material-Konfigurator](docs/screenshots/explorer-3d-model.webp) | ![Budget-Kalkulator](docs/screenshots/calculator.webp) |
+| **360° turntable per material preset**                                          | **Home page (desktop & mobile)**                       |
+| ![360°-Rundblick](docs/screenshots/explorer-turntable.webp)                     | ![Startseite](docs/screenshots/home.webp)              |
+
+## Zusammenarbeit · Work with me
+
+**Sie sind ein Handwerksbetrieb und möchten online so auftreten?** Ich setze
+Websites für Ofenbauer, Fliesenleger und andere Gewerke um — vom
+Basis-Auftritt bis zur Premium-Seite mit interaktiver 3D-Planung, Konfigurator,
+Budget-Rechner und regionaler Sichtbarkeit in Google und KI-Suchen.
+Auf Wunsch inklusive Hosting auf Cloudflare und laufender Betreuung.
+
+- Persönlicher Zugang zur Live-Demo (Basis & Premium) auf Anfrage
+- Individuelle 3D-Konfiguratoren für Ihre Produkte
+- Anpassung dieser Vorlage an Ihr Unternehmen, Ihre Inhalte und Bilder
+
+**Kontakt:** [LinkedIn](https://www.linkedin.com/in/mischa-pogrebnyak-0141b542/) ·
+[XING](https://www.xing.com/profile/Mischa_Pogrebnyak)
+
+_Looking for a website or a 3D product configurator like this one? Reach out on
+LinkedIn or XING._
+
+> Licensed under [MIT](./LICENSE). The UI and content are German, code and docs
+> English. All business data, photos and references are placeholders
+> (AI-generated imagery, see [`public/images/PROMPTS.md`](./public/images/PROMPTS.md)).
+> Contributions welcome — see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ## Demo
 
-The demos run as private previews on Cloudflare Pages: each prospect gets a
-personal access code (`npm run demo:access`, see
+The live demos are private previews on Cloudflare Pages — personal access on
+request (LinkedIn / XING above). Each visitor gets their own code
+(`npm run demo:access`, see
 [`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md#customer-access-codes)). To look
 around yourself, run it locally — no account or secrets needed:
 
@@ -26,15 +52,8 @@ npm install && npm run dev          # http://localhost:5173 (Premium)
 VITE_TIER=basis npm run dev         # the reduced Basis package
 ```
 
-The 3D planning explorer is at `/leistungen/3d-planung`.
-
------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Premium** | <https://ofenbau-premium-demo.pages.dev> | Full site: calculators, 3D planning explorer with 360° turntable and 3D model, regional pages |
-| **Basis** | <https://ofenbau-basis-demo.pages.dev> | Reduced package: website, portfolio, Ratgeber, contact form |
-| Generic | <https://ofenbau-demo.pages.dev> | Same build as Premium |
-
-Try the 3D planning explorer directly at
-<https://ofenbau-premium-demo.pages.dev/leistungen/3d-planung>.
+The 3D planning explorer is at `/leistungen/3d-planung`. Screenshots are
+regenerated with `npm run screenshots`.
 
 ---
 

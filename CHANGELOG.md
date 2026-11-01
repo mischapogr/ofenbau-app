@@ -6,8 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-01
+
 ### Added
 
+- README with screenshots, an animated 360° preview and a contact section;
+  `npm run screenshots` regenerates them and the GitHub social preview.
 - MIT license, contributing guide, security policy and GitHub Actions CI.
 - Optional server-side demo gate for Cloudflare Pages (`functions/_middleware.js`,
   `functions/api/demo-unlock.js`, `public/demo-gate.html`).
