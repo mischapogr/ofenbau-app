@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>Demo-Zugang · Ofenbau Mustermann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Standalone page served before the app bundle; mirrors src/styles/tokens.css. */
+      :root {
+        --surface-muted: #faf6f1;
+        --surface: #ffffff;
+        --content: #2b2522;
+        --content-muted: #6b625c;
+        --brand: #e35205;
+        --brand-hover: #c2460a;
+        --ink: #181412;
+        --radius: 8px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: var(--surface-muted);
+        color: var(--content);
+        font-family: Inter, system-ui, sans-serif;
+      }
+      main {
+        width: min(100%, 420px);
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 32px;
+        box-shadow: 0 18px 40px -24px rgba(24, 20, 18, 0.35);
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--brand);
+        font-weight: 600;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-family: Fraunces, Georgia, serif;
+        font-size: 28px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0 0 20px;
+        color: var(--content-muted);
+        line-height: 1.5;
+      }
+      label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        font: inherit;
+        border: 1px solid #d9d0c7;
+        border-radius: var(--radius);
+        background: var(--surface-muted);
+      }
+      input:focus {
+        outline: 2px solid var(--brand);
+        outline-offset: 1px;
+      }
+      button {
+        margin-top: 16px;
+        width: 100%;
+        padding: 12px 16px;
+        font: inherit;
+        font-weight: 600;
+        color: #fff;
+        background: var(--brand);
+        border: 0;
+        border-radius: var(--radius);
+        cursor: pointer;
+      }
+      button:hover {
+        background: var(--brand-hover);
+      }
+      .error {
+        color: #b3261e;
+        margin: 12px 0 0;
+        display: none;
+      }
+      .error[data-show] {
+        display: block;
+      }
+      footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: var(--content-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Demo-Zugang</p>
+      <h1>Ofenbau Mustermann</h1>
+      <p>
+        Diese Demo ist zugangsgeschützt. Bitte geben Sie den Zugangscode ein, den Sie erhalten
+        haben.
+      </p>
+      <form method="post" action="/api/demo-unlock" id="gate">
+        <input type="hidden" name="redirect" id="redirect" value="/" />
+        <label for="code">Zugangscode</label>
+        <input
+          id="code"
+          name="code"
+          type="password"
+          autocomplete="one-time-code"
+          required
+          autofocus
+        />
+        <p class="error" id="error" role="alert">Der Zugangscode ist nicht korrekt.</p>
+        <button type="submit">Demo öffnen</button>
+      </form>
+      <footer>Demo-Ansicht zur Vorschau. Inhalte, Bilder und Daten sind Platzhalter.</footer>
+    </main>
+    <script>
+      const params = new URLSearchParams(location.search)
+      const redirect =
+        params.get('redirect') ||
+        (location.pathname === '/demo-gate.html' ? '/' : location.pathname + location.search)
+      document.getElementById('redirect').value = redirect
+      if (params.get('error')) document.getElementById('error').setAttribute('data-show', '')
+      document.getElementById('gate').addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const code = document.getElementById('code').value.trim()
+        const res = await fetch('/api/demo-unlock', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ code }),
+        })
+        if (res.ok) location.replace(redirect)
+        else document.getElementById('error').setAttribute('data-show', '')
+      })
+    </script>
+  </body>
+</html>

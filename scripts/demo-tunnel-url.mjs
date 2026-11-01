@@ -55,5 +55,5 @@ mkdirSync('_tmp', { recursive: true })
 writeFileSync(OUT_FILE, `${url}\n`)
 
 console.log(url)
-console.log(`\nAccess code: ***REMOVED-DEMO-CODE***`)
+console.log('\nAccess code: run `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE` (see docs/SECRETS.md)')
 console.log(`(saved to ${OUT_FILE})`)
