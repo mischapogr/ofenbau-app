@@ -1,0 +1,170 @@
+/* Shared, un-scoped styles for the planning explorer stages. All selectors are
+   `plan-*` prefixed; imported once by Planning3DExplorer.vue. Being global lets
+   `.plan-xray` land on the BaseImage child root without a :deep() hack. */
+
+.plan-rotate-stage {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.plan-rotate-stage--dragging {
+  cursor: grabbing;
+}
+
+.plan-hotspot {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transform: translate(-0.75rem, -50%);
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.plan-hotspot--active .plan-hotspot__dot {
+  box-shadow: 0 0 0 0.5rem rgba(227, 82, 5, 0.45);
+}
+
+.plan-hotspot__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  background: rgb(var(--color-brand-500));
+  box-shadow: 0 0 0 0.35rem rgba(227, 82, 5, 0.28);
+}
+
+.plan-hotspot__label {
+  max-width: 8rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.24rem 0.55rem;
+  background: rgba(24, 20, 18, 0.72);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
+/* X-ray: blueprint-style inversion that turns the render into a technical
+   interior schema backdrop for the construction annotations. */
+.plan-xray {
+  filter: invert(0.88) hue-rotate(190deg) saturate(0.5) contrast(1.06) brightness(1.04);
+}
+
+/* Simulated fire behind the glass: two blended glow layers with offset
+   flicker rhythms. Position/size come from the view's `fire` zone. */
+.plan-fire {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.plan-fire__glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 68%,
+    rgba(255, 214, 130, 0.95) 0%,
+    rgba(255, 138, 38, 0.72) 38%,
+    rgba(196, 60, 8, 0.34) 64%,
+    transparent 78%
+  );
+  filter: blur(6px);
+  animation: plan-fire-flicker 1.7s ease-in-out infinite alternate;
+}
+
+.plan-fire__glow--b {
+  inset: -6%;
+  background: radial-gradient(
+    ellipse at 48% 75%,
+    rgba(255, 244, 200, 0.9) 0%,
+    rgba(255, 170, 60, 0.6) 42%,
+    transparent 70%
+  );
+  filter: blur(3px);
+  animation-duration: 1.15s;
+  animation-delay: -0.45s;
+}
+
+@keyframes plan-fire-flicker {
+  0% {
+    opacity: 0.72;
+    transform: scale(0.97) translateY(0.5%);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-0.6%);
+  }
+  100% {
+    opacity: 0.84;
+    transform: scale(0.99) translateY(0);
+  }
+}
+
+/* glTF stage: the custom element fills the stage; the poster is the existing
+   render so nothing shifts when the viewer takes over. */
+.plan-model {
+  width: 100%;
+  height: 100%;
+  min-height: 26rem;
+  background: rgb(var(--color-ink-900));
+  --poster-color: transparent;
+  --progress-bar-color: rgb(var(--color-brand-500));
+}
+
+.plan-model__hotspot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.plan-model__hotspot[data-visible='false'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.plan-view-enter-active,
+.plan-view-leave-active {
+  transition: opacity 0.22s ease;
+}
+.plan-view-enter-from,
+.plan-view-leave-to {
+  opacity: 0;
+}
+
+.stage-fade-enter-active,
+.stage-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.stage-fade-enter-from,
+.stage-fade-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-fire__glow {
+    animation: none;
+  }
+  .stage-fade-enter-active,
+  .stage-fade-leave-active {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .plan-hotspot__label {
+    display: none;
+  }
+}
