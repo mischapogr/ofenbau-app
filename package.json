@@ -35,6 +35,7 @@
     "format:check": "prettier --check \"src/**/*.{js,vue,css,json}\"",
     "gen:images": "node scripts/generate-images.mjs",
     "gen:video": "node scripts/generate-intro-video.mjs",
+    "gen:model": "node scripts/generate-placeholder-model.mjs",
     "company:check": "node scripts/check-company-profile.mjs",
     "content:review": "node scripts/write-content-review-checklist.mjs",
     "content:placeholders": "node scripts/write-placeholder-content-report.mjs",
@@ -76,6 +77,7 @@
     "secrets:edit": "sops secrets/ofenbau.enc.env"
   },
   "dependencies": {
+    "@google/model-viewer": "4.4.0",
     "axios": "^1.7.9",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
