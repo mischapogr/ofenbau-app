@@ -1,0 +1,13 @@
+# gitleaks config — extends the default rules; sops-encrypted values are ciphertext, not secrets.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "sops-encrypted files and example templates"
+paths = [
+  '''secrets/.*\.enc\.env$''',
+  '''\.sops\.yaml$''',
+  '''\.env\.example$''',
+  '''\.mcp\.env\.example$''',
+  '''\.dev\.vars\.example$''',
+]

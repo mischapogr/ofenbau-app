@@ -76,6 +76,10 @@ direnv allow                   # one-time; re-run after editing .envrc
 
 Without direnv, source it manually each shell: `set -a; source .mcp.env; set +a`.
 
+> **Repo owner:** your values live encrypted in `secrets/ofenbau.enc.env` (sops + age)
+> and `.envrc` loads them automatically — see [`docs/SECRETS.md`](./SECRETS.md).
+> Contributors never need that file.
+
 > **Stitch:** runs via `npx -y @_davideast/stitch-mcp proxy`; auth is via
 > `STITCH_API_KEY` + `STITCH_PROJECT_ID` (put them in `.mcp.env`). The
 > design-to-code workflow (Stitch → `tokens.css` → Vue) is unchanged.

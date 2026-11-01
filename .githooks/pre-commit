@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# Leak guard — wired up by `npm install` via the "prepare" script (core.hooksPath).
+# 1) Refuse local secret files outright.
+if git diff --cached --name-only | grep -Ex '\.mcp\.env|\.env|\.dev\.vars|\.env\..*\.local|.*\.dec\.env|secrets/.*\.dec\..*' >/dev/null; then
+  echo "pre-commit: refusing to commit a local secrets file (see docs/SECRETS.md)" >&2
+  exit 1
+fi
+# 2) Scan staged changes for credentials when gitleaks is available.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact --no-banner || {
+    echo "pre-commit: gitleaks found a possible secret — fix or allowlist in .gitleaks.toml" >&2
+    exit 1
+  }
+else
+  echo "pre-commit: gitleaks not installed, skipping secret scan (see docs/SECRETS.md)" >&2
+fi

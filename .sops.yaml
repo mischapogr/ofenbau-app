@@ -1,0 +1,6 @@
+# SOPS configuration — see docs/SECRETS.md.
+# Only the owner's age recipient can decrypt secrets/*.enc.env. Contributors
+# never need these files: copy .mcp.env.example → .mcp.env instead.
+creation_rules:
+  - path_regex: ^secrets/.*\.enc\.env$
+    age: age1zkuzaxd7r93atn4cwdczqu968n963yzt6de9gkqez9rpp36p33mqps76zd
