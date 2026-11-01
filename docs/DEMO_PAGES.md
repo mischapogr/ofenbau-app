@@ -80,13 +80,19 @@ they take effect and can be revoked immediately, without a redeploy.
 ```bash
 npm run demo:access -- add mueller-ofenbau --label "Müller Ofenbau GmbH" --days 30
 #   → prints the code once, e.g. K7QM-3XRP-9WHT, plus the demo links
-npm run demo:access -- list                   # customers, expiry, last login
+npm run demo:access -- list                   # customers, code, expiry, last login (local time)
 npm run demo:access -- rotate mueller-ofenbau # new code, the old one stops working
 npm run demo:access -- remove mueller-ofenbau # locked out on their next page load
 ```
 
 Codes expire after `--days` (default 30); expired entries are deleted from KV a
 week later. Codes are case-insensitive and dashes are optional.
+
+Each customer record also keeps the code AES-256-GCM encrypted with a key
+derived from `DEMO_SESSION_SECRET`, so `list` can show it again to whoever has
+that secret loaded (the owner via direnv); the demo site never reads it. A code
+issued before this was added can be stored with
+`npm run demo:access -- save-code <customer> <code>` (checked against the hash).
 
 **One-time activation** (signs the session cookies; needs `DEMO_SESSION_SECRET`
 in the environment, which the owner's `.envrc` loads from the encrypted secrets):

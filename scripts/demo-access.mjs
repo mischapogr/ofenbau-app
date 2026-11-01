@@ -9,13 +9,20 @@
  *   npm run demo:access -- list
  *   npm run demo:access -- remove <customer>                # locks the customer out immediately
  *   npm run demo:access -- setup                            # signing secret → all Pages projects
+ *   npm run demo:access -- save-code <customer> <code>      # store a code issued before codes were kept
+ *
+ * Besides the lookup hash, each customer record keeps the code AES-256-GCM
+ * encrypted with a key derived from DEMO_SESSION_SECRET, so `list` can show it
+ * to the owner (whose .envrc loads the secret). The demo site never reads it.
+ * Times are shown in the local time zone.
  *
  * Add --local to work against the local `wrangler pages dev` store instead.
  * <customer> is a short id such as "mueller-ofenbau" (a–z, 0–9, dashes).
  * Needs `wrangler login`; `setup` reads DEMO_SESSION_SECRET from the environment
  * (the owner's .envrc loads it from secrets/ofenbau.enc.env).
  */
-import { createHash, randomInt } from 'node:crypto'
+import { createCipheriv, createDecipheriv, createHash, randomBytes, randomInt } from 'node:crypto'
+import { Buffer } from 'node:buffer'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
@@ -83,6 +90,36 @@ const kvDelete = (key) => {
 
 const normalize = (code) => code.toUpperCase().replace(/[^A-Z0-9]/g, '')
 const sha256 = (value) => createHash('sha256').update(value).digest('hex')
+// Code at rest: AES-256-GCM, key = SHA-256(DEMO_SESSION_SECRET + purpose label).
+const secret = process.env.DEMO_SESSION_SECRET || ''
+const codeKey = () => createHash('sha256').update(`${secret}|demo-access-code-at-rest`).digest()
+function encryptCode(code) {
+  if (!secret) return null
+  const iv = randomBytes(12)
+  const cipher = createCipheriv('aes-256-gcm', codeKey(), iv)
+  const data = Buffer.concat([cipher.update(code, 'utf8'), cipher.final()])
+  return [iv, cipher.getAuthTag(), data].map((b) => b.toString('base64')).join('.')
+}
+function decryptCode(blob) {
+  if (!blob) return '—'
+  if (!secret) return '(load DEMO_SESSION_SECRET)'
+  try {
+    const [iv, tag, data] = blob.split('.').map((part) => Buffer.from(part, 'base64'))
+    const decipher = createDecipheriv('aes-256-gcm', codeKey(), iv)
+    decipher.setAuthTag(tag)
+    return Buffer.concat([decipher.update(data), decipher.final()]).toString('utf8')
+  } catch {
+    return '(cannot decrypt)'
+  }
+}
+const localTime = (iso, withTime = true) =>
+  iso
+    ? new Date(iso).toLocaleString('de-DE', {
+        dateStyle: 'medium',
+        ...(withTime ? { timeStyle: 'short' } : {}),
+      })
+    : ''
+
 function newCode() {
   const chars = Array.from({ length: 12 }, () => ALPHABET[randomInt(ALPHABET.length)]).join('')
   return chars.match(/.{4}/g).join('-')
@@ -109,6 +146,7 @@ function issue(record) {
     created: record?.created || new Date().toISOString(),
     lastLogin: record?.lastLogin || null,
     codeHash,
+    codeEnc: encryptCode(code),
     expires,
   }
   kvPut(`code:${codeHash}`, customer, ttl)
@@ -116,12 +154,16 @@ function issue(record) {
   if (record?.codeHash && record.codeHash !== codeHash) kvDelete(`code:${record.codeHash}`)
 
   console.log(
-    `\n${record ? 'New code for' : 'Access for'} ${next.label} (${customer}), valid until ${expires.slice(0, 10)}:\n`
+    `\n${record ? 'New code for' : 'Access for'} ${next.label} (${customer}), valid until ${localTime(expires, false)}:\n`
   )
   console.log(`    ${code}\n`)
   console.log('Send the code with one of these links (it works on all of them):')
   for (const host of hosts) console.log(`    https://${host}/`)
-  console.log('\nThe code is shown only now — it is stored as a hash.')
+  console.log(
+    next.codeEnc
+      ? '\nThe code is stored encrypted; `npm run demo:access -- list` shows it again.'
+      : '\nDEMO_SESSION_SECRET is not loaded, so the code is stored only as a hash — note it now.'
+  )
 }
 
 switch (command) {
@@ -169,12 +211,36 @@ switch (command) {
       return {
         customer: id,
         label: rec.label || '',
-        expires: (rec.expires || '').slice(0, 10) + (expired ? ' (expired)' : ''),
-        lastLogin: rec.lastLogin ? rec.lastLogin.slice(0, 16).replace('T', ' ') : 'never',
+        code: decryptCode(rec.codeEnc),
+        expires: localTime(rec.expires, false) + (expired ? ' (expired)' : ''),
+        lastLogin: rec.lastLogin ? localTime(rec.lastLogin) : 'never',
       }
     })
     console.table(rows)
     console.log(`${rows.length} customer(s).`)
+    break
+  }
+  case 'save-code': {
+    requireCustomer()
+    const code = positional[2]
+    const raw = kvGet(`customer:${customer}`)
+    if (!raw || !code) {
+      console.error(`Usage: save-code <customer> <code> (customer "${customer}" must exist).`)
+      process.exit(1)
+    }
+    if (!secret) {
+      console.error('DEMO_SESSION_SECRET must be loaded (direnv) to encrypt the code.')
+      process.exit(1)
+    }
+    const rec = JSON.parse(raw)
+    if (sha256(normalize(code)) !== rec.codeHash) {
+      console.error(`That is not the current code of "${customer}". Nothing changed.`)
+      process.exit(1)
+    }
+    const remaining = Math.round((Date.parse(rec.expires) - Date.now()) / 1000)
+    const ttl = Math.max(86400, remaining + GRACE_DAYS * 86400)
+    kvPut(`customer:${customer}`, JSON.stringify({ ...rec, codeEnc: encryptCode(code) }), ttl)
+    console.log(`Stored the code of "${customer}" encrypted; list shows it now.`)
     break
   }
   case 'setup': {
