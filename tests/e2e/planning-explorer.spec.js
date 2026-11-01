@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { srgbToLinearRgb } from '../../src/utils/color.js'
 
 /**
  * Assertion-focused checks for the planning explorer on /leistungen/3d-planung
@@ -50,6 +51,43 @@ test.describe('Planning explorer', () => {
     await expect(stage).toHaveAttribute('aria-valuenow', '-165')
     await page.keyboard.press('ArrowLeft')
     await expect(stage).toHaveAttribute('aria-valuenow', '180')
+  })
+
+  test('the turntable switches preset, keeps the angle and syncs the 3D model', async ({
+    page,
+  }) => {
+    const { explorer, stage } = await openExplorer(page)
+    const styles = explorer.getByRole('group', { name: 'Stil des Rundblicks' })
+    const currentImage = () => stage.locator('img:visible').first().getAttribute('src')
+
+    await expect(styles.getByRole('button', { name: 'Landhaus' })).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    )
+    await expect.poll(currentImage).toContain('turntable-landhaus-0.webp')
+
+    await stage.focus()
+    await page.keyboard.press('ArrowRight')
+    await page.keyboard.press('ArrowRight')
+    await expect(stage).toHaveAttribute('aria-valuenow', '30')
+
+    await styles.getByRole('button', { name: 'Modern' }).click()
+    await expect(styles.getByRole('button', { name: 'Modern' })).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    )
+    // Same angle, other material set.
+    await expect(stage).toHaveAttribute('aria-valuenow', '30')
+    await expect.poll(currentImage).toContain('turntable-modern-30.webp')
+
+    // The 3D model opens with the same preset.
+    await explorer.getByRole('button', { name: '3D-Modell' }).click()
+    await page.waitForFunction(() => document.querySelector('model-viewer')?.loaded, null, {
+      timeout: 30_000,
+    })
+    await expect(
+      explorer.getByRole('button', { name: 'Modern', exact: true }).last()
+    ).toHaveAttribute('aria-pressed', 'true')
   })
 
   test('a partial arc is labelled honestly and clamps at its ends', async ({ page }) => {
@@ -187,8 +225,12 @@ test.describe('Planning explorer', () => {
 
     // Preset: every part changes at once.
     await explorer.getByRole('button', { name: 'Modern', exact: true }).click()
-    await expect.poll(() => baseColor('Kacheln')).toEqual([0.16, 0.16, 0.17, 1])
-    await expect.poll(() => baseColor('Rahmen')).toEqual([0.75, 0.75, 0.75, 1])
+    await expect
+      .poll(() => baseColor('Kacheln'))
+      .toEqual([...srgbToLinearRgb([0.16, 0.16, 0.17]), 1])
+    await expect
+      .poll(() => baseColor('Rahmen'))
+      .toEqual([...srgbToLinearRgb([0.75, 0.75, 0.75]), 1])
 
     // Per-part choice: only the chosen part changes, the preset is no longer active.
     await explorer.getByRole('button', { name: 'Bauteile anpassen' }).click()
@@ -196,8 +238,12 @@ test.describe('Planning explorer', () => {
       .getByRole('group', { name: 'Kacheln' })
       .getByRole('button', { name: 'Terrakotta' })
       .click()
-    await expect.poll(() => baseColor('Kacheln')).toEqual([0.72, 0.4, 0.26, 1])
-    await expect.poll(() => baseColor('Rahmen')).toEqual([0.75, 0.75, 0.75, 1])
+    await expect
+      .poll(() => baseColor('Kacheln'))
+      .toEqual([...srgbToLinearRgb([0.72, 0.4, 0.26]), 1])
+    await expect
+      .poll(() => baseColor('Rahmen'))
+      .toEqual([...srgbToLinearRgb([0.75, 0.75, 0.75]), 1])
     await expect(explorer.getByRole('button', { name: 'Modern', exact: true })).toHaveAttribute(
       'aria-pressed',
       'false'

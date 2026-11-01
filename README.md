@@ -126,7 +126,8 @@ see [`docs/SECRETS.md`](./docs/SECRETS.md) and [`docs/DEMO_PAGES.md`](./docs/DEM
 ### Planning explorer ("3D")
 
 `src/components/planning/` is an image-based viewer: a drag-to-rotate turntable
-(for the Kachelofen a true 360° rendered from the 3D model by `npm run gen:turntable`),
+(for the Kachelofen a true 360° per material preset, rendered from the 3D model by
+`npm run gen:turntable`),
 hotspots, cutaway ("Röntgenblick"), stackable material variants with a compare
 slider, and a lazy-loaded `<model-viewer>` stage with per-part material
 switching (tiles, cornice, bench slab, plinth, frame, joints) plus style presets

@@ -3,6 +3,15 @@
  * and the /leistungen/3d-planung detail page, plus the examples that drive
  * Planning3DExplorer (views, frame arcs, x-ray, decisions/variants, models).
  */
+/** 24 frames, 15° apart (-165° … +180°), as written by scripts/render-turntable.mjs. */
+export const TURNTABLE_ANGLES = Array.from({ length: 24 }, (_, i) => -165 + i * 15)
+function turntableFrames(example, preset) {
+  return TURNTABLE_ANGLES.map((angle) => ({
+    angle,
+    image: `/images/planning-frames/${example}/turntable-${preset}-${String(angle).replace('-', 'm')}.webp`,
+  }))
+}
+
 export const planningContentReview = {
   approvedForLaunch: false,
   // All planning visuals are AI-generated demo content (see public/images/PROMPTS.md).
@@ -147,33 +156,14 @@ export const planningExamples = [
         { label: 'Dämmebene', top: '54%', left: '51.5%' },
       ],
     },
-    // True 360° turntable rendered from the 3D model (npm run gen:turntable).
-    frames: [
-      { angle: -165, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m165.webp' },
-      { angle: -150, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m150.webp' },
-      { angle: -135, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m135.webp' },
-      { angle: -120, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m120.webp' },
-      { angle: -105, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m105.webp' },
-      { angle: -90, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m90.webp' },
-      { angle: -75, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m75.webp' },
-      { angle: -60, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m60.webp' },
-      { angle: -45, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m45.webp' },
-      { angle: -30, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m30.webp' },
-      { angle: -15, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-m15.webp' },
-      { angle: 0, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-0.webp' },
-      { angle: 15, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-15.webp' },
-      { angle: 30, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-30.webp' },
-      { angle: 45, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-45.webp' },
-      { angle: 60, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-60.webp' },
-      { angle: 75, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-75.webp' },
-      { angle: 90, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-90.webp' },
-      { angle: 105, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-105.webp' },
-      { angle: 120, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-120.webp' },
-      { angle: 135, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-135.webp' },
-      { angle: 150, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-150.webp' },
-      { angle: 165, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-165.webp' },
-      { angle: 180, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-180.webp' },
-    ],
+    // True 360° turntables rendered from the 3D model, one per material preset
+    // (npm run gen:turntable). `frames` is the default for code without presets.
+    frames: turntableFrames('kachelofen-eckscheibe', 'landhaus'),
+    frameSets: {
+      landhaus: turntableFrames('kachelofen-eckscheibe', 'landhaus'),
+      modern: turntableFrames('kachelofen-eckscheibe', 'modern'),
+      natur: turntableFrames('kachelofen-eckscheibe', 'natur'),
+    },
     decisions: [
       { key: 'form', label: 'Form', choices: ['gerade Linie', 'Ecke', 'Sitzbank'] },
       { key: 'material', label: 'Material', choices: ['Keramik', 'Naturstein', 'Putz'] },

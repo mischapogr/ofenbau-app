@@ -85,7 +85,19 @@ export function usePlanningExplorer() {
   )
 
   // ---------------------------------------------------------------- rotate
-  const currentFrames = computed(() => current.value?.frames || [])
+  // Material presets of the 3D model (Landhaus / Modern / Natur …). Shared by
+  // the turntable and the model stage so both always show the same look; an
+  // example with `frameSets` has one rendered turntable per preset.
+  const currentPresets = computed(() => current.value?.model?.presets || [])
+  const activePreset = ref(null)
+  const activePresetKey = computed(() => activePreset.value || currentPresets.value[0]?.key || null)
+  function setPreset(key) {
+    activePreset.value = key
+  }
+  const hasPresetFrames = computed(() => Boolean(current.value?.frameSets))
+  const currentFrames = computed(
+    () => current.value?.frameSets?.[activePresetKey.value] || current.value?.frames || []
+  )
   const rotation = useFrameRotation(currentFrames, { reducedMotion })
   const isRotateMode = computed(() => stageMode.value === 'rotate' && rotation.hasFrames.value)
   // Honest label: only a frame set that covers the full circle is a "360°".
@@ -455,11 +467,17 @@ export function usePlanningExplorer() {
     current,
     (example) => {
       activeDecisionKey.value = example?.decisions?.[0]?.key || ''
+      activePreset.value = null
       framesWarmed.value = rotation.framesReady.value
       syncStageMode()
     },
     { immediate: true }
   )
+
+  // A preset swap on a warmed turntable fetches the new set right away.
+  watch(activePresetKey, () => {
+    if (framesWarmed.value) rotation.preloadFrames({ immediate: true })
+  })
 
   watch(isVariantMode, (active) => {
     if (!active) compareMode.value = false
@@ -495,6 +513,10 @@ export function usePlanningExplorer() {
     activeDecisionOptions,
     activeDecision,
     currentFrames,
+    currentPresets,
+    activePresetKey,
+    setPreset,
+    hasPresetFrames,
     rotation,
     isRotateMode,
     arcLabel,

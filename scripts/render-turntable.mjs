@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Renders a true 360° turntable from the stove model for the explorer's
- * "Rundblick" stage: 24 frames (15° steps, -165° … +180°) of
- * public/models/kachelofen-eckscheibe.glb, written as WebP to
- * public/images/planning-frames/kachelofen-eckscheibe/turntable-<angle>.webp.
+ * Renders true 360° turntables from the stove model for the explorer's
+ * "Rundblick" stage: for every material preset in src/data/planning.js, 24
+ * frames (15° steps, -165° … +180°) of public/models/kachelofen-eckscheibe.glb,
+ * written as WebP to
+ * public/images/planning-frames/kachelofen-eckscheibe/turntable-<preset>-<angle>.webp.
  *
  * Frames come from the same geometry, so neighbouring angles always match —
  * unlike the AI-generated stills this replaces. Re-run after `npm run gen:model`.
@@ -18,13 +19,30 @@ import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'nod
 import { dirname, extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from '@playwright/test'
+import { planningExamples, TURNTABLE_ANGLES } from '../src/data/planning.js'
+import { srgbToLinearRgb } from '../src/utils/color.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = resolve(root, 'public/images/planning-frames/kachelofen-eckscheibe')
 const WIDTH = 1280
 const HEIGHT = 800 // 16:10, same geometry as the photo stage
-const STEP = 15
-const ANGLES = Array.from({ length: 360 / STEP }, (_, i) => -165 + i * STEP)
+const ANGLES = TURNTABLE_ANGLES
+const EXAMPLE = 'kachelofen-eckscheibe'
+const model = planningExamples.find((example) => example.id === EXAMPLE)?.model
+if (!model?.presets?.length) throw new Error(`no model presets for ${EXAMPLE}`)
+
+/** preset → { materialName: { color, roughness, metallic } } */
+function presetMaterials(preset) {
+  return Object.fromEntries(
+    Object.entries(preset.choices).map(([partKey, optionKey]) => {
+      const option = model.parts
+        .find((part) => part.key === partKey)
+        ?.options.find((item) => item.key === optionKey)
+      if (!option) throw new Error(`${preset.key}: unknown option ${partKey}.${optionKey}`)
+      return [partKey, { ...option, color: srgbToLinearRgb(option.color) }]
+    })
+  )
+}
 const BACKGROUND = ['#2a2420', '#120f0d'] // radial studio gradient (warm ink)
 
 const files = {
@@ -57,12 +75,12 @@ try {
   const tab = await browser.newPage({ viewport: { width: WIDTH, height: HEIGHT } })
   await tab.goto(base)
   await tab.waitForFunction(() => document.querySelector('#mv')?.loaded, null, { timeout: 60_000 })
-  // Studio look: fire on (embers + warm glass), default "Landhaus" materials.
-  await tab.evaluate(() => {
+  // Studio look: fire on (embers + warm glass).
+  await tab.evaluate((fire) => {
     const model = document.querySelector('#mv').model
-    model.getMaterialByName('Glut')?.setEmissiveFactor([1, 0.38, 0.08])
-    model.getMaterialByName('Glas')?.setEmissiveFactor([0.18, 0.06, 0.01])
-  })
+    for (const [name, rgb] of Object.entries(fire))
+      model.getMaterialByName(name)?.setEmissiveFactor(rgb)
+  }, model.fire?.on || {})
 
   for (const name of readdirSync(outDir)) {
     if (name.startsWith('turntable-')) rmSync(resolve(outDir, name))
@@ -70,52 +88,58 @@ try {
   mkdirSync(outDir, { recursive: true })
 
   let total = 0
-  for (const angle of ANGLES) {
-    const dataUrl = await tab.evaluate(
-      async ({ angle, background, width, height }) => {
-        const mv = document.querySelector('#mv')
-        // model-viewer's theta is measured from +z; the stove's glass corner
-        // faces +x/+z, so 45° looks straight at the corner at angle 0.
-        mv.cameraOrbit = `${45 + angle}deg 74deg 4.6m`
-        mv.jumpCameraToGoal()
-        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
-        await mv.updateComplete
-        const png = await mv.toBlob({ mimeType: 'image/png' })
-        const bitmap = await createImageBitmap(png)
-        const canvas = document.createElement('canvas')
-        canvas.width = width
-        canvas.height = height
-        const ctx = canvas.getContext('2d')
-        const g = ctx.createRadialGradient(
-          width / 2,
-          height * 0.45,
-          40,
-          width / 2,
-          height / 2,
-          width * 0.7
-        )
-        g.addColorStop(0, background[0])
-        g.addColorStop(1, background[1])
-        ctx.fillStyle = g
-        ctx.fillRect(0, 0, width, height)
-        ctx.drawImage(bitmap, 0, 0, width, height)
-        return canvas.toDataURL('image/webp', 0.82)
-      },
-      { angle, background: BACKGROUND, width: WIDTH, height: HEIGHT }
-    )
-    const bytes = Buffer.from(dataUrl.split(',')[1], 'base64')
-    const name = `turntable-${String(angle).replace('-', 'm')}.webp`
-    writeFileSync(resolve(outDir, name), bytes)
-    total += bytes.length
+  for (const preset of model.presets) {
+    await tab.evaluate((materials) => {
+      const scene = document.querySelector('#mv').model
+      for (const [name, option] of Object.entries(materials)) {
+        const pbr = scene.getMaterialByName(name)?.pbrMetallicRoughness
+        if (!pbr) continue
+        pbr.setBaseColorFactor([...option.color, 1])
+        pbr.setRoughnessFactor(option.roughness ?? 0.5)
+        pbr.setMetallicFactor(option.metallic ?? 0)
+      }
+    }, presetMaterials(preset))
+    for (const angle of ANGLES) {
+      const dataUrl = await tab.evaluate(
+        async ({ angle, background, width, height }) => {
+          const mv = document.querySelector('#mv')
+          // model-viewer's theta is measured from +z; the stove's glass corner
+          // faces +x/+z, so 45° looks straight at the corner at angle 0.
+          mv.cameraOrbit = `${45 + angle}deg 74deg 4.6m`
+          mv.jumpCameraToGoal()
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+          await mv.updateComplete
+          const png = await mv.toBlob({ mimeType: 'image/png' })
+          const bitmap = await createImageBitmap(png)
+          const canvas = document.createElement('canvas')
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          const g = ctx.createRadialGradient(
+            width / 2,
+            height * 0.45,
+            40,
+            width / 2,
+            height / 2,
+            width * 0.7
+          )
+          g.addColorStop(0, background[0])
+          g.addColorStop(1, background[1])
+          ctx.fillStyle = g
+          ctx.fillRect(0, 0, width, height)
+          ctx.drawImage(bitmap, 0, 0, width, height)
+          return canvas.toDataURL('image/webp', 0.82)
+        },
+        { angle, background: BACKGROUND, width: WIDTH, height: HEIGHT }
+      )
+      const bytes = Buffer.from(dataUrl.split(',')[1], 'base64')
+      const name = `turntable-${preset.key}-${String(angle).replace('-', 'm')}.webp`
+      writeFileSync(resolve(outDir, name), bytes)
+      total += bytes.length
+    }
   }
   console.log(
-    `wrote ${ANGLES.length} frames to ${outDir} (${Math.round(total / 1024)} KB total, ${WIDTH}x${HEIGHT})`
-  )
-  console.log(
-    ANGLES.map(
-      (angle) =>
-        `      { angle: ${angle}, image: '/images/planning-frames/kachelofen-eckscheibe/turntable-${String(angle).replace('-', 'm')}.webp' },`
-    ).join('\n')
+    `wrote ${model.presets.length} × ${ANGLES.length} frames (${model.presets.map((p) => p.key).join(', ')}) to ${outDir} — ${Math.round(total / 1024)} KB total, ${WIDTH}x${HEIGHT}`
   )
 } finally {
   await browser.close()

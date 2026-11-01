@@ -192,10 +192,16 @@ export function useFrameRotation(frames, { reducedMotion, wrap } = {}) {
     preloadTotal.value = 0
   }
 
-  watch(frames, () => {
-    stopAutorotate()
+  // Same angles, different images (e.g. a material preset of the same
+  // turntable): keep the current angle. A different arc starts at its centre.
+  const sameAngles = (a = [], b = []) =>
+    a.length === b.length && a.every((frame, i) => frame.angle === b[i]?.angle)
+  watch(frames, (next, prev) => {
     cancelInertia()
-    resetToCenter()
+    if (!sameAngles(next, prev)) {
+      stopAutorotate()
+      resetToCenter()
+    }
     syncReadyState()
   })
   resetToCenter()

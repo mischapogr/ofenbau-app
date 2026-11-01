@@ -108,8 +108,9 @@ and point the matching `image` field (see `slot`) at `/images/<id>.webp`.
 
 ## planning-frames/<example-id> (pseudo-360 rotation arcs)
 
-> **kachelofen-eckscheibe** no longer uses AI frames: its 24-frame 360° turntable
-> (`turntable-*.webp`) is rendered from the 3D model by `npm run gen:turntable`.
+> **kachelofen-eckscheibe** no longer uses AI frames: one 24-frame 360° turntable
+> per material preset (`turntable-<preset>-<angle>.webp`) is rendered from the 3D
+> model by `npm run gen:turntable`.
 > The prompts below apply to the remaining examples.
 
 - **files:** `public/images/planning-frames/<example-id>/frame-{01..07}.webp` · **ratio:** 16/10 (1024×640)

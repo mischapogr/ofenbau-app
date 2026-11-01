@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useExplorerContext } from '@/composables/usePlanningExplorer'
+import { srgbToLinearRgb } from '@/utils/color'
 
 /**
  * Real 3D stage: a glTF model in <model-viewer> (orbit, auto-rotate, AR,
@@ -11,7 +12,8 @@ import { useExplorerContext } from '@/composables/usePlanningExplorer'
  * three.js) is imported on first open only. Rendered through `<component :is>`
  * so Vue treats the custom element as a plain tag without a compiler option.
  */
-const { current, currentModel, reducedMotion, toggleModelMode } = useExplorerContext()
+const { current, currentModel, reducedMotion, toggleModelMode, activePresetKey, setPreset } =
+  useExplorerContext()
 
 const ready = ref(false)
 const failed = ref(false)
@@ -61,7 +63,7 @@ function applyPart(partKey, optionKey) {
   const option = part?.options.find((item) => item.key === optionKey)
   const material = viewer.value?.model?.getMaterialByName(partKey)
   if (!option || !material) return
-  material.pbrMetallicRoughness.setBaseColorFactor([...option.color, 1])
+  material.pbrMetallicRoughness.setBaseColorFactor([...srgbToLinearRgb(option.color), 1])
   material.pbrMetallicRoughness.setRoughnessFactor(option.roughness ?? 0.5)
   material.pbrMetallicRoughness.setMetallicFactor(option.metallic ?? 0)
 }
@@ -87,6 +89,7 @@ function selectOption(partKey, optionKey) {
 
 function selectPreset(preset) {
   choices.value = { ...preset.choices }
+  setPreset(preset.key)
   applyAll()
 }
 
@@ -95,9 +98,14 @@ function toggleFire() {
   applyFire()
 }
 
+function presetChoices() {
+  const preset =
+    presets.value.find((item) => item.key === activePresetKey.value) || presets.value[0]
+  return preset ? { ...preset.choices } : {}
+}
+
 function resetChoices() {
-  const base = presets.value[0]
-  choices.value = base ? { ...base.choices } : {}
+  choices.value = presetChoices()
   applyAll()
 }
 
@@ -117,8 +125,8 @@ watch(
     loaded.value = false
     activeHotspot.value = null
     fireOn.value = false
-    const base = presets.value[0]
-    choices.value = base ? { ...base.choices } : {}
+    // Start from the preset the turntable is showing, so both views match.
+    choices.value = presetChoices()
   },
   { immediate: true }
 )

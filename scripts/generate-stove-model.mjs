@@ -26,6 +26,7 @@ import { Buffer } from 'node:buffer'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { srgbToLinearRgb } from '../src/utils/color.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const outPath = resolve(root, 'public/models/kachelofen-eckscheibe.glb')
@@ -55,6 +56,11 @@ const materials = {
     roughnessFactor: 0.8,
     emissiveFactor: [1, 0.38, 0.08],
   },
+}
+// Colours above are authored in sRGB (like the swatches); glTF stores linear factors.
+for (const material of Object.values(materials)) {
+  const [r, g, b, a] = material.baseColorFactor
+  material.baseColorFactor = [...srgbToLinearRgb([r, g, b]), a]
 }
 const materialIndex = Object.fromEntries(Object.keys(materials).map((name, i) => [name, i]))
 
