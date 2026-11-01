@@ -13,20 +13,20 @@ The visual language is driven by the configured Stitch project
 DNA is mapped into CSS custom properties in [`src/styles/tokens.css`](../src/styles/tokens.css)
 and surfaced to Tailwind in [`tailwind.config.js`](../tailwind.config.js):
 
-| Token group | Stitch source | Tailwind utilities |
-| --- | --- | --- |
-| `brand` (50–950) | Burnt-orange accent `#e35205` / `#ec6d13` | `bg-brand-500`, `text-brand-600`, … |
-| `ink` (50–950) | Warm charcoal panels & text `#1c1816` | `bg-ink-900`, `text-white` on ink |
-| `surface` / `surface-muted` / `surface-sand` | Cream / off-white backgrounds | `bg-surface-muted`, … |
-| `content` / `content-muted` | Charcoal body text | `text-content`, `text-content-muted` |
-| radius `lg` (8px) | Stitch `ROUND_EIGHT` | `rounded-lg` |
-| shadows `sm` / `card` / `lift` | Soft warm elevation | `shadow-card`, `hover:shadow-lift` |
-| fonts | Display **Fraunces** (serif) + body **Inter** + labels **Space Mono** | `font-display`, `font-sans`, `font-mono` |
+| Token group                                  | Stitch source                                                         | Tailwind utilities                       |
+| -------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------- |
+| `brand` (50–950)                             | Burnt-orange accent `#e35205` / `#ec6d13`                             | `bg-brand-500`, `text-brand-600`, …      |
+| `ink` (50–950)                               | Warm charcoal panels & text `#1c1816`                                 | `bg-ink-900`, `text-white` on ink        |
+| `surface` / `surface-muted` / `surface-sand` | Cream / off-white backgrounds                                         | `bg-surface-muted`, …                    |
+| `content` / `content-muted`                  | Charcoal body text                                                    | `text-content`, `text-content-muted`     |
+| radius `lg` (8px)                            | Stitch `ROUND_EIGHT`                                                  | `rounded-lg`                             |
+| shadows `sm` / `card` / `lift`               | Soft warm elevation                                                   | `shadow-card`, `hover:shadow-lift`       |
+| fonts                                        | Display **Fraunces** (serif) + body **Inter** + labels **Space Mono** | `font-display`, `font-sans`, `font-mono` |
 
 The site is a **single light theme** — the previous dark-mode toggle, `useTheme`
 composable and `theme` store were removed. To re-skin, edit `tokens.css` only.
 
-> The Stitch project also carries a saved *dark "monolith"* design-system asset
+> The Stitch project also carries a saved _dark "monolith"_ design-system asset
 > ("Max Mustermann"). It was intentionally **not** used — the rendered Stitch
 > screens and the brief both call for the warm, light direction implemented here.
 
@@ -78,7 +78,7 @@ an image-based "pseudo-3D" viewer with an optional real glTF stage:
   `ExplorerStageView` (photo + hotspots + CSS fire), `ExplorerStageXray`
   (cutaway), `ExplorerStageVariant` (decision simulation: whole-image swaps,
   stackable `layer` overlays, compare slider), `ExplorerStageModel`
-  (`<model-viewer>` loaded on first open: orbit, AR, `KHR_materials_variants`,
+  (`<model-viewer>` loaded on first open: orbit, AR, per-part materials via the scene-graph API,
   hotspots; offered only with WebGL and without `saveData`).
 - `ExplorerControls` (aside), `ExplorerStageBar` (info bar: dots/autorotate,
   compare, "Budget schätzen" hand-off into `BudgetEstimator` query params,
@@ -135,10 +135,10 @@ The canonical, authoritative design system is the repo itself
 The configured Stitch project (`STITCH_PROJECT_ID`, see `.mcp.env.example`) holds **two** design
 systems that must never be mixed:
 
-| Stitch design system | Asset id | Role |
-| --- | --- | --- |
+| Stitch design system                    | Asset id                        | Role                                                                                       |
+| --------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------ |
 | **Ofenbau Mustermann** (light "hearth") | `assets/<your-light-system-id>` | **Primary** — mirrors this repo (light, `#e35205`, ROUND_EIGHT, Fraunces/Inter/Space Mono) |
-| **Max Mustermann** (dark "monolith") | `assets/<your-dark-system-id>` | Kept, unused by the app (dark brutalist variant) |
+| **Max Mustermann** (dark "monolith")    | `assets/<your-dark-system-id>`  | Kept, unused by the app (dark brutalist variant)                                           |
 
 The light system was re-created from `design.md` (it had been removed from the
 project by mistake). To re-sync after editing tokens: update
@@ -170,6 +170,6 @@ To replace a photo slot: export `public/images/<id>.webp` and point the matching
 in-DOM gradient placeholder if a referenced file is ever missing.
 
 > Note: Stitch (in this environment) exposes only composite full-page screen
-> *screenshots*, not discrete image assets, so photos can't be auto-exported from
+> _screenshots_, not discrete image assets, so photos can't be auto-exported from
 > it. With the **Ofenbau Mustermann** design system now in the project, you can
 > also generate fresh on-brand screens directly in the Stitch UI.

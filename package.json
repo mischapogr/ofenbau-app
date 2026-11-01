@@ -35,7 +35,7 @@
     "format:check": "prettier --check \"src/**/*.{js,vue,css,json}\"",
     "gen:images": "node scripts/generate-images.mjs",
     "gen:video": "node scripts/generate-intro-video.mjs",
-    "gen:model": "node scripts/generate-placeholder-model.mjs",
+    "gen:model": "node scripts/generate-stove-model.mjs",
     "company:check": "node scripts/check-company-profile.mjs",
     "content:review": "node scripts/write-content-review-checklist.mjs",
     "content:placeholders": "node scripts/write-placeholder-content-report.mjs",

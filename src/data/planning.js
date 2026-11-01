@@ -183,12 +183,148 @@ export const planningExamples = [
       src: '/models/kachelofen-eckscheibe.glb',
       poster: '/images/planning-example-kachelofen-eckscheibe.webp',
       label: '3D-Modell',
-      text: 'Drehen, zoomen und Material wechseln — auf dem Smartphone auch in Ihrem Raum (AR).',
+      text: 'Drehen, zoomen, Materialien je Bauteil kombinieren — auf dem Smartphone auch in Ihrem Raum (AR).',
       hotspots: [
-        { label: 'Sichtscheibe', position: '0.52 0.62 0.52', normal: '0.7 0 0.7' },
-        { label: 'Sitzbank', position: '-0.55 0.42 0.95', normal: '0 1 0' },
-        { label: 'Speicherkörper', position: '0 1.42 0.3', normal: '0 1 0' },
+        { label: 'Sichtscheibe', position: '0.5 0.68 0.5', normal: '0.7 0 0.7' },
+        { label: 'Sitzbank', position: '-0.95 0.53 -0.1', normal: '0 1 0' },
+        { label: 'Speicherkörper', position: '-0.49 1.1 0.1', normal: '-1 0 0' },
+        { label: 'Sims', position: '0 1.52 0.52', normal: '0 0.3 0.95' },
       ],
+      // Per-part materials. `part` is the glTF material name in the model; the
+      // explorer applies the PBR factors through <model-viewer>'s scene-graph
+      // API, so every part can be combined with every other.
+      parts: [
+        {
+          key: 'Kacheln',
+          label: 'Kacheln',
+          options: [
+            { key: 'creme', label: 'Creme glasiert', color: [0.93, 0.86, 0.72], roughness: 0.18 },
+            { key: 'weiss', label: 'Weiß matt', color: [0.95, 0.95, 0.93], roughness: 0.7 },
+            { key: 'tannengruen', label: 'Tannengrün', color: [0.16, 0.32, 0.24], roughness: 0.15 },
+            { key: 'ultramarin', label: 'Ultramarin', color: [0.12, 0.2, 0.45], roughness: 0.15 },
+            { key: 'terrakotta', label: 'Terrakotta', color: [0.72, 0.4, 0.26], roughness: 0.35 },
+            { key: 'anthrazit', label: 'Anthrazit', color: [0.16, 0.16, 0.17], roughness: 0.3 },
+          ],
+        },
+        {
+          key: 'Sims',
+          label: 'Sims',
+          options: [
+            { key: 'creme', label: 'Creme glasiert', color: [0.93, 0.86, 0.72], roughness: 0.2 },
+            {
+              key: 'naturstein',
+              label: 'Naturstein grau',
+              color: [0.6, 0.58, 0.55],
+              roughness: 0.8,
+            },
+            { key: 'anthrazit', label: 'Anthrazit', color: [0.16, 0.16, 0.17], roughness: 0.3 },
+          ],
+        },
+        {
+          key: 'Auflage',
+          label: 'Bank & Ablage',
+          options: [
+            { key: 'eiche', label: 'Eiche geölt', color: [0.62, 0.45, 0.27], roughness: 0.55 },
+            { key: 'nussbaum', label: 'Nussbaum', color: [0.36, 0.24, 0.16], roughness: 0.5 },
+            { key: 'speckstein', label: 'Speckstein', color: [0.38, 0.4, 0.42], roughness: 0.4 },
+            {
+              key: 'naturstein',
+              label: 'Naturstein hell',
+              color: [0.78, 0.74, 0.68],
+              roughness: 0.6,
+            },
+          ],
+        },
+        {
+          key: 'Sockel',
+          label: 'Sockel',
+          options: [
+            { key: 'naturstein', label: 'Naturstein', color: [0.55, 0.52, 0.48], roughness: 0.85 },
+            { key: 'beton', label: 'Beton', color: [0.6, 0.6, 0.6], roughness: 0.9 },
+            { key: 'anthrazit', label: 'Anthrazit', color: [0.16, 0.16, 0.17], roughness: 0.6 },
+          ],
+        },
+        {
+          key: 'Rahmen',
+          label: 'Rahmen & Rohr',
+          options: [
+            {
+              key: 'schwarz',
+              label: 'Schwarz',
+              color: [0.1, 0.1, 0.1],
+              roughness: 0.45,
+              metallic: 0.6,
+            },
+            {
+              key: 'edelstahl',
+              label: 'Edelstahl',
+              color: [0.75, 0.75, 0.75],
+              roughness: 0.3,
+              metallic: 0.95,
+            },
+            {
+              key: 'bronze',
+              label: 'Bronze',
+              color: [0.55, 0.4, 0.25],
+              roughness: 0.4,
+              metallic: 0.9,
+            },
+          ],
+        },
+        {
+          key: 'Putz',
+          label: 'Fugen',
+          options: [
+            { key: 'weiss', label: 'Weiß', color: [0.9, 0.89, 0.86], roughness: 0.95 },
+            { key: 'hellgrau', label: 'Hellgrau', color: [0.7, 0.7, 0.68], roughness: 0.95 },
+            { key: 'anthrazit', label: 'Anthrazit', color: [0.2, 0.2, 0.2], roughness: 0.9 },
+          ],
+        },
+      ],
+      // Named combinations; the first one matches the model's built-in defaults.
+      presets: [
+        {
+          key: 'landhaus',
+          label: 'Landhaus',
+          choices: {
+            Kacheln: 'creme',
+            Sims: 'creme',
+            Auflage: 'eiche',
+            Sockel: 'naturstein',
+            Rahmen: 'schwarz',
+            Putz: 'weiss',
+          },
+        },
+        {
+          key: 'modern',
+          label: 'Modern',
+          choices: {
+            Kacheln: 'anthrazit',
+            Sims: 'anthrazit',
+            Auflage: 'speckstein',
+            Sockel: 'beton',
+            Rahmen: 'edelstahl',
+            Putz: 'hellgrau',
+          },
+        },
+        {
+          key: 'natur',
+          label: 'Natur',
+          choices: {
+            Kacheln: 'tannengruen',
+            Sims: 'naturstein',
+            Auflage: 'nussbaum',
+            Sockel: 'naturstein',
+            Rahmen: 'bronze',
+            Putz: 'weiss',
+          },
+        },
+      ],
+      // Emissive factors toggled by "Feuer an" (part → [r, g, b]).
+      fire: {
+        on: { Glut: [1, 0.38, 0.08], Glas: [0.18, 0.06, 0.01] },
+        off: { Glut: [0.12, 0.03, 0], Glas: [0, 0, 0] },
+      },
     },
     // Decision simulation: per choice an alternative visualization of this example.
     // Choices matching the base configuration point at the base Überblick image.

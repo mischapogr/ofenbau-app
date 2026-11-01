@@ -39,10 +39,10 @@ cp .env.example .env        # adjust values if needed
 docker compose up -d
 ```
 
-| Service | URL |
-| --- | --- |
+| Service                               | URL                     |
+| ------------------------------------- | ----------------------- |
 | **App** (Vite dev server, hot reload) | <http://localhost:5173> |
-| **Mailpit** (catches dev emails) | <http://localhost:8023> |
+| **Mailpit** (catches dev emails)      | <http://localhost:8023> |
 
 ```bash
 docker compose logs -f app      # follow app logs
@@ -64,27 +64,27 @@ their own credentials encrypted in git.
 
 ### NPM scripts
 
-| Script | Description |
-| --- | --- |
-| `npm run dev` / `dev:demo` | Vite dev server (`:5173`) / in demo mode (`:5174`) |
-| `npm run build` | Production build + prerender to `dist/` |
-| `npm run build:demo` | Demo build (noindex, demo mode per `.env.demo`) |
-| `npm run build:basis` / `build:premium` | Production build for one tier |
-| `npm run build:demo:basis` / `build:demo:premium` | Demo build for one tier |
-| `npm run preview` / `preview:demo` | Preview the current `dist/` |
-| `npm run lint` / `lint:check` | ESLint (fix / CI) |
-| `npm run format` / `format:check` | Prettier (write / CI) |
-| `npm run test:e2e` | Playwright: recorded walkthrough + explorer assertions |
-| `npm run test:e2e:report` | Open the Playwright HTML report |
-| `npm run demo:mp4` | Convert recorded walkthrough videos to `.mp4` (needs `ffmpeg-static`) |
-| `npm run gen:images` | Regenerate the on-brand SVG fallback imagery |
-| `npm run gen:model` | Regenerate the placeholder GLB for the 3D stage |
-| `npm run perf:budget` | Check JS/CSS budgets of the last build |
-| `npm run preflight` | Full local gate: build, lint, audits, smoke checks, Playwright |
-| `npm run launch:report` / `launch:check` | Launch-readiness report (reports go to `docs/generated/`) |
-| `npm run demo:pages:basis` / `premium` / `all` | Deploy demo builds to Cloudflare Pages |
-| `npm run demo:up` / `demo:url` / `demo:down` | Ad-hoc demo via Cloudflare quick tunnel |
-| `npm run secrets:edit` | Owner only: edit the sops-encrypted secrets file |
+| Script                                            | Description                                                           |
+| ------------------------------------------------- | --------------------------------------------------------------------- |
+| `npm run dev` / `dev:demo`                        | Vite dev server (`:5173`) / in demo mode (`:5174`)                    |
+| `npm run build`                                   | Production build + prerender to `dist/`                               |
+| `npm run build:demo`                              | Demo build (noindex, demo mode per `.env.demo`)                       |
+| `npm run build:basis` / `build:premium`           | Production build for one tier                                         |
+| `npm run build:demo:basis` / `build:demo:premium` | Demo build for one tier                                               |
+| `npm run preview` / `preview:demo`                | Preview the current `dist/`                                           |
+| `npm run lint` / `lint:check`                     | ESLint (fix / CI)                                                     |
+| `npm run format` / `format:check`                 | Prettier (write / CI)                                                 |
+| `npm run test:e2e`                                | Playwright: recorded walkthrough + explorer assertions                |
+| `npm run test:e2e:report`                         | Open the Playwright HTML report                                       |
+| `npm run demo:mp4`                                | Convert recorded walkthrough videos to `.mp4` (needs `ffmpeg-static`) |
+| `npm run gen:images`                              | Regenerate the on-brand SVG fallback imagery                          |
+| `npm run gen:model`                               | Regenerate the procedural stove GLB for the 3D stage                  |
+| `npm run perf:budget`                             | Check JS/CSS budgets of the last build                                |
+| `npm run preflight`                               | Full local gate: build, lint, audits, smoke checks, Playwright        |
+| `npm run launch:report` / `launch:check`          | Launch-readiness report (reports go to `docs/generated/`)             |
+| `npm run demo:pages:basis` / `premium` / `all`    | Deploy demo builds to Cloudflare Pages                                |
+| `npm run demo:up` / `demo:url` / `demo:down`      | Ad-hoc demo via Cloudflare quick tunnel                               |
+| `npm run secrets:edit`                            | Owner only: edit the sops-encrypted secrets file                      |
 
 The remaining `content:*`, `legal:*`, `deploy:*` and `launch:*` scripts generate
 checklists and run smoke tests for a real go-live; they are optional tooling.
@@ -106,17 +106,17 @@ Basis/Premium catalogue shown on the demo gate lives in `src/data/productTiers.j
 `VITE_APP_ENV=demo` (the `demo` Vite mode, `.env.demo`) enables a deterrent
 layer for sharing previews:
 
-| Variable | Purpose |
-| --- | --- |
-| `VITE_DEMO_PROTECTION_ENABLED` | Master switch for the demo layer |
-| `VITE_DEMO_CUSTOMER_NAME` | Name shown in the gate and watermark |
-| `VITE_DEMO_AUTHOR_NAME` / `VITE_DEMO_AUTHOR_EMAIL` | Optional contact shown in the notice bar (empty = anonymous) |
-| `VITE_DEMO_COPYRIGHT_NOTICE` | Text of the notice bar |
-| `VITE_DEMO_ALLOWED_HOSTS` | Comma-separated host allow-list; supports `*.example.de` |
-| `VITE_DEMO_WATERMARK_ENABLED` / `VITE_DEMO_WATERMARK_FACTOR` | Repeated visual watermark and its density |
-| `VITE_DEMO_FEATURE_CATALOG_ENABLED` | Show the Basis/Premium cards on the gate |
-| `VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM` | Where the catalogue cards forward to |
-| `VITE_DEMO_ACCESS_CODE_HASH` | SHA-256 hex of a client-side access code (empty = none). Never commit a real hash |
+| Variable                                                     | Purpose                                                                           |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| `VITE_DEMO_PROTECTION_ENABLED`                               | Master switch for the demo layer                                                  |
+| `VITE_DEMO_CUSTOMER_NAME`                                    | Name shown in the gate and watermark                                              |
+| `VITE_DEMO_AUTHOR_NAME` / `VITE_DEMO_AUTHOR_EMAIL`           | Optional contact shown in the notice bar (empty = anonymous)                      |
+| `VITE_DEMO_COPYRIGHT_NOTICE`                                 | Text of the notice bar                                                            |
+| `VITE_DEMO_ALLOWED_HOSTS`                                    | Comma-separated host allow-list; supports `*.example.de`                          |
+| `VITE_DEMO_WATERMARK_ENABLED` / `VITE_DEMO_WATERMARK_FACTOR` | Repeated visual watermark and its density                                         |
+| `VITE_DEMO_FEATURE_CATALOG_ENABLED`                          | Show the Basis/Premium cards on the gate                                          |
+| `VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`              | Where the catalogue cards forward to                                              |
+| `VITE_DEMO_ACCESS_CODE_HASH`                                 | SHA-256 hex of a client-side access code (empty = none). Never commit a real hash |
 
 The client-side code check is casual gating only (the hash ships in the bundle).
 For a real gate on Cloudflare Pages set the `DEMO_ACCESS_CODE` secret and
@@ -127,9 +127,11 @@ see [`docs/SECRETS.md`](./docs/SECRETS.md) and [`docs/DEMO_PAGES.md`](./docs/DEM
 
 `src/components/planning/` is an image-based viewer: drag-to-rotate frame arc,
 hotspots, cutaway ("Röntgenblick"), stackable material variants with a compare
-slider, and a lazy-loaded `<model-viewer>` stage for a real GLB model
-(placeholder generated by `npm run gen:model`; see
-[`public/models/README.md`](./public/models/README.md)). It is a `premium` feature.
+slider, and a lazy-loaded `<model-viewer>` stage with per-part material
+switching (tiles, cornice, bench slab, plinth, frame, joints) plus style presets
+and a fire toggle. The stove GLB is generated by `npm run gen:model`; see
+[`public/models/README.md`](./public/models/README.md) for swapping in a real
+export. It is a `premium` feature.
 
 ---
 
@@ -143,11 +145,11 @@ npm run build && npm run preview
 
 Three committed Vite mode files hold **public** defaults:
 
-| Mode | File | Build | Purpose |
-| --- | --- | --- | --- |
-| `development` | `.env.development` | `npm run build:dev` | Local defaults, demo mode off |
-| `demo` | `.env.demo` | `npm run build:demo` | Shareable preview: noindex, gate, watermark |
-| `production` | `.env.production` | `npm run build` | Normal production build |
+| Mode          | File               | Build                | Purpose                                     |
+| ------------- | ------------------ | -------------------- | ------------------------------------------- |
+| `development` | `.env.development` | `npm run build:dev`  | Local defaults, demo mode off               |
+| `demo`        | `.env.demo`        | `npm run build:demo` | Shareable preview: noindex, gate, watermark |
+| `production`  | `.env.production`  | `npm run build`      | Normal production build                     |
 
 Only `VITE_`-prefixed variables reach the client. The contact API
 (`server/contact-api.mjs`, `Dockerfile.contact`) reads `MAIL_HOST`, `MAIL_PORT`,

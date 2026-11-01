@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test'
  * Assertion-focused checks for the planning explorer on /leistungen/3d-planung
  * (premium feature): turntable keyboard stepping, variant swap + active-choice
  * chips, x-ray toggle, fullscreen focus trap, reduced motion, and the glTF
- * stage (<model-viewer>) incl. material variants.
+ * stage (<model-viewer>) incl. per-part material switching.
  *
  * Runs in every Playwright project (desktop / Pixel 7 / tablet).
  */
@@ -142,7 +142,7 @@ test.describe('Planning explorer', () => {
     await expect(explorer.getByRole('button', { name: 'Rundgang' })).toHaveCount(0)
   })
 
-  test('loads the glTF model with material variants', async ({ page }) => {
+  test('loads the glTF model and switches materials per part', async ({ page }) => {
     const errors = []
     page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text())
@@ -160,11 +160,40 @@ test.describe('Planning explorer', () => {
     await page.waitForFunction(() => document.querySelector('model-viewer')?.loaded, null, {
       timeout: 30_000,
     })
-    const variants = await viewer.evaluate((el) => el.availableVariants)
-    expect(variants).toEqual(['Kalkputz', 'Naturstein', 'Keramik'])
+    const partNames = await viewer.evaluate((el) => el.model.materials.map((m) => m.name))
+    expect(partNames).toEqual(
+      expect.arrayContaining(['Kacheln', 'Sims', 'Auflage', 'Sockel', 'Rahmen', 'Putz', 'Glas'])
+    )
+    const baseColor = (part) =>
+      viewer.evaluate(
+        (el, name) => el.model.getMaterialByName(name).pbrMetallicRoughness.baseColorFactor,
+        part
+      )
 
-    await explorer.getByRole('button', { name: 'Naturstein', exact: true }).click()
-    await expect.poll(() => viewer.evaluate((el) => el.variantName)).toBe('Naturstein')
+    // Preset: every part changes at once.
+    await explorer.getByRole('button', { name: 'Modern', exact: true }).click()
+    await expect.poll(() => baseColor('Kacheln')).toEqual([0.16, 0.16, 0.17, 1])
+    await expect.poll(() => baseColor('Rahmen')).toEqual([0.75, 0.75, 0.75, 1])
+
+    // Per-part choice: only the chosen part changes, the preset is no longer active.
+    await explorer.getByRole('button', { name: 'Bauteile anpassen' }).click()
+    await explorer
+      .getByRole('group', { name: 'Kacheln' })
+      .getByRole('button', { name: 'Terrakotta' })
+      .click()
+    await expect.poll(() => baseColor('Kacheln')).toEqual([0.72, 0.4, 0.26, 1])
+    await expect.poll(() => baseColor('Rahmen')).toEqual([0.75, 0.75, 0.75, 1])
+    await expect(explorer.getByRole('button', { name: 'Modern', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    )
+    await expect(explorer.getByTestId('model-summary')).toContainText('Terrakotta')
+
+    // Fire toggle drives the emissive factor of the embers.
+    await explorer.getByRole('button', { name: 'Feuer an' }).click()
+    await expect
+      .poll(() => viewer.evaluate((el) => el.model.getMaterialByName('Glut').emissiveFactor))
+      .toEqual([1, 0.38, 0.08])
 
     await expect(explorer.getByRole('button', { name: 'Detail: Sichtscheibe' })).toBeVisible()
     expect(errors.filter((text) => /gltf|glb|three|model-viewer/i.test(text))).toEqual([])

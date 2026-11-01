@@ -7,6 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+
 - MIT license, contributing guide, security policy and GitHub Actions CI.
 - Optional server-side demo gate for Cloudflare Pages (`functions/_middleware.js`,
   `functions/api/demo-unlock.js`, `public/demo-gate.html`).
@@ -15,13 +16,17 @@ All notable changes to this project are documented here. The format follows
 - Planning explorer split into `src/components/planning/*` with honest rotation
   labels, stackable variant overlays, lazy loading, a budget-estimator deep link,
   Playwright assertions and an optional `<model-viewer>` 3D stage with a
-  generated placeholder GLB.
+  procedurally generated stove GLB (`npm run gen:model`) whose parts (tiles,
+  cornice, bench slab, plinth, frame, joints) switch materials independently,
+  with style presets and a fire toggle.
 
 ### Changed
+
 - Demo mode no longer obfuscates the bundle and no longer embeds an author
   identity or anti-reuse wording; everything is driven by `VITE_DEMO_*` variables.
 - Generated launch/content reports are written to `docs/generated/` (git-ignored).
 
 ### Removed
+
 - `javascript-obfuscator` build step, internal go-to-market and launch reports,
   private design-tool identifiers.
