@@ -58,23 +58,24 @@ async function submitAccessCode() {
   <aside
     v-if="protection.isDemo && !protection.blocksApp"
     class="demo-copyright"
-    aria-label="Demo Urheberrechtsschutz"
+    aria-label="Demo-Hinweis"
   >
-    <strong>Geschuetzte Demo</strong>
+    <strong>Demo</strong>
     <span>{{ protection.copyrightNotice }}</span>
-    <span>Autor: {{ protection.authorName }} · {{ protection.authorEmail }}</span>
+    <span v-if="protection.authorName || protection.authorEmail">
+      Kontakt: {{ [protection.authorName, protection.authorEmail].filter(Boolean).join(' · ') }}
+    </span>
   </aside>
 
   <section v-if="protection.blocksApp" class="demo-gate" aria-labelledby="demo-gate-title">
     <div class="demo-gate__panel" :class="{ 'demo-gate__panel--wide': showCatalog }">
-      <p class="demo-gate__eyebrow">Geschuetzte Demo</p>
+      <p class="demo-gate__eyebrow">Demo-Zugang</p>
       <h1 id="demo-gate-title">Ofenbau Mustermann</h1>
 
       <div v-if="showCatalog" class="demo-catalog">
         <p class="demo-catalog__lead">
-          Diese Website ist in zwei Paketen verfügbar. Klicken Sie ein Paket an,
-          um direkt zur passenden Demo zu wechseln — anschließend geben Sie Ihren
-          Zugangscode ein.
+          Diese Website ist in zwei Paketen verfügbar. Klicken Sie ein Paket an, um direkt zur
+          passenden Demo zu wechseln — anschließend geben Sie Ihren Zugangscode ein.
         </p>
         <div class="demo-catalog__grid">
           <component
@@ -94,10 +95,7 @@ async function submitAccessCode() {
                 <h2 class="demo-tier__name">{{ t.name }}</h2>
                 <p class="demo-tier__tagline">{{ t.tagline }}</p>
               </div>
-              <span
-                v-if="t.id === activeTier"
-                class="demo-tier__badge demo-tier__badge--active"
-              >
+              <span v-if="t.id === activeTier" class="demo-tier__badge demo-tier__badge--active">
                 Diese Demo
               </span>
               <span v-else-if="t.highlight" class="demo-tier__badge">Empfohlen</span>
@@ -133,13 +131,11 @@ async function submitAccessCode() {
         <p v-if="protection.accessError" class="demo-gate__error">
           {{ protection.accessError }}
         </p>
-        <BaseButton type="submit" :disabled="protection.verifying">
-          Demo oeffnen
-        </BaseButton>
+        <BaseButton type="submit" :disabled="protection.verifying"> Demo oeffnen </BaseButton>
       </form>
       <p class="demo-gate__note">
-        Zugriff nur fuer {{ protection.customerName }}. Inhalte duerfen nicht kopiert,
-        weitergegeben oder produktiv genutzt werden.
+        Zugriff nur fuer {{ protection.customerName }}. Inhalte duerfen nicht kopiert, weitergegeben
+        oder produktiv genutzt werden.
       </p>
       <p class="demo-gate__notice">
         {{ protection.copyrightNotice }} Autor: {{ protection.authorName }} ·

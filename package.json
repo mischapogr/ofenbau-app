@@ -2,8 +2,9 @@
   "name": "ofenbau-app",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
-  "description": "Production-ready Vue 3 + Vite website for an ofenbau business",
+  "description": "Open-source Vue 3 + Vite website template for a craft business (Ofenbau demo) with optional demo mode, tier flags, calculators and a planning explorer",
   "engines": {
     "node": ">=22.0.0"
   },
@@ -70,7 +71,9 @@
     "preflight": "node scripts/run-preflight.mjs",
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report",
-    "demo:mp4": "node scripts/convert-videos.mjs"
+    "demo:mp4": "node scripts/convert-videos.mjs",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "secrets:edit": "sops secrets/ofenbau.enc.env"
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -86,12 +89,13 @@
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",
-    "ffmpeg-static": "^5.3.0",
-    "javascript-obfuscator": "^5.4.3",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.7",
     "wrangler": "^4.20.0"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "^5.3.0"
   }
 }

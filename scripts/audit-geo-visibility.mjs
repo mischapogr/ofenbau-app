@@ -22,7 +22,10 @@ function audit(condition, title, details, score = 10) {
 const robotsPath = join(root, 'public/robots.txt')
 if (existsSync(robotsPath)) {
   const content = readFileSync(robotsPath, 'utf-8')
-  const blocksAi = /user-agent:\s*(\*|gptbot|perplexitybot|google-extended|claudebot|anthropic|cohere)\s*\n+disallow:\s*\//i.test(content)
+  const blocksAi =
+    /user-agent:\s*(\*|gptbot|perplexitybot|google-extended|claudebot|anthropic|cohere)\s*\n+disallow:\s*\//i.test(
+      content
+    )
   audit(
     !blocksAi,
     'Robots.txt AI Agent Crawling Allowed',
@@ -32,20 +35,16 @@ if (existsSync(robotsPath)) {
     20
   )
 } else {
-  audit(false, 'Robots.txt Exists', 'FAIL: robots.txt is missing. Running "npm run build" first is required.', 10)
+  audit(
+    false,
+    'Robots.txt Exists',
+    'FAIL: robots.txt is missing. Running "npm run build" first is required.',
+    10
+  )
 }
 
-// 2. Production env settings (Obfuscation & Protection disabled)
-const obfuscationEnabled = env.VITE_DEMO_OBFUSCATE === 'true'
+// 2. Production env settings (demo protection disabled)
 const protectionEnabled = env.VITE_DEMO_PROTECTION_ENABLED === 'true'
-audit(
-  !obfuscationEnabled,
-  'Production Javascript Readable (No Obfuscation)',
-  obfuscationEnabled
-    ? 'FAIL: VITE_DEMO_OBFUSCATE is enabled. AI/LLM bots cannot read obfuscated JS.'
-    : 'PASS: Production bundle has no JS obfuscation, allowing AI engines to parse details.',
-  20
-)
 audit(
   !protectionEnabled,
   'Public Content Accessible (No Demo Password Gate)',
@@ -63,16 +62,31 @@ const useSeoPath = join(root, 'src/composables/useSeo.js')
 if (existsSync(templatePath)) {
   const html = readFileSync(templatePath, 'utf-8')
   const hasLang = /<html[^>]*lang="[a-z]{2}"/i.test(html)
-  audit(hasLang, 'HTML Language Tag Defined', hasLang ? 'PASS: Lang attribute helps LLMs recognize language context.' : 'FAIL: <html lang="..."> is missing.', 5)
+  audit(
+    hasLang,
+    'HTML Language Tag Defined',
+    hasLang
+      ? 'PASS: Lang attribute helps LLMs recognize language context.'
+      : 'FAIL: <html lang="..."> is missing.',
+    5
+  )
 }
 
 const appVueExists = existsSync(appVuePath)
 let hasLocalBusiness = false
 if (appVueExists) {
   const appVueContent = readFileSync(appVuePath, 'utf-8')
-  hasLocalBusiness = appVueContent.includes('local-business-jsonld') || appVueContent.includes('LocalBusiness')
+  hasLocalBusiness =
+    appVueContent.includes('local-business-jsonld') || appVueContent.includes('LocalBusiness')
 }
-audit(hasLocalBusiness, 'LocalBusiness Schema (JSON-LD) Embedded', hasLocalBusiness ? 'PASS: Structured schema enables Google/LLMs to parse company profile directly.' : 'FAIL: No LocalBusiness JSON-LD implementation found in App.vue.', 15)
+audit(
+  hasLocalBusiness,
+  'LocalBusiness Schema (JSON-LD) Embedded',
+  hasLocalBusiness
+    ? 'PASS: Structured schema enables Google/LLMs to parse company profile directly.'
+    : 'FAIL: No LocalBusiness JSON-LD implementation found in App.vue.',
+  15
+)
 
 const useSeoExists = existsSync(useSeoPath)
 let hasCanonical = false
@@ -80,7 +94,14 @@ if (useSeoExists) {
   const useSeoContent = readFileSync(useSeoPath, 'utf-8')
   hasCanonical = useSeoContent.includes('canonical') || useSeoContent.includes('upsertCanonical')
 }
-audit(hasCanonical, 'Canonical URL Tag Present', hasCanonical ? 'PASS: Canonical tag injection is wired into the SEO composable.' : 'FAIL: Canonical tag injection missing.', 10)
+audit(
+  hasCanonical,
+  'Canonical URL Tag Present',
+  hasCanonical
+    ? 'PASS: Canonical tag injection is wired into the SEO composable.'
+    : 'FAIL: Canonical tag injection missing.',
+  10
+)
 
 // 4. Scan data layer for AI rich sources (FAQs and Proof Points)
 const servicesPath = join(root, 'src/data/services.js')
@@ -91,13 +112,17 @@ if (existsSync(servicesPath)) {
   audit(
     hasFaqs,
     'Structured FAQs available',
-    hasFaqs ? 'PASS: Detailed FAQs exist (helps LLMs answer Q&A queries directly).' : 'WARNING: No FAQs found. FAQs are high-value sources for AI engine quotes.',
+    hasFaqs
+      ? 'PASS: Detailed FAQs exist (helps LLMs answer Q&A queries directly).'
+      : 'WARNING: No FAQs found. FAQs are high-value sources for AI engine quotes.',
     10
   )
   audit(
     hasProof,
     'Structured Proof Points',
-    hasProof ? 'PASS: Concrete trust proofs and certifications are available.' : 'WARNING: Missing structured proof points.',
+    hasProof
+      ? 'PASS: Concrete trust proofs and certifications are available.'
+      : 'WARNING: Missing structured proof points.',
     10
   )
 }
@@ -251,11 +276,15 @@ console.log(` GEO / AI Search Readiness Index: ${percent}% (${earnedScore}/${tot
 console.log('==================================================')
 
 if (percent < 80) {
-  console.log('\nRecommendation: Resolve FAIL and WARNING marks above to maximize AI engine citations.');
+  console.log(
+    '\nRecommendation: Resolve FAIL and WARNING marks above to maximize AI engine citations.'
+  )
 } else {
-  console.log('\nOutstanding! The website is highly optimized for AI-crawling, semantic reference, and search-agent citations.');
+  console.log(
+    '\nOutstanding! The website is highly optimized for AI-crawling, semantic reference, and search-agent citations.'
+  )
 }
 
-if (checks.some(c => !c.ok && c.score >= 20)) {
+if (checks.some((c) => !c.ok && c.score >= 20)) {
   process.exitCode = 1
 }

@@ -60,8 +60,8 @@ export function useDemoProtection() {
   const state = reactive({
     isDemo: protectionEnabled,
     customerName: env.VITE_DEMO_CUSTOMER_NAME || 'Demo',
-    authorName: env.VITE_DEMO_AUTHOR_NAME || 'Mischa Pogrebnyak',
-    authorEmail: env.VITE_DEMO_AUTHOR_EMAIL || '66591935+mischapogr@users.noreply.github.com',
+    authorName: env.VITE_DEMO_AUTHOR_NAME || '',
+    authorEmail: env.VITE_DEMO_AUTHOR_EMAIL || '',
     watermarkEnabled: protectionEnabled && env.VITE_DEMO_WATERMARK_ENABLED !== 'false',
     featureCatalogEnabled: protectionEnabled && env.VITE_DEMO_FEATURE_CATALOG_ENABLED !== 'false',
     demoUrls: {
@@ -72,12 +72,17 @@ export function useDemoProtection() {
       0,
       Math.min(5, parseFloat(env.VITE_DEMO_WATERMARK_FACTOR ?? '1') || 1)
     ),
-    watermarkText: `${env.VITE_DEMO_CUSTOMER_NAME || 'Demo'} · ${hostname || 'local'} · © ${
-      env.VITE_DEMO_AUTHOR_NAME || 'Mischa Pogrebnyak'
-    } · nicht zur Weitergabe`,
+    watermarkText: [
+      env.VITE_DEMO_CUSTOMER_NAME || 'Demo',
+      hostname || 'local',
+      env.VITE_DEMO_AUTHOR_NAME ? `© ${env.VITE_DEMO_AUTHOR_NAME}` : '',
+      'Demo-Ansicht',
+    ]
+      .filter(Boolean)
+      .join(' · '),
     copyrightNotice:
       env.VITE_DEMO_COPYRIGHT_NOTICE ||
-      'Urheberrechtlich geschuetzte Demo. Nutzung nur zur internen Pruefung. Kopieren, Weitergabe, Nachbau und produktive Verwendung sind ohne schriftliche Freigabe untersagt.',
+      'Demo-Ansicht zur Vorschau. Inhalte, Bilder und Daten sind Platzhalter.',
     blockedReason: isFileProtocol
       ? 'Diese Demo kann nicht direkt als Datei geoeffnet werden.'
       : !isAllowedHost

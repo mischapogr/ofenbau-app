@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import net from 'node:net'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import JavaScriptObfuscator from 'javascript-obfuscator'
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -174,53 +173,9 @@ function contactDevApiPlugin(env) {
   }
 }
 
-function isTruthy(value) {
-  return ['1', 'true', 'yes', 'on'].includes(String(value || '').toLowerCase())
-}
-
-function demoObfuscationPlugin(env) {
-  return {
-    name: 'demo-javascript-obfuscation',
-    apply: 'build',
-    enforce: 'post',
-    generateBundle(_options, bundle) {
-      for (const item of Object.values(bundle)) {
-        if (item.type !== 'chunk' || !item.fileName.endsWith('.js')) continue
-
-        const result = JavaScriptObfuscator.obfuscate(item.code, {
-          compact: true,
-          controlFlowFlattening: isTruthy(env.VITE_DEMO_OBFUSCATE_AGGRESSIVE),
-          controlFlowFlatteningThreshold: 0.45,
-          deadCodeInjection: false,
-          disableConsoleOutput: false,
-          identifierNamesGenerator: 'hexadecimal',
-          numbersToExpressions: true,
-          renameGlobals: false,
-          selfDefending: false,
-          simplify: true,
-          splitStrings: true,
-          splitStringsChunkLength: 8,
-          stringArray: true,
-          stringArrayCallsTransform: true,
-          stringArrayEncoding: ['base64'],
-          stringArrayRotate: true,
-          stringArrayShuffle: true,
-          stringArrayThreshold: 0.75,
-          transformObjectKeys: true,
-          unicodeEscapeSequence: false,
-        })
-
-        item.code = result.getObfuscatedCode()
-      }
-    },
-  }
-}
-
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const isDemo = mode === 'demo' || env.VITE_APP_ENV === 'demo'
-  const shouldObfuscateDemo = isDemo && env.VITE_DEMO_OBFUSCATE !== 'false'
   // Tier ("basis" | "premium") is orthogonal to mode. Resolve it explicitly and
   // inject via `define` so import.meta.env.VITE_TIER is reliable regardless of
   // whether it arrives through a .env file or an inline `VITE_TIER=basis` prefix.
@@ -234,11 +189,7 @@ export default defineConfig(({ mode }) => {
     .filter(Boolean)
 
   return {
-    plugins: [
-      contactDevApiPlugin(env),
-      vue(),
-      ...(shouldObfuscateDemo ? [demoObfuscationPlugin(env)] : []),
-    ],
+    plugins: [contactDevApiPlugin(env), vue()],
     define: {
       'import.meta.env.VITE_TIER': JSON.stringify(tier),
     },
@@ -254,7 +205,7 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       port: 5173,
       strictPort: true,
-      // Permit the demo's external hostnames (e.g. MyFRITZ) through Vite's
+      // Permit the demo's external hostnames (e.g. a DDNS name) through Vite's
       // DNS-rebinding host check; IPs and localhost are allowed by default.
       ...(demoAllowedHosts.length ? { allowedHosts: demoAllowedHosts } : {}),
       // Required for hot reload to work reliably inside Docker bind mounts.
@@ -267,7 +218,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       strictPort: true,
       // Same host allowlist as the dev server, so the served demo build can be
-      // reached via its external hostnames (MyFRITZ, tunnel upstream, etc.).
+      // reached via its external hostnames (DDNS name, tunnel upstream, etc.).
       ...(demoAllowedHosts.length ? { allowedHosts: demoAllowedHosts } : {}),
       // Forward /api to the contact API container so the demo contact form
       // works behind `vite preview` (which otherwise serves static files only).
