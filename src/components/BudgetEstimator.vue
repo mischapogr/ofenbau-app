@@ -1,7 +1,10 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import BaseButton from './BaseButton.vue'
 import AppIcon from './AppIcon.vue'
+
+const route = useRoute()
 
 const step = ref(1)
 const projectType = ref('') // 'kamin', 'kachelofen', 'schornstein', 'fliesen'
@@ -343,6 +346,21 @@ function setProjectType(type) {
   projectType.value = type
   step.value = 2
 }
+
+// Prefill from query params (the planning explorer's "Budget schätzen" link):
+//   ?typ=kamin|kachelofen|schornstein|fliesen  &form=straight|corner|tunnel
+//   &material=standard|premium
+const PROJECT_TYPES = ['kamin', 'kachelofen', 'schornstein', 'fliesen']
+const SHAPES = ['straight', 'corner', 'tunnel']
+const MATERIALS = ['standard', 'premium']
+
+onMounted(() => {
+  const query = route?.query || {}
+  if (!PROJECT_TYPES.includes(query.typ)) return
+  setProjectType(query.typ)
+  if (SHAPES.includes(query.form)) shape.value = query.form
+  if (MATERIALS.includes(query.material)) materialTier.value = query.material
+})
 </script>
 
 <template>

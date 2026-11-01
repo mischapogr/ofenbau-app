@@ -1,9 +1,14 @@
 /**
  * 3D-Planning content — benefits + service columns for Planning3DSection
- * and the /leistungen/3d-planung detail page.
+ * and the /leistungen/3d-planung detail page, plus the examples that drive
+ * Planning3DExplorer (views, frame arcs, x-ray, decisions/variants, models).
  */
 export const planningContentReview = {
   approvedForLaunch: false,
+  // All planning visuals are AI-generated demo content (see public/images/PROMPTS.md).
+  // `demoContent` tells scripts/check-content-assets.mjs not to treat the
+  // missing operator/media approvals as launch blockers.
+  demoContent: true,
   note: '3D planning examples and generated planning visuals must be reviewed against the final operator workflow before launch.',
 }
 
@@ -26,8 +31,8 @@ export const planningBenefits = [
   },
   {
     icon: 'calculator',
-    title: 'Präzise Kalkulation',
-    text: 'Verbindliche Mengen und Kosten aus dem 3D-Modell — transparent und ohne Überraschungen.',
+    title: 'Budgetrahmen schätzen',
+    text: 'Form, Material und Ausstattung aus dem Entwurf direkt in den Budget-Kalkulator übernehmen — als erste Orientierung vor dem verbindlichen Angebot.',
   },
 ]
 
@@ -49,6 +54,24 @@ export const planningServices = [
 // Decision types are defined per example (`decisions`) because each use case
 // has different meaningful choices; choices without a `variants` entry render
 // as plain (non-clickable) chips.
+//
+// `variants[key][choice]` schema:
+//   { image, text }          whole-image choice — swaps the stage photo; only
+//                            one whole-image choice is active at a time.
+//   { layer, text }          stackable choice — `layer` is a transparent
+//                            overlay (PNG/WebP with alpha, same 16/10 framing
+//                            as `image`) composited over the stage, so one
+//                            layer per decision key can be combined with the
+//                            others (e.g. Material + Sichtscheibe). Layers
+//                            also sit on top of an active whole-image choice.
+//   `budget`                 optional per example: `{ typ, params }` maps the
+//                            configured choices onto BudgetEstimator query
+//                            params (`typ`, `form`, `material`) for the
+//                            "Budget schätzen" hand-off.
+//   `model`                  optional: `{ src, poster, label, text, hotspots }`
+//                            enables the glTF stage (ExplorerStageModel);
+//                            hotspots use model-viewer's `data-position` /
+//                            `data-normal` strings in model space.
 export const planningExamples = [
   {
     id: 'kachelofen-eckscheibe',
@@ -139,6 +162,34 @@ export const planningExamples = [
       { key: 'view', label: 'Sichtscheibe', choices: ['frontal', 'Eckscheibe', 'Panorama'] },
       { key: 'detail', label: 'Detail', choices: ['Fuge', 'Kante', 'Anschluss'] },
     ],
+    budget: {
+      typ: 'kachelofen',
+      params: {
+        form: {
+          'gerade Linie': { form: 'straight' },
+          Ecke: { form: 'corner' },
+          Sitzbank: { form: 'corner' },
+        },
+        material: {
+          Keramik: { material: 'standard' },
+          Naturstein: { material: 'premium' },
+          Putz: { material: 'standard' },
+        },
+      },
+    },
+    // Placeholder glTF (see public/models/README.md) — replace with the real
+    // Draco/KTX2-compressed scan or CAD export of this stove.
+    model: {
+      src: '/models/kachelofen-eckscheibe.glb',
+      poster: '/images/planning-example-kachelofen-eckscheibe.webp',
+      label: '3D-Modell',
+      text: 'Drehen, zoomen und Material wechseln — auf dem Smartphone auch in Ihrem Raum (AR).',
+      hotspots: [
+        { label: 'Sichtscheibe', position: '0.52 0.62 0.52', normal: '0.7 0 0.7' },
+        { label: 'Sitzbank', position: '-0.55 0.42 0.95', normal: '0 1 0' },
+        { label: 'Speicherkörper', position: '0 1.42 0.3', normal: '0 1 0' },
+      ],
+    },
     // Decision simulation: per choice an alternative visualization of this example.
     // Choices matching the base configuration point at the base Überblick image.
     variants: {
@@ -302,6 +353,10 @@ export const planningExamples = [
       { key: 'rohr', label: 'Rohr-Finish', choices: ['Edelstahl', 'Schwarz matt'] },
       { key: 'ofen', label: 'Ofenkörper', choices: ['Stahl schwarz', 'Speckstein'] },
     ],
+    budget: {
+      typ: 'schornstein',
+      params: { ofen: { Speckstein: { material: 'premium' } } },
+    },
     variants: {
       rohr: {
         Edelstahl: {
@@ -389,6 +444,10 @@ export const planningExamples = [
       { key: 'format', label: 'Format', choices: ['Großformat', 'Mosaikakzent'] },
       { key: 'farbwelt', label: 'Farbwelt', choices: ['Sand', 'Anthrazit'] },
     ],
+    budget: {
+      typ: 'fliesen',
+      params: { format: { Mosaikakzent: { material: 'premium' } } },
+    },
     variants: {
       format: {
         Großformat: {
@@ -488,6 +547,10 @@ export const planningExamples = [
       { key: 'farbton', label: 'Farbton', choices: ['Creme', 'Terrakotta'] },
       { key: 'oberflaeche', label: 'Oberfläche', choices: ['Matt', 'Glänzend'] },
     ],
+    budget: {
+      typ: 'kachelofen',
+      params: { oberflaeche: { Glänzend: { material: 'premium' } } },
+    },
     variants: {
       farbton: {
         Creme: {

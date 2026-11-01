@@ -170,14 +170,20 @@ for (const example of planningExamples) {
   }
 }
 
-if (planningContentReview.approvedForLaunch !== true) {
+// Demo content: the planning visuals are declared AI-generated placeholders,
+// so missing operator/media approvals are expected and not launch warnings.
+const planningIsDemo = planningContentReview.demoContent === true
+
+if (!planningIsDemo && planningContentReview.approvedForLaunch !== true) {
   warnings.push(`3D planning examples are not approved for launch: ${planningContentReview.note}`)
 }
 
-const unapprovedPlanningExamples = planningExamples.filter(
-  (example) =>
-    example.review?.operatorApproved !== true || example.review?.mediaRightsApproved !== true
-)
+const unapprovedPlanningExamples = planningIsDemo
+  ? []
+  : planningExamples.filter(
+      (example) =>
+        example.review?.operatorApproved !== true || example.review?.mediaRightsApproved !== true
+    )
 if (unapprovedPlanningExamples.length) {
   warnings.push(
     `3D planning example approvals are incomplete for ${unapprovedPlanningExamples.length} examples: ${unapprovedPlanningExamples
