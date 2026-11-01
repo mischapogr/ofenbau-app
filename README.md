@@ -14,6 +14,20 @@ photos and references are placeholders (AI-generated imagery, see
 > Licensed under [MIT](./LICENSE). Contributions welcome — see
 > [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
+## Live demo
+
+No access code needed. Each package is its own Cloudflare Pages deployment;
+the "Paket" switch in the demo bar jumps between them.
+
+| Package     | URL                                      | What it shows                                                                                 |
+| ----------- | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Premium** | <https://ofenbau-premium-demo.pages.dev> | Full site: calculators, 3D planning explorer with 360° turntable and 3D model, regional pages |
+| **Basis**   | <https://ofenbau-basis-demo.pages.dev>   | Reduced package: website, portfolio, Ratgeber, contact form                                   |
+| Generic     | <https://ofenbau-demo.pages.dev>         | Same build as Premium                                                                         |
+
+Try the 3D planning explorer directly at
+<https://ofenbau-premium-demo.pages.dev/leistungen/3d-planung>.
+
 ---
 
 ## Tech stack
