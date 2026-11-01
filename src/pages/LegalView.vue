@@ -41,7 +41,16 @@ useSeo(() => ({
               kommt kein Vertrag zustande.
             </p>
             <p
-              v-if="!demoOperator.configured"
+              v-if="!demoOperator.configured && demoOperator.inviteOnly"
+              class="rounded-xl bg-surface-muted p-4 text-sm"
+              data-testid="invite-only-notice"
+            >
+              <strong class="text-content">Geschlossene Vorschau:</strong> Diese Demo ist nur für
+              persönlich eingeladene Interessenten zugänglich. Die Angaben zum Anbieter dieser
+              Vorschau und seine Kontaktdaten haben Sie mit Ihrer Einladung erhalten.
+            </p>
+            <p
+              v-else-if="!demoOperator.configured"
               class="rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
               role="alert"
             >
@@ -57,7 +66,7 @@ useSeo(() => ({
             folgenden Angaben durch Ihre rechtsgültigen Informationen.
           </p>
 
-          <template v-if="!isPrivacy && demoOperator.enabled">
+          <template v-if="!isPrivacy && demoOperator.enabled && demoOperator.configured">
             <h2 class="font-display text-xl font-semibold text-content">
               Anbieter dieser Demo-Website (§ 5 DDG)
             </h2>
@@ -84,6 +93,8 @@ useSeo(() => ({
               Beispielinhalte dienen ausschließlich der Vorführung.
             </p>
           </template>
+
+          <template v-else-if="!isPrivacy && demoOperator.enabled" />
 
           <template v-else-if="!isPrivacy">
             <h2 class="font-display text-xl font-semibold text-content">Angaben gemäß § 5 DDG</h2>

@@ -23,6 +23,14 @@ export const demoOperator = {
   phone: value('VITE_DEMO_OPERATOR_PHONE'),
 }
 
+/**
+ * Owner opted into an invite-only preview without published operator details
+ * (VITE_DEMO_GATED_WITHOUT_OPERATOR=true; the deploy guard only allows this on
+ * projects with the per-customer gate active).
+ */
+demoOperator.inviteOnly =
+  isDemo && String(env.VITE_DEMO_GATED_WITHOUT_OPERATOR || '').toLowerCase() === 'true'
+
 demoOperator.configured = Boolean(
   demoOperator.name && demoOperator.street && demoOperator.city && demoOperator.email
 )

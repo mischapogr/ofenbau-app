@@ -14,13 +14,17 @@ const analyticsConfigured = Boolean(import.meta.env.VITE_GA_MEASUREMENT_ID)
 <template>
   <div class="space-y-6 leading-relaxed text-content-muted">
     <h2 class="font-display text-xl font-semibold text-content">1. Verantwortliche Stelle</h2>
-    <p>
+    <p v-if="demoOperator.enabled && !demoOperator.configured">
+      Verantwortlich ist der Anbieter dieser geschlossenen Vorschau, der Ihnen Ihren persönlichen
+      Zugangscode übermittelt hat. Seine Kontaktdaten finden Sie in Ihrer Einladung.
+    </p>
+    <p v-else>
       {{ controller }}.<br />
       E-Mail: {{ controllerEmail }}
     </p>
     <p v-if="demoOperator.enabled">
       Diese Website ist eine Demo. Das dargestellte Unternehmen „{{ company.name }}“ ist fiktiv und
-      verarbeitet keine Daten; verantwortlich ist allein der oben genannte Betreiber.
+      verarbeitet keine Daten; verantwortlich ist allein der Anbieter dieser Vorschau.
     </p>
 
     <h2 class="font-display text-xl font-semibold text-content">2. Hosting und Server-Logs</h2>
@@ -31,6 +35,16 @@ const analyticsConfigured = Boolean(import.meta.env.VITE_GA_MEASUREMENT_ID)
       vor Angriffen zu schützen (Art. 6 Abs. 1 lit. f DSGVO). Cloudflare ist unter dem EU-US Data
       Privacy Framework zertifiziert; mit Cloudflare besteht ein Vertrag zur Auftragsverarbeitung.
     </p>
+
+    <template v-if="demoOperator.enabled">
+      <h2 class="font-display text-xl font-semibold text-content">Zugang zur Vorschau</h2>
+      <p>
+        Wenn Sie Ihren persönlichen Zugangscode eingeben, wird geprüft, ob er gültig ist, und ein
+        technisch notwendiges Sitzungs-Cookie für 12 Stunden gesetzt. Zur Verwaltung der Einladungen
+        wird der Zeitpunkt der letzten Anmeldung zu Ihrem Code gespeichert und mit Ablauf des Codes
+        gelöscht (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+    </template>
 
     <h2 class="font-display text-xl font-semibold text-content">3. Schriftarten</h2>
     <p>

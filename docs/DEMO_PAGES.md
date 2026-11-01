@@ -33,6 +33,22 @@ Put them in the git-ignored `.env.demo.local`, or (owner) in the encrypted
 secrets file via `npm run secrets:edit`. Every `demo:pages:*` script runs
 `scripts/check-demo-operator.mjs` first and refuses to deploy without them.
 
+### Invite-only previews without operator details
+
+If the demos are reachable only with a personal code (see
+[Customer access codes](#customer-access-codes)) you can opt out of publishing
+operator details:
+
+```bash
+echo 'VITE_DEMO_GATED_WITHOUT_OPERATOR=true' >> .env.demo.local
+```
+
+The deploy guard then accepts a project only if its gate is really active (KV
+binding in `wrangler.toml` and the `DEMO_SESSION_SECRET` secret), so it can't
+publish an open demo without an Impressum. The legal pages tell visitors that
+the provider details come with their invitation. This lowers visibility but does
+not clearly remove the § 5 DDG duty for a commercial demo — your call.
+
 ## One-time setup
 
 ```bash
