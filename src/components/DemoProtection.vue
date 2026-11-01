@@ -32,6 +32,18 @@ function cardTag(t) {
   return cardHref(t) ? 'a' : 'article'
 }
 
+// Package switch in the notice bar: available whenever the catalog is on and at
+// least one package has its own demo URL, so the choice stays visible even
+// when no access code (and therefore no gate) is configured.
+const packageLinks = computed(() =>
+  props.protection.featureCatalogEnabled
+    ? productTiers
+        .map((t) => ({ id: t.id, name: t.name, href: cardHref(t), active: t.id === activeTier }))
+        .filter((link) => link.href || link.active)
+    : []
+)
+const showPackageSwitch = computed(() => packageLinks.value.some((link) => !link.active))
+
 async function submitAccessCode() {
   await props.protection.verifyAccessCode(accessCode.value)
 }
@@ -62,6 +74,19 @@ async function submitAccessCode() {
   >
     <strong>Demo</strong>
     <span>{{ protection.copyrightNotice }}</span>
+    <nav v-if="showPackageSwitch" class="demo-packages" aria-label="Demo-Paket wählen">
+      <span class="demo-packages__label">Paket:</span>
+      <template v-for="link in packageLinks" :key="link.id">
+        <span
+          v-if="link.active"
+          class="demo-packages__item demo-packages__item--active"
+          aria-current="page"
+        >
+          {{ link.name }}
+        </span>
+        <a v-else :href="link.href" class="demo-packages__item">{{ link.name }}-Demo ansehen</a>
+      </template>
+    </nav>
     <span v-if="protection.authorName || protection.authorEmail">
       Kontakt: {{ [protection.authorName, protection.authorEmail].filter(Boolean).join(' · ') }}
     </span>
@@ -205,6 +230,41 @@ async function submitAccessCode() {
 
 .demo-copyright strong {
   color: rgb(var(--color-brand-700));
+}
+
+.demo-packages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  pointer-events: auto;
+}
+
+.demo-packages__label {
+  font-weight: 600;
+}
+
+.demo-packages__item {
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-weight: 600;
+}
+
+.demo-packages__item--active {
+  background: rgb(var(--color-brand-500));
+  color: #fff;
+}
+
+a.demo-packages__item {
+  border: 1px solid rgb(var(--color-brand-500) / 0.5);
+  color: rgb(var(--color-brand-700));
+  text-decoration: none;
+}
+
+a.demo-packages__item:hover,
+a.demo-packages__item:focus-visible {
+  background: rgb(var(--color-brand-50));
 }
 
 .demo-gate {
@@ -477,6 +537,21 @@ async function submitAccessCode() {
     right: 0.75rem;
     bottom: 0.75rem;
     max-width: calc(100vw - 1.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  /* Compact on phones: keep "Demo" + package switch, drop the sentence so the
+     bar doesn't cover the cookie banner. */
+  .demo-copyright > span {
+    display: none;
+  }
+
+  .demo-packages {
+    margin-top: 0;
   }
 
   .demo-catalog__grid {

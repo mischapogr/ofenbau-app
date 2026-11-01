@@ -9,9 +9,12 @@ For ad-hoc, throwaway shares from your own machine, see the quick tunnel in
 
 - **Projects:** `ofenbau-basis-demo`, `ofenbau-premium-demo` and the generic
   `ofenbau-demo` (see the `demo:pages:*` scripts in `package.json`).
-- **Access code:** never written down in the repo. The owner reads it with
-  `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE`
-  (see [`SECRETS.md`](./SECRETS.md)).
+- **Access code:** none. The public demos are open; the code is the same as the
+  open-source repo anyway. The notice bar carries a Basis/Premium package switch
+  (`VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`).
+- **Customer previews** with private content get their own Pages project and the
+  server-side gate below. The owner's code lives in the encrypted secrets file:
+  `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE`.
 
 ## One-time setup
 
@@ -30,10 +33,9 @@ npm run demo:pages:premium    # VITE_TIER=premium → ofenbau-premium-demo
 npm run demo:pages:all        # both + the generic project
 ```
 
-The client-side gate hash is **not** committed. Export
-`VITE_DEMO_ACCESS_CODE_HASH` before building (the owner's `.envrc` does this via
-sops) or put it in the git-ignored `.env.demo.local`; otherwise the demo builds
-without an access code.
+These builds have no access code. To put the optional client-side code screen
+back for a single build, export `VITE_DEMO_ACCESS_CODE_HASH` before building or
+put it in the git-ignored `.env.demo.local`.
 
 ## Server-side gate (recommended)
 

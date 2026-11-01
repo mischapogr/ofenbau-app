@@ -23,6 +23,10 @@ All notable changes to this project are documented here. The format follows
   per material preset (`npm run gen:turntable`, 3 × 24 frames), replacing the
   AI-generated ±60° arc. The turntable and the 3D model share the active preset.
 
+- The demo notice bar carries a Basis/Premium package switch, so the package
+  choice stays available when no access code is configured. The public demos
+  now run without an access code.
+
 ### Fixed
 
 - Material colours are converted from sRGB to linear before reaching the 3D

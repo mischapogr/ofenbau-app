@@ -114,7 +114,7 @@ layer for sharing previews:
 | `VITE_DEMO_COPYRIGHT_NOTICE`                                 | Text of the notice bar                                                            |
 | `VITE_DEMO_ALLOWED_HOSTS`                                    | Comma-separated host allow-list; supports `*.example.de`                          |
 | `VITE_DEMO_WATERMARK_ENABLED` / `VITE_DEMO_WATERMARK_FACTOR` | Repeated visual watermark and its density                                         |
-| `VITE_DEMO_FEATURE_CATALOG_ENABLED`                          | Show the Basis/Premium cards on the gate                                          |
+| `VITE_DEMO_FEATURE_CATALOG_ENABLED`                          | Show the Basis/Premium package switch (notice bar) and cards (gate)               |
 | `VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`              | Where the catalogue cards forward to                                              |
 | `VITE_DEMO_ACCESS_CODE_HASH`                                 | SHA-256 hex of a client-side access code (empty = none). Never commit a real hash |
 
