@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, unref, watch } from 'vue'
 
 const AUTOROTATE_MS = 900
 
@@ -7,11 +7,15 @@ function clamp(value, min, max) {
 }
 
 /**
- * Drag-to-rotate state for an image frame arc (pseudo-360 viewer).
- * `frames` is a ref/computed of [{ angle, image }] sorted by angle; the arc is
- * clamped at both ends (no wrap-around).
+ * Drag-to-rotate state for an image frame arc (pseudo-3D turntable).
+ * `frames` is a ref/computed of [{ angle, image }] sorted by angle.
+ *
+ * The arc is clamped at both ends unless the frames cover a full circle: with
+ * `wrap` unset, wrapping is derived from the angle coverage (span + one step
+ * >= 360°), so a true 360° set spins continuously while a partial arc (e.g.
+ * -60° … +60°) stops at its ends. Pass `wrap` (boolean or ref) to override.
  */
-export function useFrameRotation(frames, { reducedMotion } = {}) {
+export function useFrameRotation(frames, { reducedMotion, wrap } = {}) {
   const frameIndex = ref(0)
   const isDragging = ref(false)
   const autorotate = ref(false)
@@ -32,9 +36,26 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
   const frameCount = computed(() => frames.value?.length ?? 0)
   const hasFrames = computed(() => frameCount.value >= 2)
   const currentFrame = computed(() => frames.value?.[frameIndex.value] ?? null)
+  const arcRange = computed(() => {
+    const list = frames.value || []
+    if (list.length < 2) return { min: 0, max: 0, span: 0 }
+    const min = Number(list[0].angle) || 0
+    const max = Number(list[list.length - 1].angle) || 0
+    return { min, max, span: max - min }
+  })
+  const spansFullCircle = computed(() => {
+    const { span } = arcRange.value
+    if (!hasFrames.value || span <= 0) return false
+    const step = span / (frameCount.value - 1)
+    return span + step >= 360
+  })
+  const wraps = computed(() => (wrap === undefined ? spansFullCircle.value : Boolean(unref(wrap))))
 
   function goToFrame(index) {
-    frameIndex.value = clamp(index, 0, Math.max(0, frameCount.value - 1))
+    const last = Math.max(0, frameCount.value - 1)
+    frameIndex.value = wraps.value
+      ? ((index % frameCount.value) + frameCount.value) % frameCount.value
+      : clamp(index, 0, last)
   }
 
   function stepFrame(delta) {
@@ -53,7 +74,7 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
   }
 
   // Flick momentum: keep stepping frames after release with decaying
-  // velocity; stops at the arc ends (no wrap-around).
+  // velocity; stops at the arc ends unless the set wraps.
   function startInertia(velocity, pxPerFrame) {
     cancelInertia()
     let v = velocity
@@ -68,8 +89,8 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
         // Same inverted mapping as the live drag.
         const step = travelled > 0 ? -1 : 1
         const next = frameIndex.value + step
-        if (next < 0 || next > frameCount.value - 1) return
-        frameIndex.value = next
+        if (!wraps.value && (next < 0 || next > frameCount.value - 1)) return
+        goToFrame(next)
         travelled -= Math.sign(travelled) * pxPerFrame
       }
       if (Math.abs(v) > 0.05) inertiaFrame = requestAnimationFrame(tick)
@@ -150,8 +171,9 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     cancelInertia()
     timer = setInterval(() => {
       const last = frameCount.value - 1
-      // Ping-pong across the clamped arc.
-      if (frameIndex.value >= last) direction = -1
+      // Full circle: spin on; partial arc: ping-pong between the ends.
+      if (wraps.value) direction = 1
+      else if (frameIndex.value >= last) direction = -1
       else if (frameIndex.value <= 0) direction = 1
       goToFrame(frameIndex.value + direction)
     }, AUTOROTATE_MS)
@@ -229,6 +251,8 @@ export function useFrameRotation(frames, { reducedMotion } = {}) {
     frameCount,
     hasFrames,
     currentFrame,
+    arcRange,
+    wraps,
     isDragging,
     autorotate,
     framesReady,
