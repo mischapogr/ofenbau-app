@@ -7,6 +7,7 @@ import {
   gateEnabled,
   normalizeCode,
   sessionCookie,
+  sessionSubject,
   sha256Hex,
   signToken,
   SESSION_TTL_SECONDS,
@@ -57,7 +58,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
     )
   )
 
-  const token = await signToken('session', customer, SESSION_TTL_SECONDS, env.DEMO_SESSION_SECRET)
+  const token = await signToken(
+    'session',
+    sessionSubject(customer, record),
+    SESSION_TTL_SECONDS,
+    env.DEMO_SESSION_SECRET
+  )
   const headers = { 'set-cookie': sessionCookie(token), 'cache-control': 'no-store' }
   if (isJson) return Response.json({ ok: true }, { headers })
   return new Response(null, {

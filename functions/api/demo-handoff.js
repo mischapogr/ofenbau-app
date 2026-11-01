@@ -11,6 +11,7 @@ import {
   COOKIE_NAME,
   activeCustomer,
   gateEnabled,
+  isSessionSubject,
   getCookie,
   signToken,
   verifyToken,
@@ -39,7 +40,7 @@ export async function onRequestGet({ request, env }) {
       getCookie(request, COOKIE_NAME),
       env.DEMO_SESSION_SECRET
     )
-    if (customer && (await activeCustomer(env.DEMO_ACCESS, customer))) {
+    if (isSessionSubject(customer) && (await activeCustomer(env.DEMO_ACCESS, customer))) {
       const token = await signToken(
         'handoff',
         customer,

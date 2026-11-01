@@ -3,8 +3,10 @@
 // KV layout (binding DEMO_ACCESS), written by scripts/demo-access.mjs:
 //   code:<sha256(code)>  → "<customer>"
 //   customer:<customer>  → { "codeHash", "label", "created", "expires", "lastLogin" }
-// Session cookie:  <customer>.<expiresAtMs>.<hmac("session:" + customer + "." + exp)>
-// Handoff token:   <customer>.<expiresAtMs>.<hmac("handoff:" + customer + "." + exp)>
+// Session cookie:  <subject>.<expiresAtMs>.<hmac("session:" + subject + "." + exp)>
+// Handoff token:   <subject>.<expiresAtMs>.<hmac("handoff:" + subject + "." + exp)>
+// subject = <customer>~<first 16 hex chars of the customer's code hash>, so a
+// rotated code invalidates every session and handoff made with the old one.
 export const COOKIE_NAME = 'ofenbau_demo_session'
 export const SESSION_TTL_SECONDS = 12 * 60 * 60
 export const HANDOFF_TTL_SECONDS = 60
@@ -63,13 +65,33 @@ export async function verifyToken(purpose, token, secret) {
   return (await timingSafeEqual(signature, expected)) ? customer : null
 }
 
-/** The customer's record if it exists and has not expired. */
-export async function activeCustomer(kv, customer) {
-  if (!kv || !customer) return null
+const TAG_LENGTH = 16
+
+/** Session subject for a customer record: binds the session to the current code. */
+export function sessionSubject(customer, record) {
+  return `${customer}~${String(record.codeHash || '').slice(0, TAG_LENGTH)}`
+}
+
+/**
+ * The customer's record if it exists, has not expired and — for a session
+ * subject — still has the code the session was created with. Accepts a bare
+ * customer id (lookups during login) or a `customer~tag` subject (sessions).
+ */
+export async function activeCustomer(kv, subjectOrCustomer) {
+  if (!kv || !subjectOrCustomer) return null
+  const [customer, tag] = String(subjectOrCustomer).split('~')
   const record = await kv.get(`customer:${customer}`, 'json')
   if (!record) return null
   if (record.expires && Date.parse(record.expires) < Date.now()) return null
+  if (String(subjectOrCustomer).includes('~')) {
+    if (!tag || !String(record.codeHash || '').startsWith(tag)) return null
+  }
   return record
+}
+
+/** Session subjects carry a code tag; a bare id (old cookie format) is never a valid session. */
+export function isSessionSubject(subject) {
+  return /^[a-z0-9-]+~[0-9a-f]{16}$/.test(String(subject || ''))
 }
 
 export function getCookie(request, name) {

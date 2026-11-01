@@ -13,6 +13,7 @@ import {
   COOKIE_NAME,
   activeCustomer,
   gateEnabled,
+  isSessionSubject,
   getCookie,
   sessionCookie,
   signToken,
@@ -60,7 +61,7 @@ export async function onRequest({ request, env, next }) {
   const handoff = url.searchParams.get('demo_handoff')
   if (handoff) {
     const customer = await verifyToken('handoff', handoff, env.DEMO_SESSION_SECRET)
-    if (customer && (await activeCustomer(env.DEMO_ACCESS, customer))) {
+    if (isSessionSubject(customer) && (await activeCustomer(env.DEMO_ACCESS, customer))) {
       url.searchParams.delete('demo_handoff')
       const token = await signToken(
         'session',
@@ -87,7 +88,10 @@ export async function onRequest({ request, env, next }) {
   // API calls only need an authentic session; page loads also re-check KV so a
   // removed or expired customer is locked out without waiting for the cookie.
   const isPage = !url.pathname.startsWith('/api/')
-  if (customer && (!isPage || (await activeCustomer(env.DEMO_ACCESS, customer)))) {
+  if (
+    isSessionSubject(customer) &&
+    (!isPage || (await activeCustomer(env.DEMO_ACCESS, customer)))
+  ) {
     const response = await next()
     const headers = new Headers(response.headers)
     headers.set('cache-control', 'private, no-store')
