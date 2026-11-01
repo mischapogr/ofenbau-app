@@ -38,6 +38,7 @@
     "gen:video": "node scripts/generate-intro-video.mjs",
     "gen:model": "node scripts/generate-stove-model.mjs",
     "gen:turntable": "node scripts/render-turntable.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs",
     "company:check": "node scripts/check-company-profile.mjs",
     "content:review": "node scripts/write-content-review-checklist.mjs",
     "content:placeholders": "node scripts/write-placeholder-content-report.mjs",
@@ -98,6 +99,7 @@
     "eslint-plugin-vue": "^9.32.0",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
+    "sharp": "0.34.5",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.7",
     "wrangler": "^4.20.0"
