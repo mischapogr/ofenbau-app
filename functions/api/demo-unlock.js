@@ -1,50 +1,68 @@
-// Cloudflare Pages Function — exchanges the demo access code for a session cookie.
+// Cloudflare Pages Function — exchanges a customer's access code for a session cookie.
 // Accepts JSON `{ "code": "…" }` (returns JSON) or a form POST (redirects back).
-// Pair with a WAF rate-limiting rule on this path in the Cloudflare dashboard.
-import { sessionCookie, signSession, timingSafeEqual } from '../_lib/demo-session.js'
+// Codes are looked up by SHA-256 hash in the DEMO_ACCESS KV store; the customer's
+// last login is recorded. Pair with a WAF rate-limiting rule on this path.
+import {
+  activeCustomer,
+  gateEnabled,
+  normalizeCode,
+  sessionCookie,
+  sha256Hex,
+  signToken,
+  SESSION_TTL_SECONDS,
+} from '../_lib/demo-session.js'
 
 function safeRedirect(value) {
   const target = String(value || '/')
   return target.startsWith('/') && !target.startsWith('//') ? target : '/'
 }
 
-export async function onRequestPost({ request, env }) {
-  if (!env.DEMO_ACCESS_CODE) {
-    return Response.json({ ok: true, gate: 'disabled' })
-  }
+export async function onRequestPost({ request, env, waitUntil }) {
+  if (!gateEnabled(env)) return Response.json({ ok: true, gate: 'disabled' })
 
-  const contentType = request.headers.get('content-type') || ''
+  const isJson = (request.headers.get('content-type') || '').includes('application/json')
   let code = ''
   let redirect = '/'
-  let isJson = contentType.includes('application/json')
-
   if (isJson) {
     const body = await request.json().catch(() => ({}))
-    code = String(body.code || '')
+    code = body.code
   } else {
     const form = await request.formData().catch(() => null)
-    code = String(form?.get('code') || '')
+    code = form?.get('code')
     redirect = safeRedirect(form?.get('redirect'))
   }
 
-  if (!code.trim() || !(await timingSafeEqual(code.trim(), env.DEMO_ACCESS_CODE))) {
+  const normalized = normalizeCode(code)
+  const customer = normalized
+    ? await env.DEMO_ACCESS.get(`code:${await sha256Hex(normalized)}`)
+    : null
+  const record = customer ? await activeCustomer(env.DEMO_ACCESS, customer) : null
+
+  if (!record) {
     if (isJson) {
       return Response.json(
-        { ok: false, message: 'Der Zugangscode ist nicht korrekt.' },
-        { status: 401 }
+        { ok: false, message: 'Der Zugangscode ist nicht korrekt oder abgelaufen.' },
+        { status: 401, headers: { 'cache-control': 'no-store' } }
       )
     }
-    return Response.redirect(
-      new URL(`/demo-gate.html?error=1&redirect=${encodeURIComponent(redirect)}`, request.url),
-      303
+    const back = new URL(
+      `/demo-gate.html?error=1&redirect=${encodeURIComponent(redirect)}`,
+      request.url
     )
+    return Response.redirect(back.toString(), 303)
   }
 
-  const token = await signSession(env.DEMO_SESSION_SECRET || env.DEMO_ACCESS_CODE)
+  // Record the login without delaying the response.
+  waitUntil(
+    env.DEMO_ACCESS.put(
+      `customer:${customer}`,
+      JSON.stringify({ ...record, lastLogin: new Date().toISOString() })
+    )
+  )
+
+  const token = await signToken('session', customer, SESSION_TTL_SECONDS, env.DEMO_SESSION_SECRET)
   const headers = { 'set-cookie': sessionCookie(token), 'cache-control': 'no-store' }
-  if (isJson) {
-    return Response.json({ ok: true }, { headers })
-  }
+  if (isJson) return Response.json({ ok: true }, { headers })
   return new Response(null, {
     status: 303,
     headers: { ...headers, location: new URL(redirect, request.url).toString() },

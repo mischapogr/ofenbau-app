@@ -1,6 +1,18 @@
-# Cloudflare Pages project config for the persistent customer demo.
-# Deployed via `npm run demo:pages` (Wrangler direct upload — no GitHub).
-# Permanent URL: https://ofenbau-demo.pages.dev
+# Cloudflare Pages config shared by the three demo projects
+# (ofenbau-basis-demo, ofenbau-premium-demo, ofenbau-demo — see demo:pages:* in
+# package.json, which pass --project-name). Wrangler direct upload, no GitHub.
 name = "ofenbau-demo"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-06-10"
+
+# Per-customer demo access codes (functions/_middleware.js). Only SHA-256 hashes
+# of the codes are stored. Managed with `npm run demo:access -- add|list|remove`.
+# Forks: create your own namespace (`wrangler kv namespace create …`) and replace
+# the id, or delete this block to run the demos without a gate.
+[[kv_namespaces]]
+binding = "DEMO_ACCESS"
+id = "323439059bcc4e2c8bd7532eedce2e49"
+
+[vars]
+# Hosts the Basis/Premium switch may hand a logged-in visitor over to.
+DEMO_HANDOFF_HOSTS = "ofenbau-basis-demo.pages.dev,ofenbau-premium-demo.pages.dev,ofenbau-demo.pages.dev"

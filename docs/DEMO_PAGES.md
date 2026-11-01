@@ -9,12 +9,10 @@ For ad-hoc, throwaway shares from your own machine, see the quick tunnel in
 
 - **Projects:** `ofenbau-basis-demo`, `ofenbau-premium-demo` and the generic
   `ofenbau-demo` (see the `demo:pages:*` scripts in `package.json`).
-- **Access code:** none. The public demos are open; the code is the same as the
-  open-source repo anyway. The notice bar carries a Basis/Premium package switch
-  (`VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`).
-- **Customer previews** with private content get their own Pages project and the
-  server-side gate below. The owner's code lives in the encrypted secrets file:
-  `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE`.
+- **Access:** one personal code per prospect, managed with
+  `npm run demo:access` (see [Customer access codes](#customer-access-codes)).
+  The notice bar carries a Basis/Premium package switch
+  (`VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`) that keeps the visitor logged in.
 
 ## Operator details (required)
 
@@ -56,15 +54,38 @@ These builds have no access code. To put the optional client-side code screen
 back for a single build, export `VITE_DEMO_ACCESS_CODE_HASH` before building or
 put it in the git-ignored `.env.demo.local`.
 
-## Server-side gate (recommended)
+## Customer access codes
 
-Set the secrets once per project and the bundle is no longer served to
-unauthenticated visitors — see [`SECRETS.md`](./SECRETS.md#server-side-gate-cloudflare-pages-functions):
+Every prospect gets their own code; one code works on all three demos (the
+"Paket" switch hands the visitor over without asking again). Codes are stored
+only as SHA-256 hashes in the `DEMO_ACCESS` KV namespace (`wrangler.toml`), so
+they take effect and can be revoked immediately, without a redeploy.
 
 ```bash
-wrangler pages secret put DEMO_ACCESS_CODE    --project-name ofenbau-premium-demo
-wrangler pages secret put DEMO_SESSION_SECRET --project-name ofenbau-premium-demo
+npm run demo:access -- add mueller-ofenbau --label "Müller Ofenbau GmbH" --days 30
+#   → prints the code once, e.g. K7QM-3XRP-9WHT, plus the demo links
+npm run demo:access -- list                   # customers, expiry, last login
+npm run demo:access -- rotate mueller-ofenbau # new code, the old one stops working
+npm run demo:access -- remove mueller-ofenbau # locked out on their next page load
 ```
+
+Codes expire after `--days` (default 30); expired entries are deleted from KV a
+week later. Codes are case-insensitive and dashes are optional.
+
+**One-time activation** (signs the session cookies; needs `DEMO_SESSION_SECRET`
+in the environment, which the owner's `.envrc` loads from the encrypted secrets):
+
+```bash
+npm run demo:access -- setup    # sets the secret on all three Pages projects
+npm run demo:pages:all          # the secret takes effect with the next deployment
+```
+
+The gate is active whenever a project has both the KV binding and the secret;
+remove either and the demos are open again. Static files (`/assets`, `/images`,
+`/models`, `/videos`) bypass the gate via `public/_routes.json` — the source is
+open anyway, and this keeps them off the free plan's ~100 000 Functions requests
+per day. Add a WAF rate-limiting rule for `/api/demo-unlock` in the dashboard
+(e.g. 10 requests / 10 s per IP).
 
 ## Contact form
 
@@ -74,7 +95,8 @@ proxy, so Pages Functions stand in (auto-bundled by Wrangler, zero config):
 - `functions/api/contact.js` — accepts `POST`, returns `{ ok: true }`; rejects
   non-POST with 405. Nothing is delivered — same as the local Mailpit sink.
 - `functions/api/healthz.js` — returns `{ ok: true }`.
-- `functions/api/demo-unlock.js` + `functions/_middleware.js` — the optional gate.
+- `functions/_middleware.js`, `functions/api/demo-unlock.js`,
+  `functions/api/demo-handoff.js` — the per-customer gate and the package handoff.
 
 ## Watermark before sharing
 
@@ -86,6 +108,7 @@ before sharing.
 
 ```bash
 npm run build:demo
-cp .dev.vars.example .dev.vars   # fill in DEMO_ACCESS_CODE to try the server gate
-npx wrangler pages dev dist      # serves dist/ + Functions on a local URL
+cp .dev.vars.example .dev.vars   # fill in DEMO_SESSION_SECRET to try the gate
+npm run demo:access -- add test --local
+npx wrangler pages dev dist      # serves dist/ + Functions + local KV
 ```

@@ -29,6 +29,7 @@
     "demo:pages:premium": "node scripts/check-demo-operator.mjs && npm run build:demo:premium && wrangler pages deploy dist --project-name=ofenbau-premium-demo --branch=main",
     "demo:pages:generic": "node scripts/check-demo-operator.mjs && npm run build:demo:premium && wrangler pages deploy dist --project-name=ofenbau-demo --branch=main",
     "demo:pages:all": "npm run demo:pages:basis && npm run demo:pages:premium && npm run demo:pages:generic",
+    "demo:access": "node scripts/demo-access.mjs",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write \"src/**/*.{js,vue,css,json}\"",

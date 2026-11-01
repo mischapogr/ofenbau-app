@@ -16,6 +16,7 @@ export default [
       'playwright-report/**',
       'demo-artifacts/**',
       'test-results/**',
+      '.wrangler/**',
     ],
   },
   js.configs.recommended,

@@ -7,9 +7,10 @@
 Exposes the demo build to an external viewer over HTTPS using a Cloudflare
 **quick tunnel** in front of `build:demo` (served by `vite preview`).
 
-- **Access code:** read it with `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE`
-  (owner) — it is never stored in the repo. Export `VITE_DEMO_ACCESS_CODE_HASH`
-  before `demo:up` or the build ships without a code.
+- **No per-customer gate:** the tunnel serves the build with `vite preview`,
+  which has no Pages Functions, so anyone with the link can open it. Use it only
+  for short shares; prospects get the gated Pages demos
+  ([`DEMO_PAGES.md`](./DEMO_PAGES.md#customer-access-codes)).
 - **Stack:** `docker-compose.demo.yml` — `ofenbau-demo-web` (build + serve) and
   `ofenbau-demo-tunnel` (Cloudflare quick tunnel), both `restart: unless-stopped`.
 

@@ -3,11 +3,11 @@
 This is a public repository. The rule is simple: **nothing in git can unlock
 anything on its own.** Three kinds of values exist.
 
-| Kind | Examples | Where it lives | In git? |
-| --- | --- | --- | --- |
-| Public build config | every `VITE_*` variable (`.env.development`, `.env.demo`, `.env.production`) | committed env files | yes — these ship to the browser, so they are never secret |
-| Developer credentials | `GITHUB_PERSONAL_ACCESS_TOKEN`, `STITCH_API_KEY`, `STITCH_PROJECT_ID`, `CLOUDFLARE_API_TOKEN` | your git-ignored `.mcp.env` (template: `.mcp.env.example`) | no |
-| Runtime secrets of a deployment | `DEMO_ACCESS_CODE`, `DEMO_SESSION_SECRET` for the server-side gate | Cloudflare Pages secrets (`wrangler pages secret put …`), `.dev.vars` locally | no |
+| Kind                            | Examples                                                                                       | Where it lives                                                                | In git?                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Public build config             | every `VITE_*` variable (`.env.development`, `.env.demo`, `.env.production`)                   | committed env files                                                           | yes — these ship to the browser, so they are never secret |
+| Developer credentials           | `GITHUB_PERSONAL_ACCESS_TOKEN`, `STITCH_API_KEY`, `STITCH_PROJECT_ID`, `CLOUDFLARE_API_TOKEN`  | your git-ignored `.mcp.env` (template: `.mcp.env.example`)                    | no                                                        |
+| Runtime secrets of a deployment | `DEMO_SESSION_SECRET` for the per-customer gate (codes themselves are hashes in Cloudflare KV) | Cloudflare Pages secrets (`wrangler pages secret put …`), `.dev.vars` locally | no                                                        |
 
 The repo owner additionally keeps **their own** credentials encrypted in
 `secrets/ofenbau.enc.env` (sops + age) so a fresh clone on another machine is
@@ -40,26 +40,14 @@ Compute a hash:
 node -e "const {createHash}=require('node:crypto'); console.log(createHash('sha256').update(process.argv[1]).digest('hex'))" "your-code"
 ```
 
-## Server-side gate (Cloudflare Pages Functions)
+## Per-customer gate (Cloudflare Pages Functions)
 
-`functions/_middleware.js` turns into a real gate as soon as the Pages project has
-a `DEMO_ACCESS_CODE` secret: unauthenticated visitors only ever receive
-`public/demo-gate.html`; the app bundle is not served until
-`POST /api/demo-unlock` has set an `HttpOnly` session cookie (12 h, HMAC-signed).
-
-```bash
-wrangler pages secret put DEMO_ACCESS_CODE    --project-name ofenbau-premium-demo
-wrangler pages secret put DEMO_SESSION_SECRET --project-name ofenbau-premium-demo   # openssl rand -hex 32
-```
-
-Repeat per project (`ofenbau-basis-demo`, `ofenbau-demo`). Locally, copy
-`.dev.vars.example` to `.dev.vars` and run `npx wrangler pages dev dist`.
-Add a WAF rate-limiting rule for `/api/demo-unlock` in the dashboard (e.g.
-10 requests / 10 s per IP). Without the secret the middleware passes every request
-through and the client-side gate applies.
-
-Zero-code alternative: Pages project → Settings → *Enable access policy* puts
-Cloudflare Access (e-mail one-time PIN) in front of the `*.pages.dev` URL.
+Prospects log in with personal codes managed by `npm run demo:access`; only
+SHA-256 hashes of the codes are stored, in the `DEMO_ACCESS` KV namespace. The
+only secret is `DEMO_SESSION_SECRET`, which signs the session cookies and the
+package-handoff tokens; `npm run demo:access -- setup` copies it from your
+environment to all demo projects. Details and commands:
+[`DEMO_PAGES.md`](./DEMO_PAGES.md#customer-access-codes).
 
 ## Cloudflare deploys
 
@@ -84,14 +72,14 @@ age-keygen -o ~/.config/sops/age/keys.txt && chmod 600 ~/.config/sops/age/keys.t
 Back up `~/.config/sops/age/keys.txt` in your password manager. Its public
 recipient is listed in `.sops.yaml`.
 
-| Task | Command |
-| --- | --- |
-| Edit secrets | `npm run secrets:edit` (= `sops secrets/ofenbau.enc.env`) |
-| Read one value | `sops decrypt secrets/ofenbau.enc.env \| grep DEMO_ACCESS_CODE` |
-| Load into the shell | automatic via `.envrc` (`direnv allow` once) — nothing is written to disk |
-| New machine | restore the key file, `direnv allow`, done |
-| Add a second key | add its `age1…` to `.sops.yaml`, then `sops updatekeys secrets/ofenbau.enc.env` |
-| Rotate the age key | add new key, `sops updatekeys`, remove old key, `sops rotate -i secrets/ofenbau.enc.env` |
+| Task                | Command                                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Edit secrets        | `npm run secrets:edit` (= `sops secrets/ofenbau.enc.env`)                                            |
+| Read one value      | `sops decrypt secrets/ofenbau.enc.env \| grep STITCH_API_KEY`                                        |
+| Load into the shell | automatic via `.envrc` (`direnv allow` once) — nothing is written to disk                            |
+| New machine         | restore the key file, `direnv allow`, done                                                           |
+| Add a second key    | add its `age1…` to `.sops.yaml`, then `sops updatekeys secrets/ofenbau.enc.env`                      |
+| Rotate the age key  | add new key, `sops updatekeys`, remove old key, `sops rotate -i secrets/ofenbau.enc.env`             |
 | Rotate a credential | revoke at the provider, update the value, re-run `wrangler pages secret put` if it is a Pages secret |
 
 Only add keys that have a value. `.envrc` exports every key, so an empty

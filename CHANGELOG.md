@@ -34,21 +34,23 @@ All notable changes to this project are documented here. The format follows
 - The privacy policy covers Cloudflare Pages hosting and the optional
   OpenStreetMap (Nominatim) location lookup.
 
+- Per-customer demo access codes: `npm run demo:access -- add|list|rotate|remove`
+  stores SHA-256 hashes in Cloudflare KV; one code works on all demo projects
+  (the package switch hands the session over), revocation is immediate and the
+  last login is recorded. Replaces the single shared server-side code.
+
 ### Changed
 
 - Fonts are self-hosted (Latin subset) instead of loaded from Google Fonts.
 - Legal pages cite § 5 DDG and § 18 Abs. 2 MStV instead of the repealed § 5 TMG.
+- Demo mode no longer obfuscates the bundle and no longer embeds an author
+  identity or anti-reuse wording; everything is driven by `VITE_DEMO_*` variables.
+- Generated launch/content reports are written to `docs/generated/` (git-ignored).
 
 ### Fixed
 
 - Material colours are converted from sRGB to linear before reaching the 3D
   renderer, so dark finishes (Anthrazit, Tannengrün) no longer look washed out.
-
-### Changed
-
-- Demo mode no longer obfuscates the bundle and no longer embeds an author
-  identity or anti-reuse wording; everything is driven by `VITE_DEMO_*` variables.
-- Generated launch/content reports are written to `docs/generated/` (git-ignored).
 
 ### Removed
 

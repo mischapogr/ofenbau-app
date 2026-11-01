@@ -14,16 +14,24 @@ photos and references are placeholders (AI-generated imagery, see
 > Licensed under [MIT](./LICENSE). Contributions welcome — see
 > [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
-## Live demo
+## Demo
 
-No access code needed. Each package is its own Cloudflare Pages deployment;
-the "Paket" switch in the demo bar jumps between them.
+The demos run as private previews on Cloudflare Pages: each prospect gets a
+personal access code (`npm run demo:access`, see
+[`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md#customer-access-codes)). To look
+around yourself, run it locally — no account or secrets needed:
 
-| Package     | URL                                      | What it shows                                                                                 |
-| ----------- | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
+```bash
+npm install && npm run dev          # http://localhost:5173 (Premium)
+VITE_TIER=basis npm run dev         # the reduced Basis package
+```
+
+The 3D planning explorer is at `/leistungen/3d-planung`.
+
+----------- | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
 | **Premium** | <https://ofenbau-premium-demo.pages.dev> | Full site: calculators, 3D planning explorer with 360° turntable and 3D model, regional pages |
-| **Basis**   | <https://ofenbau-basis-demo.pages.dev>   | Reduced package: website, portfolio, Ratgeber, contact form                                   |
-| Generic     | <https://ofenbau-demo.pages.dev>         | Same build as Premium                                                                         |
+| **Basis** | <https://ofenbau-basis-demo.pages.dev> | Reduced package: website, portfolio, Ratgeber, contact form |
+| Generic | <https://ofenbau-demo.pages.dev> | Same build as Premium |
 
 Try the 3D planning explorer directly at
 <https://ofenbau-premium-demo.pages.dev/leistungen/3d-planung>.
@@ -141,9 +149,9 @@ to deploy without them. Fonts are self-hosted, so the demo makes no third-party
 requests until a visitor opts in. See [`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md).
 
 The client-side code check is casual gating only (the hash ships in the bundle).
-For a real gate on Cloudflare Pages set the `DEMO_ACCESS_CODE` secret and
-`functions/_middleware.js` stops serving the app to unauthenticated visitors —
-see [`docs/SECRETS.md`](./docs/SECRETS.md) and [`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md).
+On Cloudflare Pages, `functions/_middleware.js` adds a real per-customer gate:
+personal codes stored as hashes in Cloudflare KV, revocable instantly, one code
+for all demo projects — see [`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md#customer-access-codes).
 
 ### Planning explorer ("3D")
 

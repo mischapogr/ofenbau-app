@@ -55,5 +55,5 @@ mkdirSync('_tmp', { recursive: true })
 writeFileSync(OUT_FILE, `${url}\n`)
 
 console.log(url)
-console.log('\nAccess code: run `sops decrypt secrets/ofenbau.enc.env | grep DEMO_ACCESS_CODE` (see docs/SECRETS.md)')
+console.log('\nNote: the tunnel has no access gate — anyone with this link can open it.')
 console.log(`(saved to ${OUT_FILE})`)

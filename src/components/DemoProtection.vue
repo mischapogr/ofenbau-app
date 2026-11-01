@@ -32,13 +32,27 @@ function cardTag(t) {
   return cardHref(t) ? 'a' : 'article'
 }
 
+// Built demos go through /api/demo-handoff, which carries a logged-in customer
+// over to the other package's demo without asking for the code again (and is a
+// plain redirect when the gate is off). The Vite dev server has no Functions,
+// so it links directly.
+function switchHref(url) {
+  if (!url) return null
+  return import.meta.env.DEV ? url : `/api/demo-handoff?to=${encodeURIComponent(url)}`
+}
+
 // Package switch in the notice bar: available whenever the catalog is on and at
 // least one package has its own demo URL, so the choice stays visible even
 // when no access code (and therefore no gate) is configured.
 const packageLinks = computed(() =>
   props.protection.featureCatalogEnabled
     ? productTiers
-        .map((t) => ({ id: t.id, name: t.name, href: cardHref(t), active: t.id === activeTier }))
+        .map((t) => ({
+          id: t.id,
+          name: t.name,
+          href: switchHref(cardHref(t)),
+          active: t.id === activeTier,
+        }))
         .filter((link) => link.href || link.active)
     : []
 )

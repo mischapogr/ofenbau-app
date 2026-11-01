@@ -108,8 +108,8 @@
       <p class="eyebrow">Demo-Zugang</p>
       <h1>Ofenbau Mustermann</h1>
       <p>
-        Diese Demo ist zugangsgeschützt. Bitte geben Sie den Zugangscode ein, den Sie erhalten
-        haben.
+        Diese Demo ist für ausgewählte Interessenten freigegeben. Bitte geben Sie Ihren persönlichen
+        Zugangscode ein, den Sie erhalten haben.
       </p>
       <form method="post" action="/api/demo-unlock" id="gate">
         <input type="hidden" name="redirect" id="redirect" value="/" />
@@ -117,12 +117,17 @@
         <input
           id="code"
           name="code"
-          type="password"
+          type="text"
+          placeholder="XXXX-XXXX-XXXX"
+          autocapitalize="characters"
+          spellcheck="false"
           autocomplete="one-time-code"
           required
           autofocus
         />
-        <p class="error" id="error" role="alert">Der Zugangscode ist nicht korrekt.</p>
+        <p class="error" id="error" role="alert">
+          Der Zugangscode ist nicht korrekt oder abgelaufen.
+        </p>
         <button type="submit">Demo öffnen</button>
       </form>
       <footer>

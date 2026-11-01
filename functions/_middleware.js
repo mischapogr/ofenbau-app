@@ -1,46 +1,98 @@
-// Cloudflare Pages middleware — optional server-side demo gate.
+// Cloudflare Pages middleware — per-customer demo gate.
 //
-// Active only when the `DEMO_ACCESS_CODE` secret is set on the Pages project
-// (`wrangler pages secret put DEMO_ACCESS_CODE --project-name <project>`).
-// Without it every request passes through unchanged, so a deployment keeps the
-// client-side gate behaviour (VITE_DEMO_ACCESS_CODE_HASH) until you opt in.
+// Active when the project has the DEMO_ACCESS KV binding (wrangler.toml) and the
+// DEMO_SESSION_SECRET secret. Otherwise every request passes through unchanged.
 //
-// With it, unauthenticated HTML requests receive the static gate page
-// (public/demo-gate.html) with status 401 and the app bundle is never served;
-// other requests get a plain 401. `POST /api/demo-unlock` issues the session cookie.
-import { COOKIE_NAME, getCookie, verifySession } from './_lib/demo-session.js'
+// Page navigations need a session cookie for a customer that still exists and
+// has not expired in KV, so removing a customer (`npm run demo:access -- remove`)
+// locks them out on their next page load. Without a valid session the static
+// public/demo-gate.html is returned with status 401. Static files (/assets,
+// /images, /models, /videos) are excluded via public/_routes.json: the source is
+// open anyway, and this keeps them off the daily Functions quota.
+import {
+  COOKIE_NAME,
+  activeCustomer,
+  gateEnabled,
+  getCookie,
+  sessionCookie,
+  signToken,
+  verifyToken,
+  SESSION_TTL_SECONDS,
+} from './_lib/demo-session.js'
 
-const PUBLIC_PATHS = new Set(['/api/healthz', '/api/demo-unlock', '/demo-gate.html'])
+const PUBLIC_PATHS = new Set([
+  '/api/healthz',
+  '/api/demo-unlock',
+  '/api/demo-handoff',
+  '/demo-gate.html',
+])
 
-export async function onRequest({ request, env, next }) {
-  const accessCode = env.DEMO_ACCESS_CODE
-  if (!accessCode) return next()
+const noIndex = { 'x-robots-tag': 'noindex, nofollow, noarchive' }
 
-  const url = new URL(request.url)
-  if (PUBLIC_PATHS.has(url.pathname)) return next()
-
-  const token = getCookie(request, COOKIE_NAME)
-  if (await verifySession(token, env.DEMO_SESSION_SECRET || accessCode)) {
-    const response = await next()
-    const headers = new Headers(response.headers)
-    headers.set('cache-control', 'private, no-store')
-    headers.set('x-robots-tag', 'noindex, nofollow, noarchive')
-    return new Response(response.body, { status: response.status, headers })
-  }
-
+async function gateResponse(request, env) {
   const wantsHtml =
     request.method === 'GET' && (request.headers.get('accept') || '').includes('text/html')
   if (!wantsHtml) {
-    return new Response('Unauthorized', { status: 401, headers: { 'cache-control': 'no-store' } })
+    return new Response('Unauthorized', {
+      status: 401,
+      headers: { 'cache-control': 'no-store', ...noIndex },
+    })
   }
-
   const gate = await env.ASSETS.fetch(new URL('/demo-gate.html', request.url))
   return new Response(gate.body, {
     status: 401,
     headers: {
       'content-type': 'text/html; charset=utf-8',
       'cache-control': 'no-store',
-      'x-robots-tag': 'noindex, nofollow, noarchive',
+      ...noIndex,
     },
   })
+}
+
+export async function onRequest({ request, env, next }) {
+  if (!gateEnabled(env)) return next()
+
+  const url = new URL(request.url)
+  if (PUBLIC_PATHS.has(url.pathname)) return next()
+
+  // Arriving from another package's demo with a short-lived handoff token.
+  const handoff = url.searchParams.get('demo_handoff')
+  if (handoff) {
+    const customer = await verifyToken('handoff', handoff, env.DEMO_SESSION_SECRET)
+    if (customer && (await activeCustomer(env.DEMO_ACCESS, customer))) {
+      url.searchParams.delete('demo_handoff')
+      const token = await signToken(
+        'session',
+        customer,
+        SESSION_TTL_SECONDS,
+        env.DEMO_SESSION_SECRET
+      )
+      return new Response(null, {
+        status: 303,
+        headers: {
+          location: url.toString(),
+          'set-cookie': sessionCookie(token),
+          'cache-control': 'no-store',
+        },
+      })
+    }
+  }
+
+  const customer = await verifyToken(
+    'session',
+    getCookie(request, COOKIE_NAME),
+    env.DEMO_SESSION_SECRET
+  )
+  // API calls only need an authentic session; page loads also re-check KV so a
+  // removed or expired customer is locked out without waiting for the cookie.
+  const isPage = !url.pathname.startsWith('/api/')
+  if (customer && (!isPage || (await activeCustomer(env.DEMO_ACCESS, customer)))) {
+    const response = await next()
+    const headers = new Headers(response.headers)
+    headers.set('cache-control', 'private, no-store')
+    headers.set('x-robots-tag', noIndex['x-robots-tag'])
+    return new Response(response.body, { status: response.status, headers })
+  }
+
+  return gateResponse(request, env)
 }

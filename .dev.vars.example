@@ -1,7 +1,6 @@
 # Local values for Cloudflare Pages Functions when running `npx wrangler pages dev dist`.
-# Copy to `.dev.vars` (git-ignored). On Cloudflare, set the same names as secrets:
-#   wrangler pages secret put DEMO_ACCESS_CODE --project-name <project>
-#   wrangler pages secret put DEMO_SESSION_SECRET --project-name <project>
-# Leave DEMO_ACCESS_CODE empty to disable the server-side gate (functions/_middleware.js).
-DEMO_ACCESS_CODE=
+# Copy to `.dev.vars` (git-ignored). On Cloudflare the same secret is set with
+# `npm run demo:access -- setup` (all demo projects).
+# The per-customer gate is active when this secret is set AND the DEMO_ACCESS KV
+# binding exists (wrangler.toml). Local codes: `npm run demo:access -- add <id> --local`.
 DEMO_SESSION_SECRET=
