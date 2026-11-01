@@ -94,6 +94,11 @@ recipient is listed in `.sops.yaml`.
 | Rotate the age key | add new key, `sops updatekeys`, remove old key, `sops rotate -i secrets/ofenbau.enc.env` |
 | Rotate a credential | revoke at the provider, update the value, re-run `wrangler pages secret put` if it is a Pages secret |
 
+Only add keys that have a value. `.envrc` exports every key, so an empty
+`CLOUDFLARE_ACCOUNT_ID=` makes wrangler ignore your `wrangler login`, and an empty
+`GITHUB_PERSONAL_ACCESS_TOKEN=` blanks the token your shell already has. Remove a
+key with `sops unset secrets/ofenbau.enc.env '["KEY"]'`.
+
 Accepted trade-off: if the age key ever leaks, every historical version of the
 encrypted file becomes readable. The answer is rotating the credentials inside
 it, which you would do anyway.
