@@ -120,17 +120,25 @@ Basis/Premium catalogue shown on the demo gate lives in `src/data/productTiers.j
 `VITE_APP_ENV=demo` (the `demo` Vite mode, `.env.demo`) enables a deterrent
 layer for sharing previews:
 
-| Variable                                                     | Purpose                                                                           |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| `VITE_DEMO_PROTECTION_ENABLED`                               | Master switch for the demo layer                                                  |
-| `VITE_DEMO_CUSTOMER_NAME`                                    | Name shown in the gate and watermark                                              |
-| `VITE_DEMO_AUTHOR_NAME` / `VITE_DEMO_AUTHOR_EMAIL`           | Optional contact shown in the notice bar (empty = anonymous)                      |
-| `VITE_DEMO_COPYRIGHT_NOTICE`                                 | Text of the notice bar                                                            |
-| `VITE_DEMO_ALLOWED_HOSTS`                                    | Comma-separated host allow-list; supports `*.example.de`                          |
-| `VITE_DEMO_WATERMARK_ENABLED` / `VITE_DEMO_WATERMARK_FACTOR` | Repeated visual watermark and its density                                         |
-| `VITE_DEMO_FEATURE_CATALOG_ENABLED`                          | Show the Basis/Premium package switch (notice bar) and cards (gate)               |
-| `VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`              | Where the catalogue cards forward to                                              |
-| `VITE_DEMO_ACCESS_CODE_HASH`                                 | SHA-256 hex of a client-side access code (empty = none). Never commit a real hash |
+| Variable                                                              | Purpose                                                                                             |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `VITE_DEMO_PROTECTION_ENABLED`                                        | Master switch for the demo layer                                                                    |
+| `VITE_DEMO_CUSTOMER_NAME`                                             | Name shown in the gate and watermark                                                                |
+| `VITE_DEMO_AUTHOR_NAME` / `VITE_DEMO_AUTHOR_EMAIL`                    | Optional contact shown in the notice bar (empty = anonymous)                                        |
+| `VITE_DEMO_COPYRIGHT_NOTICE`                                          | Text of the notice bar                                                                              |
+| `VITE_DEMO_ALLOWED_HOSTS`                                             | Comma-separated host allow-list; supports `*.example.de`                                            |
+| `VITE_DEMO_WATERMARK_ENABLED` / `VITE_DEMO_WATERMARK_FACTOR`          | Repeated visual watermark and its density                                                           |
+| `VITE_DEMO_FEATURE_CATALOG_ENABLED`                                   | Show the Basis/Premium package switch (notice bar) and cards (gate)                                 |
+| `VITE_DEMO_URL_BASIS` / `VITE_DEMO_URL_PREMIUM`                       | Where the catalogue cards forward to                                                                |
+| `VITE_DEMO_ACCESS_CODE_HASH`                                          | SHA-256 hex of a client-side access code (empty = none). Never commit a real hash                   |
+| `VITE_DEMO_OPERATOR_NAME` / `_STREET` / `_CITY` / `_EMAIL` / `_PHONE` | Real operator shown in the demo's Impressum and privacy policy (required to deploy; phone optional) |
+
+**Publishing a demo in Germany/the EU?** The business on the site is fictional,
+so the Impressum (§ 5 DDG) and the privacy policy must name whoever publishes the
+demo. Set the `VITE_DEMO_OPERATOR_*` variables in the git-ignored
+`.env.demo.local` (or your own secrets store); the `demo:pages:*` scripts refuse
+to deploy without them. Fonts are self-hosted, so the demo makes no third-party
+requests until a visitor opts in. See [`docs/DEMO_PAGES.md`](./docs/DEMO_PAGES.md).
 
 The client-side code check is casual gating only (the hash ships in the bundle).
 For a real gate on Cloudflare Pages set the `DEMO_ACCESS_CODE` secret and
