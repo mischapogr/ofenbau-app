@@ -44,6 +44,10 @@ const routes = [
     name: 'service-detail',
     component: () => import('@/pages/ServiceDetailView.vue'),
     meta: { title: `Leistung — ${siteName}` },
+    // The 3D-planning service is premium-only; a basis build sends the slug
+    // back to the overview instead of rendering "Leistung nicht gefunden".
+    beforeEnter: (to) =>
+      to.params.slug === '3d-planung' && !hasFeature('planning3d') ? { name: 'services' } : true,
   },
   {
     path: '/projekte',

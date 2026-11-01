@@ -9,7 +9,7 @@ import ServiceCard from '@/components/ServiceCard.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import CTASection from '@/components/CTASection.vue'
 import AppIcon from '@/components/AppIcon.vue'
-import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
+import ExplorerLazy from '@/components/planning/ExplorerLazy.vue'
 import HeizlastCalculator from '@/components/HeizlastCalculator.vue'
 import BimschvChecker from '@/components/BimschvChecker.vue'
 import { getActiveServices } from '@/data/services'
@@ -238,7 +238,7 @@ useJsonLd(() => {
         </BaseContainer>
       </section>
 
-      <Planning3DExplorer />
+      <ExplorerLazy />
 
       <section class="section bg-surface-muted">
         <BaseContainer class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">

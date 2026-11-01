@@ -7,7 +7,7 @@ import AboutSection from '@/components/AboutSection.vue'
 import ProcessTimeline from '@/components/ProcessTimeline.vue'
 import ProjectGallery from '@/components/ProjectGallery.vue'
 import Planning3DSection from '@/components/Planning3DSection.vue'
-import Planning3DExplorer from '@/components/Planning3DExplorer.vue'
+import ExplorerLazy from '@/components/planning/ExplorerLazy.vue'
 import CTASection from '@/components/CTASection.vue'
 import { company } from '@/data/company'
 import { getRegion } from '@/data/regions'
@@ -51,7 +51,7 @@ useSeo(() => {
     <ProjectGallery :limit="6" :show-filters="false" show-cta />
     <template v-if="hasFeature('planning3d')">
       <Planning3DSection />
-      <Planning3DExplorer />
+      <ExplorerLazy />
     </template>
     <CTASection />
   </div>
