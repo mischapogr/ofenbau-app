@@ -10,4 +10,6 @@ paths = [
   '''\.env\.example$''',
   '''\.mcp\.env\.example$''',
   '''\.dev\.vars\.example$''',
+  # content inventory exports: "key" fields are content slugs, not credentials
+  '''docs/(generated/)?CONTENT_INVENTORY\.json$''',
 ]
