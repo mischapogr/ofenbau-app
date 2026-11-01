@@ -1,0 +1,6 @@
+# Cloudflare Pages response headers.
+# Strip Link headers so Cloudflare never sends Early Hints (103) — a cached hint
+# from an older build pointed browsers at fonts.googleapis.com. Fonts are
+# self-hosted; the site must not contact Google before consent.
+/*
+  ! Link

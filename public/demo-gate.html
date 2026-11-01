@@ -139,7 +139,9 @@
       const params = new URLSearchParams(location.search)
       const redirect =
         params.get('redirect') ||
-        (location.pathname === '/demo-gate.html' ? '/' : location.pathname + location.search)
+        (/^\/demo-gate(\.html)?$/.test(location.pathname)
+          ? '/'
+          : location.pathname + location.search)
       document.getElementById('redirect').value = redirect
       if (params.get('error')) document.getElementById('error').setAttribute('data-show', '')
       document.getElementById('gate').addEventListener('submit', async (event) => {

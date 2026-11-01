@@ -45,10 +45,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         { status: 401, headers: { 'cache-control': 'no-store' } }
       )
     }
-    const back = new URL(
-      `/demo-gate.html?error=1&redirect=${encodeURIComponent(redirect)}`,
-      request.url
-    )
+    const back = new URL(`/demo-gate?error=1&redirect=${encodeURIComponent(redirect)}`, request.url)
     return Response.redirect(back.toString(), 303)
   }
 

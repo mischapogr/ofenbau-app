@@ -25,6 +25,7 @@ const PUBLIC_PATHS = new Set([
   '/api/demo-unlock',
   '/api/demo-handoff',
   '/demo-gate.html',
+  '/demo-gate', // Pages serves /demo-gate.html under this pretty URL
 ])
 
 const noIndex = { 'x-robots-tag': 'noindex, nofollow, noarchive' }
